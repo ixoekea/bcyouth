@@ -1,0 +1,68 @@
+.header {
+  background-color: rgb(209, 208, 208)
+}
+
+
+/*Horizontal nav menu */
+ul {
+  list-style-type: none;
+  margin: 5;
+  padding: 0;
+  overflow: hidden;
+  background-color: #28a1c0;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: #111;
+}
+
+/*image*/
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+/*Image border*/
+
+.image
+    img {
+  border: 10px solid #000000;}
+
+  /*Columns*/
+  .column {
+    float: left;
+    width: 25%;
+    padding: 10px;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  /* Table style ??not working */
+  table, td {
+    border:1px solid black;
+    align-items: center;
+    justify-items: center;
+  }
