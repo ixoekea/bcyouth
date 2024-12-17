@@ -1,68 +1,75 @@
-.header {
-  background-color: rgb(209, 208, 208)
-}
-
-
-/*Horizontal nav menu */
-ul {
-  list-style-type: none;
-  margin: 5;
+* {
+  margin: 0;
   padding: 0;
-  overflow: hidden;
-  background-color: #28a1c0;
+  box-sizing: border-box;
+}
+.mG {
+  width: 50px;
+  height: auto;
+}
+.bc {
+  width: 60px;
+  height: auto;
+}
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-li {
-  float: left;
+.navigation a {
+  padding: 20px;
+  color: black;
+}
+.navigation a:hover {
+  color: blue;
+  font-weight: bold;
+}
+.site-header {
+  background-color: lightblue;
+  padding: 10px 0px;
+  border: 1px black solid;
+}
+.event1 {
+  width: 200px;
 }
 
-li a {
-  display: block;
-  color: white;
+.main {
+  display: flex;
+  justify-content: center;
+  background-color: black;
+}
+video {
+  width: 400px;
+  display: flex;
+  justify-content: center;
+}
+.mainCategory {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  border: 2px black solid;
+  background-color: lightsteelblue;
+  border-radius: 10px;
+}
+p {
   text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
+  padding: 10px;
+}
+button {
+  padding: 10px;
 }
 
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-  background-color: #111;
+img {
+  justify-content: center;
+  width: 150px;
 }
-
-/*image*/
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-/*Image border*/
-
-.image
-    img {
-  border: 10px solid #000000;}
-
-  /*Columns*/
-  .column {
-    float: left;
-    width: 25%;
-    padding: 10px;
-    height: 200px;
-    width: 200px;
-    margin: 10px;
-    text-align: center;
-  }
-  
-  /* Clear floats after the columns */
-  .row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-
-  /* Table style ??not working */
-  table, td {
-    border:1px solid black;
-    align-items: center;
-    justify-items: center;
-  }
