@@ -222,3 +222,17 @@ nav {
   font-weight: bold;
 }
 */
+
+/* Center the iframe */
+.center-calendar {
+  display: flex;
+  justify-content: center; /* Horizontally center */
+  align-items: center; /* Vertically center */
+  height: 100vh; /* Optional: make the container take full height */
+}
+
+iframe {
+  border: 0;
+  width: 400px; /* Adjust width as needed */
+  height: 600px; /* Adjust height as needed */
+}
