@@ -17,8 +17,8 @@
   justify-content: center;
   align-items: center;
   padding: 15px 20px;
+  width: 100%;
 }
-
 /*Header Logo*/
 
 .mG,
@@ -32,6 +32,8 @@
   list-style: none;
   display: flex;
   gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-links li {
@@ -89,13 +91,28 @@ p {
 }
 button {
   padding: 10px;
+  border-radius: 10px;
 }
-
 img {
   justify-content: center;
   width: 150px;
 }
 
+/*Images */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-template-rows: repeat(3, auto); /* 3 rows */
+  gap: 40px; /* Space between images */
+  max-width: 600px; /* Adjust width as needed */
+  margin: auto; /* Center the grid */
+}
+
+.grid-container img {
+  width: 100%; /* Make images responsive */
+  height: auto;
+  border-radius: 10px; /* Optional: Rounded corners */
+}
 /*Mobile Nav Menu */
 .menu-icon {
   display: none;
