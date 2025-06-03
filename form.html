@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Annual Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.6;
+      }
+      h2 {
+        margin-top: 2rem;
+        border-bottom: 2px solid #ccc;
+      }
+      label {
+        display: block;
+        margin: 0.5rem 0;
+      }
+      input[type="text"],
+      input[type="email"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 0.4rem;
+        margin-bottom: 1rem;
+      }
+      .checkbox-group {
+        margin-bottom: 1rem;
+      }
+      .checkbox-group label {
+        display: flex;
+        align-items: center;
+      }
+      .checkbox-group input[type="text"] {
+        margin-left: 0.5rem;
+        flex: 1;
+      }
+      textarea {
+        width: 100%;
+        height: 200px;
+      }
+      .signature-section input {
+        width: 50%;
+      }
+      #pastor-signature,
+      #clerk-signature {
+        border: 2px solid #333; /* dark gray solid border, 2px thick */
+        border-radius: 4px; /* optional, rounds corners */
+        background-color: #fff; /* optional, makes sure canvas background is white */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BC Adventurer / Pathfinder / Master Guide Annual Application Form</h1>
+
+    <form onsubmit="handleSubmit(event)">
+      <!-- Club Checkboxes and Contact Info Omitted for Brevity -->
+      <!-- Include previous code here -->
+      <h2>Club Type</h2>
+      <div class="checkbox-group">
+        <label
+          ><input type="checkbox" name="adventurers" /> Adventurers Club Name:
+          <input type="text" name="adventurers_club_name" />
+        </label>
+        <label
+          ><input type="checkbox" name="pathfinders" /> Pathfinders Club Name:
+          <input type="text" name="pathfinders_club_name" />
+        </label>
+        <label
+          ><input type="checkbox" name="master_guide" /> Master Guide Club Name:
+          <input type="text" name="master_guide_club_name" />
+        </label>
+      </div>
+
+      <h2>Philosophy of the Pathfinder Ministry</h2>
+      <p>
+        The purpose of having a Pathfinder Club is to lead its membership into a
+        growing, redemptive relationship with Christ, and to build its
+        membership into responsible, mature individuals in active selfless
+        service.
+      </p>
+      <p>
+        All pathfinder leaders are Christians, working hand in hand with
+        parents, teachers, and pastors providing optimum opportunities for
+        Christian development. The Pathfinder Club is an extension of the home,
+        school and church. It is an experimental laboratory where growth and
+        learning flourish.
+      </p>
+      <p>
+        The membership involves youth in grades 5 – 10 (age 10 – 15) who have a
+        desire for group activities ranging from community and world mission
+        projects to nature, outdoor and camping activities, Annual BC Camporee,
+        AY/Pathfinder class curriculum and AY Honors. Above all, Pathfinders
+        give youth an environment in which to actively expand their personal
+        experience with Christ.
+      </p>
+      <h2>Philosophy of Adventurer Ministry</h2>
+      <p>
+        The Adventurer Club is a Seventh-day Adventist Church-sponsored ministry
+        to children aged 6 to 9 years old. There are also the Little Lamb and
+        Eager Beaver segments for children aged 4 and 5, respectively. Around
+        the world we have nearly 700,000 enrolled children in the Adventurer
+        Ministry. This Ministry was created to assist parents in their important
+        responsibilities as a child’s primary teachers and evangelizers. The
+        program aims to strengthen the parent/child relationship and further the
+        child’s development in spiritual, physical, mental and social areas. In
+        this way the church, home and school can work together with the parent
+        to develop a mature, happy child.
+      </p>
+      <p>
+        The Church’s greatest resource is our children; therefore, it is
+        imperative that as a church we meet the challenge to provide a ministry
+        for our children during their early formative years. We want right
+        habits, thoughts, motives, dispositions and attitudes to be established.
+      </p>
+      <p>
+        The wise man wrote, “Bring up a child in the way he should go, and when
+        he is old he will not turn from it.” (Proverbs 22:6). This is more than
+        a cliché – it is a Bible principle which assures parents that the
+        lessons learned in childhood will last a lifetime. Following the Lord
+        will however, depend on the child’s choices. The Adventurer Ministry
+        assists parents in guiding children to Christ.
+      </p>
+      <h2>Philosophy of Master Guide Ministry</h2>
+      <p>
+        The Seventh-day Adventist Church is committed to training youth and
+        young adults for leadership and service to God and humanity.
+      </p>
+      <p>
+        Just as God has used young people to pioneer the Adventist Church, He
+        continually uses youth and young adults in this present generation to
+        fulfill the mission of the Church. One of the most effective ways to
+        cultivate their leadership potential is through the Master Guide Club
+        ministry.
+      </p>
+      <p>
+        The Master Guide Club provides a balanced approach to the development of
+        the spiritual, mental, physical, and social aspects of life. Its
+        philosophy is based on the premise that young people, with the right
+        training, will contribute to the finishing of God’s work. When young
+        people are given the opportunity to take leadership roles, to be
+        actively involved in discipling those in Adventurer Club, Pathfinder
+        Club, Youth Ministries, and church ministries, and to take part in
+        community service endeavors, they will be able to take ownership of the
+        mission of the Church and gain life-changing experiences that will
+        inspire their leadership and ministry.
+      </p>
+      <p>
+        In addition, the Master Guide Club exists to disciple children, youth,
+        and young adults in conjunction with the Great Commission (Matt.
+        28:19–20). With love as the distinguishing mark of a true disciple of
+        Christ (John 13:35), the Master Guide Club will offer a friendly
+        environment where everyone is loved, trusted, and supported, and
+        meaningful relationships are forged. It is also a place where candidates
+        will grow together spiritually and learn to work together using their
+        God-given talents and spiritual gifts.
+      </p>
+      <p>
+        The Master Guide Club exists primarily for Adventurer Club, Pathfinder
+        Club, Youth Ministries, and church ministries.
+      </p>
+      <h2>Your Commitment to Pathfinders and Adventurers</h2>
+      <p>
+        We, the undersigned, have read, understand, and are in full agreement
+        with the above Philosophy of the Pathfinder Ministry and the Adventuer
+        Ministry and agree to support our club through those means with which
+        the Lord has blessed this church, including financially; Invoices for
+        supplies and Conference Sponsored Events (Camporee), securing a place to
+        meet, transportation on outings, and other such needs as may arise in
+        the fulfillment of this ministry, and to assist and support the work of
+        the Pathfinder Ministry in the BC Conference and around the world.
+      </p>
+      <p>
+        We understand that all staff and volunteers 19 and older are required to
+        have a CRC from the Criminal Records Review Program (CRRP) prior to club
+        involvement. <br />
+        <strong>
+          *A valid Criminal Record Clearance Letter is required to be in our
+          files for all Leaders, Parents and Adults 19 years and older before
+          they are present at any meetings, activities or events.*
+        </strong>
+      </p>
+
+      <h2>Sponsoring Church & Contact Info</h2>
+      <label
+        >Sponsoring Church:
+        <input type="text" name="sponsoring_church" />
+      </label>
+      <label
+        >Elected Club Director:
+        <input type="text" name="club_director" />
+      </label>
+      <label
+        >Mailing Address:
+        <input type="text" name="mailing_address" />
+      </label>
+      <label
+        >Email:
+        <input type="email" name="email" />
+      </label>
+      <label
+        >Cell Phone:
+        <input type="tel" name="cell_phone" />
+      </label>
+      <label
+        >Home Phone:
+        <input type="tel" name="home_phone" />
+      </label>
+      <label
+        >Work Phone:
+        <input type="tel" name="work_phone" />
+      </label>
+
+      <h2>Signatures</h2>
+
+      <div class="signature-section">
+        <label>Church Pastor Signature:</label>
+        <canvas id="pastor-signature" width="400" height="150"></canvas>
+        <button type="button" onclick="clearSignature('pastor-signature')">
+          Clear
+        </button>
+        <input
+          type="hidden"
+          name="pastor_signature_data"
+          id="pastor_signature_data"
+        />
+
+        <label
+          >First and Last Name:
+          <input type="text" name="pastor_name" />
+        </label>
+
+        <label>Church Clerk or Treasurer Signature:</label>
+        <canvas id="clerk-signature" width="400" height="150"></canvas>
+        <button type="button" onclick="clearSignature('clerk-signature')">
+          Clear
+        </button>
+        <input
+          type="hidden"
+          name="clerk_signature_data"
+          id="clerk_signature_data"
+        />
+
+        <label
+          >First and Last Name:
+          <input type="text" name="board_name" />
+        </label>
+      </div>
+
+      <script>
+        function setupSignaturePad(canvasId) {
+          const canvas = document.getElementById(canvasId);
+          const ctx = canvas.getContext("2d");
+          let drawing = false;
+
+          canvas.addEventListener("mousedown", (e) => {
+            drawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+          });
+          canvas.addEventListener("mouseup", () => (drawing = false));
+          canvas.addEventListener("mouseleave", () => (drawing = false));
+          canvas.addEventListener("mousemove", (e) => {
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineWidth = 2;
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "black";
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+          });
+
+          // Optional: add touch support
+          canvas.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            drawing = true;
+            ctx.beginPath();
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+          });
+          canvas.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            drawing = false;
+          });
+          canvas.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            if (!drawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+            ctx.stroke();
+          });
+        }
+
+        function clearSignature(canvasId) {
+          const canvas = document.getElementById(canvasId);
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        async function handleSubmit(event) {
+          event.preventDefault();
+
+          const form = event.target;
+
+          // Validate club names if checkboxes are checked
+          if (
+            form.adventurers.checked &&
+            form.adventurers_club_name.value.trim() === ""
+          ) {
+            alert("Please enter the Adventurers Club Name if checked.");
+            return;
+          }
+          if (
+            form.pathfinders.checked &&
+            form.pathfinders_club_name.value.trim() === ""
+          ) {
+            alert("Please enter the Pathfinders Club Name if checked.");
+            return;
+          }
+          if (
+            form.master_guide.checked &&
+            form.master_guide_club_name.value.trim() === ""
+          ) {
+            alert("Please enter the Master Guide Club Name if checked.");
+            return;
+          }
+
+          // Capture signature images as base64 data URLs
+          const pastorCanvas = document.getElementById("pastor-signature");
+          const clerkCanvas = document.getElementById("clerk-signature");
+
+          const pastorSignatureData = pastorCanvas.toDataURL();
+          const clerkSignatureData = clerkCanvas.toDataURL();
+
+          // Prepare data object to save
+          const formData = {
+            adventurers: form.adventurers.checked,
+            adventurers_club_name: form.adventurers_club_name.value.trim(),
+            pathfinders: form.pathfinders.checked,
+            pathfinders_club_name: form.pathfinders_club_name.value.trim(),
+            master_guide: form.master_guide.checked,
+            master_guide_club_name: form.master_guide_club_name.value.trim(),
+
+            sponsoring_church: form.sponsoring_church.value.trim(),
+            club_director: form.club_director.value.trim(),
+            mailing_address: form.mailing_address.value.trim(),
+            email: form.email.value.trim(),
+            cell_phone: form.cell_phone.value.trim(),
+            home_phone: form.home_phone.value.trim(),
+            work_phone: form.work_phone.value.trim(),
+
+            pastor_signature_data: pastorSignatureData,
+            pastor_name: form.pastor_name.value.trim(),
+            clerk_signature_data: clerkSignatureData,
+            board_name: form.board_name.value.trim(),
+            board_approval_date: form.board_approval_date.value,
+
+            submitted_at: new Date(),
+          };
+
+          try {
+            await addDoc(collection(db, "bc_club_applications"), formData);
+            alert("Form submitted successfully!");
+            form.reset();
+            clearSignature("pastor-signature");
+            clearSignature("clerk-signature");
+          } catch (error) {
+            console.error("Error writing document: ", error);
+            alert("There was an error submitting the form. Please try again.");
+          }
+        }
+      </script>
+
+      <label
+        >Date of Board Approval:
+        <input type="date" name="board_approval_date" />
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyB4arvQapX5A57BWX3YdQYbAOtadrwG0Lg",
+        authDomain: "bc-club-application.firebaseapp.com",
+        projectId: "bc-club-application",
+        storageBucket: "bc-club-application.appspot.com",
+        messagingSenderId: "459362325049",
+        appId: "1:459362325049:web:3d405c612f253d90b8b3e8",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      // Make db functions available to global scope
+      window.db = db;
+      window.collection = collection;
+      window.addDoc = addDoc;
+
+      // ... existing functions like setupSignaturePad(), clearSignature(), handleSubmit()
+
+      // 👇 Call these after the page loads to initialize the signature pads
+      window.onload = function () {
+        setupSignaturePad("pastor-signature");
+        setupSignaturePad("clerk-signature");
+      };
+    </script>
+  </body>
+</html>
