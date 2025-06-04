@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Annual Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.6;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+      }
+      .checkbox-group {
+        margin-bottom: 1rem;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        display: block;
+        margin-top: 0.5rem;
+      }
+      button {
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BC Club Annual Application</h1>
+    <form id="bc-club-form" onsubmit="handleSubmit(event)">
+      <!-- Club Checkboxes and Names -->
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" name="adventurers" /> Adventurers
+        </label>
+        <label>
+          Adventurers Club Name:
+          <input
+            type="text"
+            name="adventurers_club_name"
+            placeholder="Enter Adventurers Club Name"
+          />
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" name="pathfinders" /> Pathfinders
+        </label>
+        <label>
+          Pathfinders Club Name:
+          <input
+            type="text"
+            name="pathfinders_club_name"
+            placeholder="Enter Pathfinders Club Name"
+          />
+        </label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>
+          <input type="checkbox" name="master_guide" /> Master Guide
+        </label>
+        <label>
+          Master Guide Club Name:
+          <input
+            type="text"
+            name="master_guide_club_name"
+            placeholder="Enter Master Guide Club Name"
+          />
+        </label>
+      </div>
+
+      <!-- Other Details -->
+      <label>
+        Sponsoring Church:
+        <input type="text" name="sponsoring_church" required />
+      </label>
+      <label>
+        Club Director:
+        <input type="text" name="club_director" required />
+      </label>
+      <label>
+        Mailing Address:
+        <input type="text" name="mailing_address" />
+      </label>
+      <label>
+        Email:
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        Cell Phone:
+        <input type="tel" name="cell_phone" />
+      </label>
+      <label>
+        Home Phone:
+        <input type="tel" name="home_phone" />
+      </label>
+      <label>
+        Work Phone:
+        <input type="tel" name="work_phone" />
+      </label>
+
+      <!-- Pastor Signature -->
+      <label>
+        Pastor Name:
+        <input type="text" name="pastor_name" required />
+      </label>
+      <label>
+        Pastor Signature:
+        <canvas id="pastor-signature" width="400" height="150"></canvas>
+      </label>
+      <button type="button" onclick="clearSignature('pastor-signature')">
+        Clear Pastor Signature
+      </button>
+
+      <!-- Clerk Signature -->
+      <label>
+        Board Name:
+        <input type="text" name="board_name" required />
+      </label>
+      <label>
+        Clerk Signature:
+        <canvas id="clerk-signature" width="400" height="150"></canvas>
+      </label>
+      <button type="button" onclick="clearSignature('clerk-signature')">
+        Clear Clerk Signature
+      </button>
+
+      <!-- Board Approval Date -->
+      <label>
+        Date of Board Approval:
+        <input type="date" name="board_approval_date" required />
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      // Signature pad setup function
+      function setupSignaturePad(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", (e) => {
+          drawing = true;
+          ctx.beginPath();
+          const rect = canvas.getBoundingClientRect();
+          ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        });
+        canvas.addEventListener("mouseup", () => (drawing = false));
+        canvas.addEventListener("mouseleave", () => (drawing = false));
+        canvas.addEventListener("mousemove", (e) => {
+          if (!drawing) return;
+          const rect = canvas.getBoundingClientRect();
+          ctx.lineWidth = 2;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "black";
+          ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+          ctx.stroke();
+        });
+
+        // Touch support
+        canvas.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          drawing = true;
+          ctx.beginPath();
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+        });
+        canvas.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          drawing = false;
+        });
+        canvas.addEventListener("touchmove", (e) => {
+          e.preventDefault();
+          if (!drawing) return;
+          const rect = canvas.getBoundingClientRect();
+          const touch = e.touches[0];
+          ctx.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+          ctx.stroke();
+        });
+      }
+
+      // Clear signature canvas
+      function clearSignature(canvasId) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      // Form submit handler
+      async function handleSubmit(event) {
+        event.preventDefault();
+        const form = event.target;
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        // Validate club names if checkboxes checked
+        if (
+          form.adventurers.checked &&
+          form.adventurers_club_name.value.trim() === ""
+        ) {
+          alert("Please enter the Adventurers Club Name if checked.");
+          return;
+        }
+        if (
+          form.pathfinders.checked &&
+          form.pathfinders_club_name.value.trim() === ""
+        ) {
+          alert("Please enter the Pathfinders Club Name if checked.");
+          return;
+        }
+        if (
+          form.master_guide.checked &&
+          form.master_guide_club_name.value.trim() === ""
+        ) {
+          alert("Please enter the Master Guide Club Name if checked.");
+          return;
+        }
+
+        // Additional required fields check (optional, you can customize)
+        if (!form.sponsoring_church.value.trim()) {
+          alert("Please enter the Sponsoring Church.");
+          return;
+        }
+        if (!form.club_director.value.trim()) {
+          alert("Please enter the Club Director.");
+          return;
+        }
+        if (!form.email.value.trim()) {
+          alert("Please enter the Email.");
+          return;
+        }
+        if (!form.pastor_name.value.trim()) {
+          alert("Please enter the Pastor Name.");
+          return;
+        }
+        if (!form.board_name.value.trim()) {
+          alert("Please enter the Board Name.");
+          return;
+        }
+        if (!form.board_approval_date.value) {
+          alert("Please enter the Date of Board Approval.");
+          return;
+        }
+
+        // Disable submit button during submission
+        submitButton.disabled = true;
+
+        // Get signature data URLs
+        const pastorCanvas = document.getElementById("pastor-signature");
+        const clerkCanvas = document.getElementById("clerk-signature");
+        const pastorSignatureData = pastorCanvas.toDataURL();
+        const clerkSignatureData = clerkCanvas.toDataURL();
+
+        // Check if signatures are provided (optional)
+        // You can check if canvas is blank by inspecting pixel data
+        // For simplicity, this is omitted here.
+
+        // Prepare data object
+        const formData = {
+          adventurers: form.adventurers.checked,
+          adventurers_club_name: form.adventurers_club_name.value.trim(),
+          pathfinders: form.pathfinders.checked,
+          pathfinders_club_name: form.pathfinders_club_name.value.trim(),
+          master_guide: form.master_guide.checked,
+          master_guide_club_name: form.master_guide_club_name.value.trim(),
+          sponsoring_church: form.sponsoring_church.value.trim(),
+          club_director: form.club_director.value.trim(),
+          mailing_address: form.mailing_address.value.trim(),
+          email: form.email.value.trim(),
+          cell_phone: form.cell_phone.value.trim(),
+          home_phone: form.home_phone.value.trim(),
+          work_phone: form.work_phone.value.trim(),
+          pastor_signature_data: pastorSignatureData,
+          pastor_name: form.pastor_name.value.trim(),
+          clerk_signature_data: clerkSignatureData,
+          board_name: form.board_name.value.trim(),
+          board_approval_date: form.board_approval_date.value,
+          submitted_at: new Date().toISOString(),
+        };
+
+        try {
+          const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbw-jiPc4Z_snk_mRmeEybgDaexKmCIriWrcgmbI4BODaiNGecIKfTkmWWs8-vvmgrEkAg/exec",
+            {
+              method: "POST",
+              body: JSON.stringify(formData),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const result = await response.json();
+
+          if (result.result !== "success") {
+            throw new Error("Google Apps Script error: " + result.message);
+          }
+
+          alert("Form submitted successfully!");
+          form.reset();
+          clearSignature("pastor-signature");
+          clearSignature("clerk-signature");
+        } catch (error) {
+          console.error("Error submitting form:", error);
+          alert("Error submitting form: " + error.message);
+        } finally {
+          submitButton.disabled = false;
+        }
+      }
+
+      // Initialize signature pads on window load
+      window.onload = function () {
+        setupSignaturePad("pastor-signature");
+        setupSignaturePad("clerk-signature");
+      };
+
+      // Expose functions globally (optional)
+      window.clearSignature = clearSignature;
+      window.handleSubmit = handleSubmit;
+    </script>
+  </body>
+</html>
