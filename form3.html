@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Annual Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.6;
+        max-width: 700px;
+      }
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      button {
+        margin-top: 0.5rem;
+      }
+      .club-section {
+        display: none;
+        margin-left: 1rem;
+        border-left: 2px solid #ccc;
+        padding-left: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BC Club Annual Application</h1>
+
+    <form
+      id="bc-club-form"
+      method="post"
+      action="https://script.google.com/macros/s/AKfycbyfk3vKg11vqvSyekMjTLKL-DsHY7emM9Ajtk3YiPJpPpuvuJ_yFXBb0KwD0Oc9jFlo/exec"
+      onsubmit="return prepareSubmit()"
+    >
+      <!-- Checkboxes to Show/Hide Club Sections -->
+      <label>
+        <input
+          type="checkbox"
+          name="adventurers"
+          value="true"
+          id="adventurers-check"
+          onclick="toggleClubSection('adventurers')"
+        />
+        I am applying for Adventurers
+      </label>
+
+      <div id="adventurers-section" class="club-section">
+        <h2>Adventurers Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="adventurers_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="adventurers_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="adventurers_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="adventurers_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="adventurers_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="adventurers_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="adventurers_director_workphone"
+        /></label>
+      </div>
+
+      <label>
+        <input
+          type="checkbox"
+          name="pathfinders"
+          value="true"
+          id="pathfinders-check"
+          onclick="toggleClubSection('pathfinders')"
+        />
+        I am applying for Pathfinders
+      </label>
+
+      <div id="pathfinders-section" class="club-section">
+        <h2>Pathfinders Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="pathfinders_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="pathfinders_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="pathfinder_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="pathfinder_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="pathfinder_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="pathfinder_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="pathfinder_director_workphone"
+        /></label>
+      </div>
+
+      <label>
+        <input
+          type="checkbox"
+          name="masterguide"
+          value="true"
+          id="master_guide-check"
+          onclick="toggleClubSection('master_guide')"
+        />
+        I am applying for Master Guide
+      </label>
+
+      <div id="master_guide-section" class="club-section">
+        <h2>Master Guide Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="master_guide_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="master_guide_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="master_guide_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="master_guide_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="master_guide_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="master_guide_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="master_guide_director_workphone"
+        /></label>
+      </div>
+
+      <h2>General Info</h2>
+      <label
+        >Sponsoring Church:
+        <input type="text" name="sponsoring_church" required
+      /></label>
+      <label
+        >Person Submitting Application:
+        <input type="text" name="club_director" required
+      /></label>
+
+      <h2>Pastor Signature</h2>
+      <canvas id="pastor-signature" width="400" height="150"></canvas>
+      <button type="button" onclick="clearSignature('pastor-signature')">
+        Clear Pastor Signature
+      </button>
+      <label
+        >Pastor Name: <input type="text" name="pastor_name" required
+      /></label>
+
+      <h2>Clerk/Treasurer Signature</h2>
+      <canvas id="clerk-signature" width="400" height="150"></canvas>
+      <button type="button" onclick="clearSignature('clerk-signature')">
+        Clear Clerk Signature
+      </button>
+      <label
+        >Clerk/Treasurer Name: <input type="text" name="board_name" required
+      /></label>
+
+      <label
+        >Date of Board Approval:
+        <input type="date" name="board_approval_date" required
+      /></label>
+
+      <!-- Hidden signature inputs -->
+      <input
+        type="hidden"
+        name="pastor_signature_data"
+        id="pastor_signature_data"
+      />
+      <input
+        type="hidden"
+        name="clerk_signature_data"
+        id="clerk_signature_data"
+      />
+
+      <button type="submit">Submit Application</button>
+    </form>
+
+    <script>
+      function setupSignatureCanvas(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
+
+        canvas.addEventListener("mousedown", () => (drawing = true));
+        canvas.addEventListener("mouseup", () => {
+          drawing = false;
+          ctx.beginPath();
+        });
+        canvas.addEventListener("mouseout", () => {
+          drawing = false;
+          ctx.beginPath();
+        });
+        canvas.addEventListener("mousemove", (e) => {
+          if (!drawing) return;
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          ctx.lineWidth = 2;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "black";
+          ctx.lineTo(x, y);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(x, y);
+        });
+      }
+
+      function clearSignature(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function prepareSubmit() {
+        document.getElementById("pastor_signature_data").value = document
+          .getElementById("pastor-signature")
+          .toDataURL();
+        document.getElementById("clerk_signature_data").value = document
+          .getElementById("clerk-signature")
+          .toDataURL();
+        return true;
+      }
+
+      function toggleClubSection(club) {
+        const section = document.getElementById(`${club}-section`);
+        const checkbox = document.getElementById(`${club}-check`);
+        if (section && checkbox) {
+          section.style.display = checkbox.checked ? "block" : "none";
+        }
+      }
+
+      window.onload = function () {
+        ["adventurers", "pathfinders", "master_guide"].forEach((club) => {
+          const checkbox = document.getElementById(`${club}-check`);
+          if (checkbox && checkbox.checked) toggleClubSection(club);
+        });
+        setupSignatureCanvas("pastor-signature");
+        setupSignatureCanvas("clerk-signature");
+      };
+    </script>
+  </body>
+</html>
