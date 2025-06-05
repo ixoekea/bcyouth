@@ -37,7 +37,7 @@
       id="bc-club-form"
       method="post"
       action="https://script.google.com/macros/s/AKfycbyfk3vKg11vqvSyekMjTLKL-DsHY7emM9Ajtk3YiPJpPpuvuJ_yFXBb0KwD0Oc9jFlo/exec"
-      onsubmit="return prepareSubmit()"
+      onsubmit="return prepareSubmit(event)"
     >
       <!-- Checkboxes to Show/Hide Club Sections -->
       <label>
@@ -200,6 +200,7 @@
     </form>
 
     <script>
+      // Setup signature canvas with drawing capability
       function setupSignatureCanvas(id) {
         const canvas = document.getElementById(id);
         const ctx = canvas.getContext("2d");
@@ -229,22 +230,24 @@
         });
       }
 
+      // Clear the signature on the canvas
       function clearSignature(id) {
         const canvas = document.getElementById(id);
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
 
-      function prepareSubmit() {
+      // Prepare signature data URLs before form submission
+      function prepareSignatureData() {
         document.getElementById("pastor_signature_data").value = document
           .getElementById("pastor-signature")
           .toDataURL();
         document.getElementById("clerk_signature_data").value = document
           .getElementById("clerk-signature")
           .toDataURL();
-        return true;
       }
 
+      // Toggle visibility of club sections
       function toggleClubSection(club) {
         const section = document.getElementById(`${club}-section`);
         const checkbox = document.getElementById(`${club}-check`);
@@ -253,6 +256,39 @@
         }
       }
 
+      // AJAX form submit handler
+      function handleFormSubmit(event) {
+        event.preventDefault(); // Prevent normal form submission
+
+        prepareSignatureData();
+
+        const form = event.target;
+        const url = form.action;
+
+        const formData = new FormData(form);
+
+        fetch(url, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.result === "success") {
+              alert("Submission successful!");
+              form.reset(); // optional: clear the form after success
+              // Optional: clear signatures from canvas
+              clearSignature("pastor-signature");
+              clearSignature("clerk-signature");
+            } else {
+              alert("Submission failed: " + JSON.stringify(data));
+            }
+          })
+          .catch((error) => {
+            alert("Error submitting form: " + error.message);
+          });
+      }
+
+      // On window load, set up canvases and initial toggles, add submit listener
       window.onload = function () {
         ["adventurers", "pathfinders", "master_guide"].forEach((club) => {
           const checkbox = document.getElementById(`${club}-check`);
@@ -260,6 +296,12 @@
         });
         setupSignatureCanvas("pastor-signature");
         setupSignatureCanvas("clerk-signature");
+
+        // Add AJAX submit handler to form
+        const form = document.getElementById("bc-club-form");
+        if (form) {
+          form.addEventListener("submit", handleFormSubmit);
+        }
       };
     </script>
   </body>
