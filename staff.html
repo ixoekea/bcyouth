@@ -1,0 +1,82 @@
+<form id="staffForm">
+  <label for="club">Club Name:</label>
+  <input type="text" id="club" name="club" required><br>
+
+  <div id="staffEntries">
+    <!-- Staff Entry Template -->
+    <div class="staff">
+      <fieldset>
+        <legend>Staff Member</legend>
+        <label>Name: <input type="text" name="name" required></label><br>
+        <label>CRC:
+          <select name="crc">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label><br>
+        <label>First Aid:
+          <select name="firstAid">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label><br>
+        <label>Driver's Abstract:
+          <select name="driversAbstract">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label><br>
+        <label>Insurance:
+          <select name="insurance">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </label><br>
+        <hr>
+      </fieldset>
+    </div>
+  </div>
+
+  <button type="button" onclick="addStaffEntry()">+ Add Staff</button><br><br>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+  function addStaffEntry() {
+    const container = document.getElementById('staffEntries');
+    const template = container.firstElementChild.cloneNode(true);
+    template.querySelectorAll('input, select').forEach(input => input.value = '');
+    container.appendChild(template);
+  }
+
+  document.getElementById('staffForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const club = document.getElementById('club').value;
+    const staffList = [];
+
+    document.querySelectorAll('#staffEntries .staff').forEach(entry => {
+      const name = entry.querySelector('[name="name"]').value;
+      const crc = entry.querySelector('[name="crc"]').value;
+      const firstAid = entry.querySelector('[name="firstAid"]').value;
+      const driversAbstract = entry.querySelector('[name="driversAbstract"]').value;
+      const insurance = entry.querySelector('[name="insurance"]').value;
+
+      staffList.push({ name, crc, firstAid, driversAbstract, insurance });
+    });
+
+    const payload = {
+      club,
+      staffList
+    };
+
+    const response = await fetch('YOUR_WEB_APP_URL_HERE', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' }
+    });
+
+    const result = await response.text();
+    alert(result);
+  });
+</script>
