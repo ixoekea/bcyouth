@@ -314,110 +314,98 @@
       <button type="submit">Submit Application</button>
     </form>
 
-    <script>
-      // Setup signature canvas with drawing capability
-      function setupSignatureCanvas(id) {
-        const canvas = document.getElementById(id);
-        const ctx = canvas.getContext("2d");
-        let drawing = false;
+   <script>
+  function toggleClubSection(club) {
+    const checkbox = document.getElementById(`${club}-check`);
+    const section = document.getElementById(`${club}-section`);
+    section.style.display = checkbox.checked ? "block" : "none";
+  }
 
-        canvas.addEventListener("mousedown", () => (drawing = true));
-        canvas.addEventListener("mouseup", () => {
-          drawing = false;
-          ctx.beginPath();
-        });
-        canvas.addEventListener("mouseout", () => {
-          drawing = false;
-          ctx.beginPath();
-        });
-        canvas.addEventListener("mousemove", (e) => {
-          if (!drawing) return;
-          const rect = canvas.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          ctx.lineWidth = 2;
-          ctx.lineCap = "round";
-          ctx.strokeStyle = "black";
-          ctx.lineTo(x, y);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(x, y);
-        });
+  function setupSignatureCanvas(id) {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      if (e.touches) {
+        return {
+          x: e.touches[0].clientX - rect.left,
+          y: e.touches[0].clientY - rect.top,
+        };
+      } else {
+        return {
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top,
+        };
       }
+    }
 
-      // Clear the signature on the canvas
-      function clearSignature(id) {
-        const canvas = document.getElementById(id);
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+    function startDrawing(e) {
+      e.preventDefault();
+      drawing = true;
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
 
-      // Prepare signature data URLs before form submission
-      function prepareSignatureData() {
-        document.getElementById("pastor_signature_data").value = document
-          .getElementById("pastor-signature")
-          .toDataURL();
-        document.getElementById("clerk_signature_data").value = document
-          .getElementById("clerk-signature")
-          .toDataURL();
-      }
+    function draw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const pos = getPos(e);
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "black";
 
-      // Toggle visibility of club sections
-      function toggleClubSection(club) {
-        const section = document.getElementById(`${club}-section`);
-        const checkbox = document.getElementById(`${club}-check`);
-        if (section && checkbox) {
-          section.style.display = checkbox.checked ? "block" : "none";
-        }
-      }
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }
 
-      // AJAX form submit handler
-      function handleFormSubmit(event) {
-        event.preventDefault(); // Prevent normal form submission
+    function stopDrawing(e) {
+      e.preventDefault();
+      drawing = false;
+      ctx.beginPath();
+    }
 
-        prepareSignatureData();
+    // Mouse events
+    canvas.addEventListener("mousedown", startDrawing);
+    canvas.addEventListener("mousemove", draw);
+    canvas.addEventListener("mouseup", stopDrawing);
+    canvas.addEventListener("mouseout", stopDrawing);
 
-        const form = event.target;
-        const url = form.action;
+    // Touch events
+    canvas.addEventListener("touchstart", startDrawing);
+    canvas.addEventListener("touchmove", draw);
+    canvas.addEventListener("touchend", stopDrawing);
+    canvas.addEventListener("touchcancel", stopDrawing);
+  }
 
-        const formData = new FormData(form);
+  function clearSignature(id) {
+    const canvas = document.getElementById(id);
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
 
-        fetch(url, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.result === "success") {
-              alert("Submission successful!");
-              form.reset(); // optional: clear the form after success
-              // Optional: clear signatures from canvas
-              clearSignature("pastor-signature");
-              clearSignature("clerk-signature");
-            } else {
-              alert("Submission failed: " + JSON.stringify(data));
-            }
-          })
-          .catch((error) => {
-            alert("Error submitting form: " + error.message);
-          });
-      }
+  function prepareSubmit() {
+    const pastorCanvas = document.getElementById("pastor-signature");
+    const clerkCanvas = document.getElementById("clerk-signature");
 
-      // On window load, set up canvases and initial toggles, add submit listener
-      window.onload = function () {
-        ["adventurers", "pathfinders", "master_guide"].forEach((club) => {
-          const checkbox = document.getElementById(`${club}-check`);
-          if (checkbox && checkbox.checked) toggleClubSection(club);
-        });
-        setupSignatureCanvas("pastor-signature");
-        setupSignatureCanvas("clerk-signature");
+    document.getElementById("pastor_signature_data").value =
+      pastorCanvas.toDataURL();
+    document.getElementById("clerk_signature_data").value =
+      clerkCanvas.toDataURL();
 
-        // Add AJAX submit handler to form
-        const form = document.getElementById("bc-club-form");
-        if (form) {
-          form.addEventListener("submit", handleFormSubmit);
-        }
-      };
-    </script>
-  </body>
+    return true;
+  }
+
+  // Initialize signature canvases on load
+  window.onload = function () {
+    setupSignatureCanvas("pastor-signature");
+    setupSignatureCanvas("clerk-signature");
+  };
+</script>
+</body>
 </html>
+
