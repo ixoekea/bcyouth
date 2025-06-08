@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Club Event Calendar Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </head>
+  <body>
+    <h2>Club Event Calendar Form</h2>
+    
+    <label>Club Name: <input id="clubName" type="text" required /></label><br/><br/>
+
+    <label>Select Dates:</label>
+    <input id="datePicker" type="text" placeholder="Select dates" /><br/><br/>
+
+    <form id="eventsForm"></form>
+
+    <button id="reviewBtn" disabled>Review All Events</button>
+
+    <div id="reviewSection" style="display:none;">
+      <h3>Review your events</h3>
+      <pre id="reviewText"></pre>
+      <button id="finalSubmitBtn">Submit All</button>
+    </div>
+
+    <script>
+      const datePicker = document.getElementById('datePicker');
+      const eventsForm = document.getElementById('eventsForm');
+      const reviewBtn = document.getElementById('reviewBtn');
+      const reviewSection = document.getElementById('reviewSection');
+      const reviewText = document.getElementById('reviewText');
+      const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+
+      // Initialize flatpickr with multiple date selection
+      flatpickr(datePicker, {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+          // Clear existing inputs
+          eventsForm.innerHTML = '';
+          if (selectedDates.length === 0) {
+            reviewBtn.disabled = true;
+            return;
+          }
+
+          // Create input groups for each selected date
+          selectedDates.forEach(date => {
+            const dateStr = date.toISOString().slice(0, 10);
+            const fieldset = document.createElement('fieldset');
+            fieldset.innerHTML = `
+              <legend>Event details for ${dateStr}</legend>
+              <label>Event Type: <input name="eventType-${dateStr}" required /></label><br/>
+              <label>Name: <input name="name-${dateStr}" required /></label><br/>
+              <label>Time: <input name="time-${dateStr}" required placeholder="e.g. 3:00 PM" /></label><br/>
+              <label>Location: <input name="location-${dateStr}" required /></label><br/>
+            `;
+            eventsForm.appendChild(fieldset);
+          });
+
+          reviewBtn.disabled = false;
+          reviewSection.style.display = 'none';
+        }
+      });
+
+      reviewBtn.onclick = () => {
+        // Validate inputs
+        const inputs = eventsForm.querySelectorAll('input');
+        for (let input of inputs) {
+          if (!input.value.trim()) {
+            alert('Please fill all event details.');
+            return;
+          }
+        }
+
+        // Gather data
+        const clubName = document.getElementById('clubName').value.trim();
+        if (!clubName) {
+          alert('Please enter your club name.');
+          return;
+        }
+
+        const events = [];
+        const fieldsets = eventsForm.querySelectorAll('fieldset');
+        fieldsets.forEach(fs => {
+          const date = fs.querySelector('legend').textContent.match(/\d{4}-\d{2}-\d{2}/)[0];
+          const eventType = fs.querySelector(`input[name="eventType-${date}"]`).value.trim();
+          const name = fs.querySelector(`input[name="name-${date}"]`).value.trim();
+          const time = fs.querySelector(`input[name="time-${date}"]`).value.trim();
+          const location = fs.querySelector(`input[name="location-${date}"]`).value.trim();
+          events.push({date, eventType, name, time, location});
+        });
+
+        // Show review summary
+        let summaryText = `Club: ${clubName}\n\nEvents:\n`;
+        events.forEach(e => {
+          summaryText += `Date: ${e.date}\nType: ${e.eventType}\nName: ${e.name}\nTime: ${e.time}\nLocation: ${e.location}\n\n`;
+        });
+
+        reviewText.textContent = summaryText;
+        reviewSection.style.display = 'block';
+      };
+
+      finalSubmitBtn.onclick = () => {
+        // Prepare data for submission
+        const clubName = document.getElementById('clubName').value.trim();
+
+        const fieldsets = eventsForm.querySelectorAll('fieldset');
+        const events = [];
+        fieldsets.forEach(fs => {
+          const date = fs.querySelector('legend').textContent.match(/\d{4}-\d{2}-\d{2}/)[0];
+          const eventType = fs.querySelector(`input[name="eventType-${date}"]`).value.trim();
+          const name = fs.querySelector(`input[name="name-${date}"]`).value.trim();
+          const time = fs.querySelector(`input[name="time-${date}"]`).value.trim();
+          const location = fs.querySelector(`input[name="location-${date}"]`).value.trim();
+          events.push({date, eventType, name, time, location});
+        });
+
+        // Send data to Google Apps Script Web App endpoint
+        fetch('YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clubName, events })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert(data.message || 'Submitted successfully!');
+          // Reset form
+          datePicker._flatpickr.clear();
+          eventsForm.innerHTML = '';
+          reviewSection.style.display = 'none';
+          reviewBtn.disabled = true;
+          document.getElementById('clubName').value = '';
+        })
+        .catch(err => {
+          alert('Submission failed: ' + err.message);
+        });
+      };
+    </script>
+  </body>
+</html>
