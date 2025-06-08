@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Club Staff Sign-Up</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-      line-height: 1.6;
-      max-width: 700px;
-    }
-    fieldset {
-      margin-bottom: 1.5rem;
-    }
-    legend {
-      font-weight: bold;
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Staff List</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+        line-height: 1.6;
+        max-width: 700px;
+      }
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+      canvas {
+        border: 1px solid #ccc;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+      button {
+        margin-top: 0.5rem;
+      }
+      .club-section {
+        display: none;
+        margin-left: 1rem;
+        border-left: 2px solid #ccc;
+        padding-left: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>BC Club Staff List</h1>
 
-  <form id="staffForm">
+    <form
+      id="bc-staff-form"
+      method="post"
+      action="1iY7BiWhlzgo4LlutLZI4GjQoNstb-mLP1N7XKK5opro"
+      onsubmit="return prepareSubmit(event)"
+    >
+      <!-- Checkboxes to Show/Hide Club Sections -->
+      
+       <form id="staffForm">
     <label for="club">Club Name:</label>
     <input type="text" id="club" name="club" required><br>
 
@@ -35,7 +52,7 @@
           <label>Name: <input type="text" name="name" required></label>
           <label>Email: <input type="email" name="email" required></label>
 
-          <label>CRC:
+          <label>CRC sent in to Shelly at sgibbions@bcadeventist.ca:
             <select name="crc">
               <option value="Yes">Yes</option>
               <option value="No">No</option>
@@ -56,7 +73,7 @@
             </select>
           </label>
 
-          <label>Insurance:
+          <label>5 million Insurance:
             <select name="insurance">
               <option value="Yes">Yes</option>
               <option value="No">No</option>
