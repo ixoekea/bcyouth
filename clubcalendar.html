@@ -116,7 +116,7 @@
         });
 
         // Send data to Google Apps Script Web App endpoint
-        fetch('YOUR_GOOGLE_APPS_SCRIPT_WEBAPP_URL', {
+        fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ clubName, events })
