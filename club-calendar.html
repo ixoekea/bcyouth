@@ -27,22 +27,22 @@
   </style>
 </head>
 <body>
-  <h2>Event Calendar Form</h2>
-
-  <input id="calendar" placeholder="Select a date" readonly disabled />
-
   <!-- Club Modal -->
-  <div id="clubModal" style="display:flex;">
-    <div class="modal-content">
-      <h3>Which club are you part of?</h3>
-      <form id="clubForm">
-        <label>Club Name: <input type="text" name="clubName" required /></label>
-        <div style="margin-top:1rem;">
-          <button type="submit">Start</button>
-        </div>
-      </form>
+  <div id="clubModal">
+    <div id="clubModalContent">
+      <h3>Enter Your Club Name</h3>
+      <input id="clubNameInput" type="text" placeholder="Club name" />
+      <br/><br/>
+      <button id="confirmClubBtn">Confirm</button>
     </div>
   </div>
+
+  <h2>Club Event Calendar Form</h2>
+
+  <label>Club: <span id="clubDisplay">[Not set]</span></label><br/><br/>
+
+  <label>Select Date:</label>
+  <input id="calendarInput" type="text" placeholder="Pick a date" disabled /><br/><br/>
 
   <!-- Event Modal -->
   <div id="eventModal">
