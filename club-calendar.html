@@ -6,6 +6,43 @@
   <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
+          nav {
+  margin-bottom: 1.5rem;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-menu li {
+  /* no extra style needed */
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #004080;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.nav-menu a:hover {
+  background-color: #e6f0ff;
+  border-color: #004080;
+}
+
+.nav-menu a.active {
+  background-color: #004080;
+  color: white;
+  border-color: #003366;
+}
     /* Removed modal styles for club */
     #eventModal {
       display: none;
