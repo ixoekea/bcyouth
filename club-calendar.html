@@ -27,18 +27,18 @@
   </style>
 </head>
 <body>
-  <h2>Click a date to add an event</h2>
-  <input id="calendar" placeholder="Select a date" readonly />
+  <h2>Event Calendar Form</h2>
+
+  <input id="calendar" placeholder="Select a date" readonly disabled />
 
   <!-- Club Modal -->
-  <div id="clubModal">
+  <div id="clubModal" style="display:flex;">
     <div class="modal-content">
       <h3>Which club are you part of?</h3>
       <form id="clubForm">
         <label>Club Name: <input type="text" name="clubName" required /></label>
         <div style="margin-top:1rem;">
-          <button type="submit">Next</button>
-          <button type="button" id="clubCancelBtn">Cancel</button>
+          <button type="submit">Start</button>
         </div>
       </form>
     </div>
@@ -139,51 +139,50 @@
         additionalDatesFP.clear();
       }
     });
+eventForm.onsubmit = e => {
+  e.preventDefault();
+  const mainDate = eventForm.dataset.mainDate;
+  const eventName = eventForm.eventName.value.trim();
+  const eventTime = eventForm.eventTime.value.trim();
+  const isMultiDay = eventForm.multiDay.checked;
+  const description = eventForm.description.value.trim();
+  const location = eventForm.location.value.trim();
+  const additionalDates = additionalDatesFP.selectedDates.map(d => d.toISOString().slice(0,10));
 
-    eventForm.onsubmit = (e) => {
-      e.preventDefault();
-      const mainDate = eventForm.dataset.mainDate;
-      const eventName = eventForm.eventName.value.trim();
-      const eventTime = eventForm.eventTime.value.trim();
-      const isMultiDay = eventForm.multiDay.checked;
-      const description = eventForm.description.value.trim();
-      const location = eventForm.location.value.trim();
-      const additionalDates = additionalDatesFP.selectedDates.map(d => d.toISOString().slice(0,10));
+  if (!eventName || !eventTime || !location) {
+    alert("Please fill in all required fields.");
+    return;
+  }
 
-      if (!eventName || !eventTime || !location) {
-        alert("Please fill in all required fields.");
-        return;
-      }
+  const allDates = [mainDate];
+  if (isMultiDay) {
+    additionalDates.forEach(d => {
+      if (!allDates.includes(d)) allDates.push(d);
+    });
+  }
 
-      // Prepare all dates involved
-      const allDates = [mainDate];
-      if (isMultiDay) {
-        additionalDates.forEach(d => {
-          if (!allDates.includes(d)) allDates.push(d);
-        });
-      }
+  eventsData.push({
+    club: currentClubName,
+    eventName,
+    eventTime,
+    description,
+    location,
+    dates: allDates
+  });
 
-      // Add event object to eventsData array
-      eventsData.push({
-        club: currentClubName,
-        eventName,
-        eventTime,
-        description,
-        location,
-        dates: allDates
-      });
+  allDates.forEach(date => {
+    const li = document.createElement('li');
+    li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
+    if(description) li.textContent += `, Description: ${description}`;
+    eventsList.appendChild(li);
+  });
 
-      // Add event display in the list
-      allDates.forEach(date => {
-        const li = document.createElement('li');
-        li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
-        if(description) li.textContent += `, Description: ${description}`;
-        eventsList.appendChild(li);
-      });
+  finalSubmitBtn.disabled = false;
+  eventModal.style.display = 'none';
 
-      finalSubmitBtn.disabled = false;
-      eventModal.style.display = 'none';
-    };
+  // Clear calendar input so user can pick another date
+  calendarInput._flatpickr.clear();
+};
 
     document.getElementById('eventCancelBtn').onclick = () => {
       eventModal.style.display = 'none';
