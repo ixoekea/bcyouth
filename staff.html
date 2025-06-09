@@ -186,6 +186,11 @@
      // Put JSON string in hidden input
     document.getElementById('staffListInput').value = JSON.stringify(staffList);
    });
+// Attach iframe load listener once, when page loads
+  const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+  iframe.addEventListener('load', () => {
+    alert('Submission successful! Thank you.');
+  });
   </script>
 </body>
 </html>
