@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Event Calendar with Popup</title>
+  <title>Event Calendar with Club and Final Submit</title>
   <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <style>
-    /* Simple modal style */
-    #eventModal {
+    #eventModal, #clubModal {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -15,13 +14,13 @@
       justify-content: center;
       align-items: center;
     }
-    #eventModal .modal-content {
+    .modal-content {
       background: white;
       padding: 1rem;
       border-radius: 5px;
-      width: 300px;
+      width: 320px;
     }
-    #eventModal label {
+    label {
       display: block;
       margin: 0.5rem 0 0.2rem;
     }
@@ -31,6 +30,21 @@
   <h2>Click a date to add an event</h2>
   <input id="calendar" placeholder="Select a date" readonly />
 
+  <!-- Club Modal -->
+  <div id="clubModal">
+    <div class="modal-content">
+      <h3>Which club are you part of?</h3>
+      <form id="clubForm">
+        <label>Club Name: <input type="text" name="clubName" required /></label>
+        <div style="margin-top:1rem;">
+          <button type="submit">Next</button>
+          <button type="button" id="clubCancelBtn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Event Modal -->
   <div id="eventModal">
     <div class="modal-content">
       <h3>Add Event for <span id="selectedDateText"></span></h3>
@@ -49,8 +63,8 @@
         </label>
         <label>Location: <input type="text" name="location" required /></label>
         <div style="margin-top:1rem;">
-          <button type="submit">Save Event</button>
-          <button type="button" id="cancelBtn">Cancel</button>
+          <button type="submit">Add Event</button>
+          <button type="button" id="eventCancelBtn">Cancel</button>
         </div>
       </form>
     </div>
@@ -59,39 +73,56 @@
   <h3>Events Added:</h3>
   <ul id="eventsList"></ul>
 
+  <button id="finalSubmitBtn" disabled>Submit All Events</button>
+
   <script>
     const calendarInput = document.getElementById('calendar');
+    const clubModal = document.getElementById('clubModal');
+    const clubForm = document.getElementById('clubForm');
+    const clubCancelBtn = document.getElementById('clubCancelBtn');
     const eventModal = document.getElementById('eventModal');
-    const selectedDateText = document.getElementById('selectedDateText');
     const eventForm = document.getElementById('eventForm');
+    const selectedDateText = document.getElementById('selectedDateText');
     const multiDayCheckbox = document.getElementById('multiDayCheckbox');
     const multiDayDatesDiv = document.getElementById('multiDayDates');
     const additionalDatesPicker = document.getElementById('additionalDatesPicker');
     const eventsList = document.getElementById('eventsList');
+    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
 
-    // Initialize flatpickr as a single date picker (readonly input)
-    flatpickr(calendarInput, {
-      dateFormat: "Y-m-d",
-      onChange: function(selectedDates) {
-        if (selectedDates.length === 0) return;
-        const selectedDate = selectedDates[0].toISOString().slice(0,10);
-        openEventModal(selectedDate);
-      }
-    });
-
-    // Initialize additional dates picker (multi-date)
     let additionalDatesFP = flatpickr(additionalDatesPicker, {
       mode: "multiple",
       dateFormat: "Y-m-d",
       allowInput: true,
     });
 
-    multiDayCheckbox.addEventListener('change', () => {
-      multiDayDatesDiv.style.display = multiDayCheckbox.checked ? 'block' : 'none';
-      if (!multiDayCheckbox.checked) {
-        additionalDatesFP.clear();
+    let currentSelectedDate = null;
+    let currentClubName = '';
+    const eventsData = [];
+
+    // Step 1: When user selects a date, ask for Club Name first
+    flatpickr(calendarInput, {
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates) {
+        if (selectedDates.length === 0) return;
+        currentSelectedDate = selectedDates[0].toISOString().slice(0,10);
+        clubModal.style.display = 'flex';
+        clubForm.reset();
+        calendarInput._flatpickr.clear();
       }
     });
+
+    clubForm.onsubmit = (e) => {
+      e.preventDefault();
+      const clubInput = clubForm.clubName.value.trim();
+      if (!clubInput) return alert('Please enter your club name.');
+      currentClubName = clubInput;
+      clubModal.style.display = 'none';
+      openEventModal(currentSelectedDate);
+    };
+
+    clubCancelBtn.onclick = () => {
+      clubModal.style.display = 'none';
+    };
 
     function openEventModal(dateStr) {
       selectedDateText.textContent = dateStr;
@@ -102,10 +133,12 @@
       eventForm.dataset.mainDate = dateStr;
     }
 
-    document.getElementById('cancelBtn').onclick = () => {
-      eventModal.style.display = 'none';
-      calendarInput._flatpickr.clear();  // Clear calendar selection
-    };
+    multiDayCheckbox.addEventListener('change', () => {
+      multiDayDatesDiv.style.display = multiDayCheckbox.checked ? 'block' : 'none';
+      if (!multiDayCheckbox.checked) {
+        additionalDatesFP.clear();
+      }
+    });
 
     eventForm.onsubmit = (e) => {
       e.preventDefault();
@@ -130,25 +163,68 @@
         });
       }
 
-      // Add event to the list (display)
+      // Add event object to eventsData array
+      eventsData.push({
+        club: currentClubName,
+        eventName,
+        eventTime,
+        description,
+        location,
+        dates: allDates
+      });
+
+      // Add event display in the list
       allDates.forEach(date => {
         const li = document.createElement('li');
-        li.textContent = `${date} - ${eventName} at ${eventTime}, Location: ${location}`;
+        li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
         if(description) li.textContent += `, Description: ${description}`;
         eventsList.appendChild(li);
       });
 
+      finalSubmitBtn.disabled = false;
       eventModal.style.display = 'none';
-      calendarInput._flatpickr.clear();  // Clear calendar selection
     };
 
-    // Close modal if clicked outside content
-    eventModal.addEventListener('click', (e) => {
-      if(e.target === eventModal) {
-        eventModal.style.display = 'none';
-        calendarInput._flatpickr.clear();
-      }
+    document.getElementById('eventCancelBtn').onclick = () => {
+      eventModal.style.display = 'none';
+    };
+
+    // Close modals if clicked outside content
+    [clubModal, eventModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if(e.target === modal) modal.style.display = 'none';
+      });
     });
+
+    // Final submit button: send all events to Google Apps Script
+    finalSubmitBtn.onclick = () => {
+      if(eventsData.length === 0) {
+        alert("No events to submit.");
+        return;
+      }
+
+      finalSubmitBtn.disabled = true;
+
+      // Prepare FormData
+      const formData = new FormData();
+      formData.append("events", JSON.stringify(eventsData));
+
+      fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message || 'Events submitted successfully!');
+        eventsData.length = 0; // clear array
+        eventsList.innerHTML = '';
+        finalSubmitBtn.disabled = true;
+      })
+      .catch(err => {
+        alert("Submission failed: " + err.message);
+        finalSubmitBtn.disabled = false;
+      });
+    };
   </script>
 </body>
 </html>
