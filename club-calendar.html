@@ -1,143 +1,154 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Club Event Calendar Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  </head>
-  <body>
-    <h2>Club Event Calendar Form</h2>
-    
-    <label>Club Name: <input id="clubName" type="text" required /></label><br/><br/>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Event Calendar with Popup</title>
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <style>
+    /* Simple modal style */
+    #eventModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    #eventModal .modal-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 5px;
+      width: 300px;
+    }
+    #eventModal label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Click a date to add an event</h2>
+  <input id="calendar" placeholder="Select a date" readonly />
 
-    <label>Select Dates:</label>
-    <input id="datePicker" type="text" placeholder="Select dates" /><br/><br/>
-
-    <form id="eventsForm"></form>
-
-    <button id="reviewBtn" disabled>Review All Events</button>
-
-    <div id="reviewSection" style="display:none;">
-      <h3>Review your events</h3>
-      <pre id="reviewText"></pre>
-      <button id="finalSubmitBtn">Submit All</button>
+  <div id="eventModal">
+    <div class="modal-content">
+      <h3>Add Event for <span id="selectedDateText"></span></h3>
+      <form id="eventForm">
+        <label>Name of Event: <input type="text" name="eventName" required /></label>
+        <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
+        <label>
+          <input type="checkbox" name="multiDay" id="multiDayCheckbox" /> Multiday Event
+        </label>
+        <div id="multiDayDates" style="display:none; margin-top: 0.5rem;">
+          <label>Select additional dates:</label>
+          <input type="text" id="additionalDatesPicker" placeholder="Select additional dates" />
+        </div>
+        <label>Description:<br/>
+          <textarea name="description" rows="3" style="width:100%;"></textarea>
+        </label>
+        <label>Location: <input type="text" name="location" required /></label>
+        <div style="margin-top:1rem;">
+          <button type="submit">Save Event</button>
+          <button type="button" id="cancelBtn">Cancel</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
-      const datePicker = document.getElementById('datePicker');
-      const eventsForm = document.getElementById('eventsForm');
-      const reviewBtn = document.getElementById('reviewBtn');
-      const reviewSection = document.getElementById('reviewSection');
-      const reviewText = document.getElementById('reviewText');
-      const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+  <h3>Events Added:</h3>
+  <ul id="eventsList"></ul>
 
-      // Initialize flatpickr with multiple date selection
-      flatpickr(datePicker, {
-        mode: "multiple",
-        dateFormat: "Y-m-d",
-        onChange: function(selectedDates, dateStr, instance) {
-          // Clear existing inputs
-          eventsForm.innerHTML = '';
-          if (selectedDates.length === 0) {
-            reviewBtn.disabled = true;
-            return;
-          }
+  <script>
+    const calendarInput = document.getElementById('calendar');
+    const eventModal = document.getElementById('eventModal');
+    const selectedDateText = document.getElementById('selectedDateText');
+    const eventForm = document.getElementById('eventForm');
+    const multiDayCheckbox = document.getElementById('multiDayCheckbox');
+    const multiDayDatesDiv = document.getElementById('multiDayDates');
+    const additionalDatesPicker = document.getElementById('additionalDatesPicker');
+    const eventsList = document.getElementById('eventsList');
 
-          // Create input groups for each selected date
-          selectedDates.forEach(date => {
-            const dateStr = date.toISOString().slice(0, 10);
-            const fieldset = document.createElement('fieldset');
-            fieldset.innerHTML = `
-              <legend>Event details for ${dateStr}</legend>
-              <label>Event Type: <input name="eventType-${dateStr}" required /></label><br/>
-              <label>Name: <input name="name-${dateStr}" required /></label><br/>
-              <label>Time: <input name="time-${dateStr}" required placeholder="e.g. 3:00 PM" /></label><br/>
-              <label>Location: <input name="location-${dateStr}" required /></label><br/>
-            `;
-            eventsForm.appendChild(fieldset);
-          });
+    // Initialize flatpickr as a single date picker (readonly input)
+    flatpickr(calendarInput, {
+      dateFormat: "Y-m-d",
+      onChange: function(selectedDates) {
+        if (selectedDates.length === 0) return;
+        const selectedDate = selectedDates[0].toISOString().slice(0,10);
+        openEventModal(selectedDate);
+      }
+    });
 
-          reviewBtn.disabled = false;
-          reviewSection.style.display = 'none';
-        }
+    // Initialize additional dates picker (multi-date)
+    let additionalDatesFP = flatpickr(additionalDatesPicker, {
+      mode: "multiple",
+      dateFormat: "Y-m-d",
+      allowInput: true,
+    });
+
+    multiDayCheckbox.addEventListener('change', () => {
+      multiDayDatesDiv.style.display = multiDayCheckbox.checked ? 'block' : 'none';
+      if (!multiDayCheckbox.checked) {
+        additionalDatesFP.clear();
+      }
+    });
+
+    function openEventModal(dateStr) {
+      selectedDateText.textContent = dateStr;
+      eventForm.reset();
+      multiDayDatesDiv.style.display = 'none';
+      additionalDatesFP.clear();
+      eventModal.style.display = 'flex';
+      eventForm.dataset.mainDate = dateStr;
+    }
+
+    document.getElementById('cancelBtn').onclick = () => {
+      eventModal.style.display = 'none';
+      calendarInput._flatpickr.clear();  // Clear calendar selection
+    };
+
+    eventForm.onsubmit = (e) => {
+      e.preventDefault();
+      const mainDate = eventForm.dataset.mainDate;
+      const eventName = eventForm.eventName.value.trim();
+      const eventTime = eventForm.eventTime.value.trim();
+      const isMultiDay = eventForm.multiDay.checked;
+      const description = eventForm.description.value.trim();
+      const location = eventForm.location.value.trim();
+      const additionalDates = additionalDatesFP.selectedDates.map(d => d.toISOString().slice(0,10));
+
+      if (!eventName || !eventTime || !location) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+
+      // Prepare all dates involved
+      const allDates = [mainDate];
+      if (isMultiDay) {
+        additionalDates.forEach(d => {
+          if (!allDates.includes(d)) allDates.push(d);
+        });
+      }
+
+      // Add event to the list (display)
+      allDates.forEach(date => {
+        const li = document.createElement('li');
+        li.textContent = `${date} - ${eventName} at ${eventTime}, Location: ${location}`;
+        if(description) li.textContent += `, Description: ${description}`;
+        eventsList.appendChild(li);
       });
 
-      reviewBtn.onclick = () => {
-        // Validate inputs
-        const inputs = eventsForm.querySelectorAll('input');
-        for (let input of inputs) {
-          if (!input.value.trim()) {
-            alert('Please fill all event details.');
-            return;
-          }
-        }
+      eventModal.style.display = 'none';
+      calendarInput._flatpickr.clear();  // Clear calendar selection
+    };
 
-        // Gather data
-        const clubName = document.getElementById('clubName').value.trim();
-        if (!clubName) {
-          alert('Please enter your club name.');
-          return;
-        }
-
-        const events = [];
-        const fieldsets = eventsForm.querySelectorAll('fieldset');
-        fieldsets.forEach(fs => {
-          const date = fs.querySelector('legend').textContent.match(/\d{4}-\d{2}-\d{2}/)[0];
-          const eventType = fs.querySelector(`input[name="eventType-${date}"]`).value.trim();
-          const name = fs.querySelector(`input[name="name-${date}"]`).value.trim();
-          const time = fs.querySelector(`input[name="time-${date}"]`).value.trim();
-          const location = fs.querySelector(`input[name="location-${date}"]`).value.trim();
-          events.push({date, eventType, name, time, location});
-        });
-
-        // Show review summary
-        let summaryText = `Club: ${clubName}\n\nEvents:\n`;
-        events.forEach(e => {
-          summaryText += `Date: ${e.date}\nType: ${e.eventType}\nName: ${e.name}\nTime: ${e.time}\nLocation: ${e.location}\n\n`;
-        });
-
-        reviewText.textContent = summaryText;
-        reviewSection.style.display = 'block';
-      };
-
-      finalSubmitBtn.onclick = () => {
-        // Prepare data for submission
-        const clubName = document.getElementById('clubName').value.trim();
-
-        const fieldsets = eventsForm.querySelectorAll('fieldset');
-        const events = [];
-        fieldsets.forEach(fs => {
-          const date = fs.querySelector('legend').textContent.match(/\d{4}-\d{2}-\d{2}/)[0];
-          const eventType = fs.querySelector(`input[name="eventType-${date}"]`).value.trim();
-          const name = fs.querySelector(`input[name="name-${date}"]`).value.trim();
-          const time = fs.querySelector(`input[name="time-${date}"]`).value.trim();
-          const location = fs.querySelector(`input[name="location-${date}"]`).value.trim();
-          events.push({date, eventType, name, time, location});
-        });
-
-        // Send data to Google Apps Script Web App endpoint
-       const formData = new FormData();
-formData.append("clubName", clubName);
-formData.append("events", JSON.stringify(events));
-
-fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
-  method: 'POST',
-  body: formData
-})
-        .then(response => response.json())
-        .then(data => {
-          alert(data.message || 'Submitted successfully!');
-          // Reset form
-          datePicker._flatpickr.clear();
-          eventsForm.innerHTML = '';
-          reviewSection.style.display = 'none';
-          reviewBtn.disabled = true;
-          document.getElementById('clubName').value = '';
-        })
-        .catch(err => {
-          alert('Submission failed: ' + err.message);
-        });
-      };
-    </script>
-  </body>
+    // Close modal if clicked outside content
+    eventModal.addEventListener('click', (e) => {
+      if(e.target === eventModal) {
+        eventModal.style.display = 'none';
+        calendarInput._flatpickr.clear();
+      }
+    });
+  </script>
+</body>
 </html>
