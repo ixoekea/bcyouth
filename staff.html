@@ -138,6 +138,7 @@
     <input type="hidden" name="staffList" id="staffListInput" />
 
   <button type="button" onclick="addStaffEntry()">+ Add Staff</button><br><br>
+   <button type="button" onclick="removeStaffEntry()">- Remove Last</button><br><br>
   <button type="submit">Submit</button>
 </form>
 <iframe name="hidden_iframe" style="display:none;"></iframe>
@@ -165,7 +166,15 @@
 
       container.appendChild(template);
     }
-
+function removeStaffEntry() {
+  const container = document.getElementById('staffEntries');
+  const staffCount = container.querySelectorAll('.staff').length;
+  if (staffCount > 1) {  // always keep at least one
+    container.removeChild(container.lastElementChild);
+  } else {
+    alert("At least one staff member entry must remain.");
+  }
+}
    document.getElementById('staffForm').addEventListener('submit', function(e) {
     const staffList = [];
     document.querySelectorAll('#staffEntries .staff').forEach(entry => {
