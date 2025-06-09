@@ -223,6 +223,7 @@
 
       flatpickr(calendarInput, {
         dateFormat: "Y-m-d",
+         disableMobile: true, // Force flatpickr on mobile
         onChange: function (selectedDates) {
           if (selectedDates.length === 0) return;
           currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
