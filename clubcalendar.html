@@ -116,11 +116,14 @@
         });
 
         // Send data to Google Apps Script Web App endpoint
-        fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ clubName, events })
-        })
+       const formData = new FormData();
+formData.append("clubName", clubName);
+formData.append("events", JSON.stringify(events));
+
+fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
+  method: 'POST',
+  body: formData
+})
         .then(response => response.json())
         .then(data => {
           alert(data.message || 'Submitted successfully!');
