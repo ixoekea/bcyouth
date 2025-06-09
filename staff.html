@@ -142,6 +142,15 @@
 </form>
 <iframe name="hidden_iframe" style="display:none;"></iframe>
   <script>
+     // Attach the iframe listener on DOM ready
+  document.addEventListener('DOMContentLoaded', () => {
+    const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+    iframe.addEventListener('load', () => {
+      // This fires when iframe loads a response after form submit
+      alert('Submission successful! Thank you.');
+    });
+  });
+    
     function addStaffEntry() {
       const container = document.getElementById('staffEntries');
       const template = container.firstElementChild.cloneNode(true);
@@ -186,11 +195,6 @@
      // Put JSON string in hidden input
     document.getElementById('staffListInput').value = JSON.stringify(staffList);
    });
-// Attach iframe load listener once, when page loads
-  const iframe = document.querySelector('iframe[name="hidden_iframe"]');
-  iframe.addEventListener('load', () => {
-    alert('Submission successful! Thank you.');
-  });
   </script>
 </body>
 </html>
