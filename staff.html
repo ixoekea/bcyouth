@@ -1,216 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>BC Club Staff List</title>
-  <style>
-          nav {
-  margin-bottom: 1.5rem;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Staff List</title>
+    <style>
+      nav {
+        margin-bottom: 1.5rem;
+      }
 
-.nav-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 1.5rem;
-}
+      .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
+      }
 
-.nav-menu li {
-  /* no extra style needed */
-}
+      .nav-menu a {
+        text-decoration: none;
+        color: #004080;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        border: 1px solid transparent;
+      }
 
-.nav-menu a {
-  text-decoration: none;
-  color: #004080;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  border: 1px solid transparent;
-}
+      .nav-menu a:hover {
+        background-color: #e6f0ff;
+        border-color: #004080;
+      }
 
-.nav-menu a:hover {
-  background-color: #e6f0ff;
-  border-color: #004080;
-}
+      .nav-menu a.active {
+        background-color: #004080;
+        color: white;
+        border-color: #003366;
+      }
 
-.nav-menu a.active {
-  background-color: #004080;
-  color: white;
-  border-color: #003366;
-}
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-      line-height: 1.6;
-      max-width: 700px;
-    }
-    label {
-      display: block;
-      margin: 1rem 0 0.5rem;
-    }
-    canvas {
-      border: 1px solid #ccc;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    button {
-      margin-top: 0.5rem;
-    }
-    .club-section {
-      display: none;
-      margin-left: 1rem;
-      border-left: 2px solid #ccc;
-      padding-left: 1rem;
-    }
-  </style>
-  <nav>
-    <ul class="nav-menu">
-      <li><a href="form3.html" >Club Registration</a></li>
-      <li><a href="staff.html" class="active">Staff List</a></li>
-      <li><a href="club-calendar.html">Club Calendar</a></li>
-    </ul>
-  </nav>
-  <h1>BC Club Staff List</h1>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
- <form id="staffForm" action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec" method="post" target="hidden_iframe">
-  <label for="club">Club Name:</label>
-  <input type="text" id="club" name="club" required><br>
+      .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 2rem;
+        width: 100%;
+        max-width: 700px;
+      }
 
-    <div id="staffEntries">
-      <div class="staff">
-        <fieldset>
-          <legend>Staff Member</legend>
-          <label>Name: <input type="text" name="name" required></label>
-          <label>Email: <input type="email" name="email" required></label>
+      form {
+        width: 100%;
+      }
 
-          <label>CRC sent in to Shelly Gibbons at sgibbons@bcadventist.ca
-            <select name="crc">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
 
-          <label>First Aid:
-            <select name="firstAid">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+      button {
+        margin-top: 0.5rem;
+      }
 
-          <label>Driver's Abstract:
-            <select name="driversAbstract">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+      .staff fieldset {
+        border: 1px solid #ccc;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="form3.html">Club Registration</a></li>
+        <li><a href="staff.html" class="active">Staff List</a></li>
+        <li><a href="club-calendar.html">Club Calendar</a></li>
+      </ul>
+    </nav>
 
-          <label>5 Million Vehicle Liability Insurance:
-            <select name="insurance">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+    <h1>BC Club Staff List</h1>
 
-          <label>Calendar Approved:
-            <select name="calendarApproved">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+    <div class="form-container">
+      <form
+        id="staffForm"
+        action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec"
+        method="post"
+        target="hidden_iframe"
+      >
+        <label for="club"
+          >Club Name:
+          <input type="text" id="club" name="club" required />
+        </label>
 
-          <label>Volunteers Approved:
-            <select name="volunteersApproved">
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </label>
+        <div id="staffEntries">
+          <div class="staff">
+            <fieldset>
+              <legend>Staff Member</legend>
 
-          <label>
-            <input type="checkbox" name="volunteerForm"> Volunteer Form Submitted
-          </label>
-        </fieldset>
-      </div>
+              <label
+                >Name:
+                <input type="text" name="name" required />
+              </label>
+
+              <label
+                >Email:
+                <input type="email" name="email" required />
+              </label>
+
+              <label
+                >CRC sent in to Shelly Gibbons at sgibbons@bcadventist.ca
+                <select name="crc">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label
+                >First Aid:
+                <select name="firstAid">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label
+                >Driver's Abstract:
+                <select name="driversAbstract">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label
+                >5 Million Vehicle Liability Insurance:
+                <select name="insurance">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label
+                >Calendar Approved:
+                <select name="calendarApproved">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label
+                >Volunteers Approved:
+                <select name="volunteersApproved">
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </label>
+
+              <label>
+                <input type="checkbox" name="volunteerForm" /> Volunteer Form
+                Submitted
+              </label>
+            </fieldset>
+          </div>
+        </div>
+
+        <input type="hidden" name="staffList" id="staffListInput" />
+
+        <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
+        <button type="button" onclick="removeStaffEntry()">
+          - Remove Last
+        </button>
+        <br /><br />
+        <button type="submit">Submit</button>
+      </form>
     </div>
 
-    <input type="hidden" name="staffList" id="staffListInput" />
+    <iframe name="hidden_iframe" style="display: none"></iframe>
 
-  <button type="button" onclick="addStaffEntry()">+ Add Staff</button><br><br>
-   <button type="button" onclick="removeStaffEntry()">- Remove Last</button><br><br>
-  <button type="submit">Submit</button>
-</form>
-<iframe name="hidden_iframe" style="display:none;"></iframe>
-<script>
-  let formSubmitted = false;
+    <script>
+      let formSubmitted = false;
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+      document.addEventListener("DOMContentLoaded", () => {
+        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
-    iframe.addEventListener('load', () => {
-      if (formSubmitted) {
-        alert('Submission successful! Thank you.');
-        formSubmitted = false; // reset for next submission
-      }
-    });
-
-    document.getElementById('staffForm').addEventListener('submit', function(e) {
-      const staffList = [];
-      document.querySelectorAll('#staffEntries .staff').forEach(entry => {
-        const name = entry.querySelector('[name="name"]').value;
-        const email = entry.querySelector('[name="email"]').value;
-        const crc = entry.querySelector('[name="crc"]').value;
-        const firstAid = entry.querySelector('[name="firstAid"]').value;
-        const driversAbstract = entry.querySelector('[name="driversAbstract"]').value;
-        const insurance = entry.querySelector('[name="insurance"]').value;
-        const calendarApproved = entry.querySelector('[name="calendarApproved"]').value;
-        const volunteersApproved = entry.querySelector('[name="volunteersApproved"]').value;
-        const volunteerForm = entry.querySelector('[name="volunteerForm"]').checked;
-
-        staffList.push({
-          name,
-          email,
-          crc,
-          firstAid,
-          driversAbstract,
-          insurance,
-          calendarApproved,
-          volunteersApproved,
-          volunteerForm
+        iframe.addEventListener("load", () => {
+          if (formSubmitted) {
+            alert("Submission successful! Thank you.");
+            formSubmitted = false; // reset for next submission
+          }
         });
+
+        document
+          .getElementById("staffForm")
+          .addEventListener("submit", function (e) {
+            const staffList = [];
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const name = entry.querySelector('[name="name"]').value.trim();
+                const email = entry
+                  .querySelector('[name="email"]')
+                  .value.trim();
+                const crc = entry.querySelector('[name="crc"]').value;
+                const firstAid = entry.querySelector('[name="firstAid"]').value;
+                const driversAbstract = entry.querySelector(
+                  '[name="driversAbstract"]'
+                ).value;
+                const insurance =
+                  entry.querySelector('[name="insurance"]').value;
+                const calendarApproved = entry.querySelector(
+                  '[name="calendarApproved"]'
+                ).value;
+                const volunteersApproved = entry.querySelector(
+                  '[name="volunteersApproved"]'
+                ).value;
+                const volunteerForm = entry.querySelector(
+                  '[name="volunteerForm"]'
+                ).checked;
+
+                staffList.push({
+                  name,
+                  email,
+                  crc,
+                  firstAid,
+                  driversAbstract,
+                  insurance,
+                  calendarApproved,
+                  volunteersApproved,
+                  volunteerForm,
+                });
+              });
+
+            document.getElementById("staffListInput").value =
+              JSON.stringify(staffList);
+            formSubmitted = true;
+          });
       });
 
-      document.getElementById('staffListInput').value = JSON.stringify(staffList);
-      formSubmitted = true;
-    });
-  });
+      function addStaffEntry() {
+        const container = document.getElementById("staffEntries");
+        const template = container.firstElementChild.cloneNode(true);
 
-  function addStaffEntry() {
-    const container = document.getElementById('staffEntries');
-    const template = container.firstElementChild.cloneNode(true);
+        template.querySelectorAll("input, select").forEach((input) => {
+          if (input.type === "checkbox") {
+            input.checked = false;
+          } else {
+            input.value = "";
+          }
+        });
 
-    template.querySelectorAll('input, select').forEach(input => {
-      if (input.type === 'checkbox') {
-        input.checked = false;
-      } else {
-        input.value = '';
+        container.appendChild(template);
       }
-    });
 
-    container.appendChild(template);
-  }
-
-  function removeStaffEntry() {
-    const container = document.getElementById('staffEntries');
-    const staffCount = container.querySelectorAll('.staff').length;
-    if (staffCount > 1) {
-      container.removeChild(container.lastElementChild);
-    } else {
-      alert("At least one staff member entry must remain.");
-    }
-  }
-</script>
-
-</body>
+      function removeStaffEntry() {
+        const container = document.getElementById("staffEntries");
+        const staffCount = container.querySelectorAll(".staff").length;
+        if (staffCount > 1) {
+          container.removeChild(container.lastElementChild);
+        } else {
+          alert("At least one staff member entry must remain.");
+        }
+      }
+    </script>
+  </body>
 </html>
