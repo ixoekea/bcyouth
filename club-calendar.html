@@ -1,277 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Event Calendar with Club and Final Submit</title>
-  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <style>
-          nav {
-  margin-bottom: 1.5rem;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Event Calendar with Club and Final Submit</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+      nav {
+        margin-bottom: 1.5rem;
+      }
 
-.nav-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  gap: 1.5rem;
-}
+      .nav-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
+      }
 
-.nav-menu li {
-  /* no extra style needed */
-}
+      .nav-menu li {
+        /* no extra style needed */
+      }
 
-.nav-menu a {
-  text-decoration: none;
-  color: #004080;
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-  border: 1px solid transparent;
-}
+      .nav-menu a {
+        text-decoration: none;
+        color: #004080;
+        font-weight: bold;
+        font-family: Arial, sans-serif;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        border: 1px solid transparent;
+      }
 
-.nav-menu a:hover {
-  background-color: #e6f0ff;
-  border-color: #004080;
-}
+      .nav-menu a:hover {
+        background-color: #e6f0ff;
+        border-color: #004080;
+      }
 
-.nav-menu a.active {
-  background-color: #004080;
-  color: white;
-  border-color: #003366;
-}
-    /* Removed modal styles for club */
-    #eventModal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .modal-content {
-      background: white;
-      padding: 1rem;
-      border-radius: 5px;
-      width: 320px;
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-    }
-    /* Inline club input container */
-    #clubInputContainer {
-      margin-bottom: 1rem;
-    }
-    #clubErrorMsg {
-      color: red;
-      margin-top: 0.3rem;
-      height: 1.2em;
-    }
-  </style>
-</head>
-<body>
+      .nav-menu a.active {
+        background-color: #004080;
+        color: white;
+        border-color: #003366;
+      }
 
-  <h2>Club Event Calendar Form</h2>
+      /* Removed modal styles for club */
+      #eventModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      .modal-content {
+        background: white;
+        padding: 1rem;
+        border-radius: 5px;
+        width: 320px;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-  <div id="clubInputContainer">
-    <label for="clubNameInput">Club Name:</label>
-    <input id="clubNameInput" type="text" placeholder="Enter your club name" />
-    <button id="confirmClubBtn">Confirm</button>
-    <div id="clubErrorMsg"></div>
-  </div>
+      .form-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 2rem;
+        width: 100%;
+        max-width: 700px;
+      }
 
-  <label>Club: <span id="clubDisplay">[Not set]</span></label><br/><br/>
+      form {
+        width: 100%;
+      }
 
-  <label>Select Date:</label>
-  <input id="calendarInput" type="text" placeholder="Pick a date" disabled /><br/><br/>
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+      /* Inline club input container */
+      #clubInputContainer {
+        margin-bottom: 1rem;
+      }
+      #clubErrorMsg {
+        color: red;
+        margin-top: 0.3rem;
+        height: 1.2em;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="form3.html">Club Registration</a></li>
+        <li><a href="staff.html">Staff List</a></li>
+        <li><a href="club-calendar.html" class="active">Club Calendar</a></li>
+      </ul>
+    </nav>
 
-  <!-- Event Modal -->
-  <div id="eventModal">
-    <div class="modal-content">
-      <h3>Add Event for <span id="selectedDateText"></span></h3>
-      <form id="eventForm">
-        <label>Name of Event: <input type="text" name="eventName" required /></label>
-        <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
-        <label>
-          <input type="checkbox" name="multiDay" id="multiDayCheckbox" /> Multiday Event
-        </label>
-        <div id="multiDayDates" style="display:none; margin-top: 0.5rem;">
-          <label>Select additional dates:</label>
-          <input type="text" id="additionalDatesPicker" placeholder="Select additional dates" />
-        </div>
-        <label>Description:<br/>
-          <textarea name="description" rows="3" style="width:100%;"></textarea>
-        </label>
-        <label>Location: <input type="text" name="location" required /></label>
-        <div style="margin-top:1rem;">
-          <button type="submit">Add Event</button>
-          <button type="button" id="eventCancelBtn">Cancel</button>
-        </div>
-      </form>
+    <h2>Club Event Calendar Form</h2>
+
+    <div id="clubInputContainer">
+      <label for="clubNameInput"
+        >Club Name:
+        <input
+          id="clubNameInput"
+          type="text"
+          placeholder="Enter your club name"
+        />
+        <button id="confirmClubBtn">Confirm</button></label
+      >
+      <div id="clubErrorMsg"></div>
+
+      <label
+        >Select Date:
+        <input
+          id="calendarInput"
+          type="text"
+          placeholder="Pick a date"
+          disabled
+      /></label>
     </div>
-  </div>
 
-  <h3>Events Added:</h3>
-  <ul id="eventsList"></ul>
+    <!-- Event Modal -->
+    <div id="eventModal">
+      <div class="modal-content">
+        <h3>Add Event for <span id="selectedDateText"></span></h3>
+        <form id="eventForm">
+          <label
+            >Name of Event: <input type="text" name="eventName" required
+          /></label>
+          <label
+            >Time:
+            <input
+              type="text"
+              name="eventTime"
+              placeholder="e.g. 3:00 PM"
+              required
+          /></label>
+          <label>
+            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
+            Multiday Event
+          </label>
+          <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
+            <label>Select additional dates:</label>
+            <input
+              type="text"
+              id="additionalDatesPicker"
+              placeholder="Select additional dates"
+            />
+          </div>
+          <label
+            >Description:<br />
+            <textarea
+              name="description"
+              rows="3"
+              style="width: 100%"
+            ></textarea>
+          </label>
+          <label
+            >Location: <input type="text" name="location" required
+          /></label>
+          <div style="margin-top: 1rem">
+            <button type="submit">Add Event</button>
+            <button type="button" id="eventCancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-  <button id="finalSubmitBtn" disabled>Submit All Events</button>
+    <h3>Events Added:</h3>
+    <ul id="eventsList"></ul>
 
-  <script>
-    const calendarInput = document.getElementById('calendarInput');
-    const eventModal = document.getElementById('eventModal');
-    const eventForm = document.getElementById('eventForm');
-    const selectedDateText = document.getElementById('selectedDateText');
-    const multiDayCheckbox = document.getElementById('multiDayCheckbox');
-    const multiDayDatesDiv = document.getElementById('multiDayDates');
-    const additionalDatesPicker = document.getElementById('additionalDatesPicker');
-    const eventsList = document.getElementById('eventsList');
-    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
-    const clubDisplay = document.getElementById('clubDisplay');
+    <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
-    // Club input elements (now inline)
-    const clubNameInput = document.getElementById('clubNameInput');
-    const confirmClubBtn = document.getElementById('confirmClubBtn');
-    const clubErrorMsg = document.getElementById('clubErrorMsg');
+    <script>
+      const calendarInput = document.getElementById("calendarInput");
+      const eventModal = document.getElementById("eventModal");
+      const eventForm = document.getElementById("eventForm");
+      const selectedDateText = document.getElementById("selectedDateText");
+      const multiDayCheckbox = document.getElementById("multiDayCheckbox");
+      const multiDayDatesDiv = document.getElementById("multiDayDates");
+      const additionalDatesPicker = document.getElementById(
+        "additionalDatesPicker"
+      );
+      const eventsList = document.getElementById("eventsList");
+      const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+      const clubDisplay = document.getElementById("clubDisplay");
 
-    let additionalDatesFP = flatpickr(additionalDatesPicker, {
-      mode: "multiple",
-      dateFormat: "Y-m-d",
-      allowInput: true,
-    });
+      // Club input elements (now inline)
+      const clubNameInput = document.getElementById("clubNameInput");
+      const confirmClubBtn = document.getElementById("confirmClubBtn");
+      const clubErrorMsg = document.getElementById("clubErrorMsg");
 
-    let currentSelectedDate = null;
-    let currentClubName = '';
-    const eventsData = [];
-
-    // Initially disable calendar until club is confirmed
-    calendarInput.disabled = true;
-
-    flatpickr(calendarInput, {
-      dateFormat: "Y-m-d",
-      onChange: function(selectedDates) {
-        if (selectedDates.length === 0) return;
-        currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
-        openEventModal(currentSelectedDate);
-        calendarInput._flatpickr.clear();
-      }
-    });
-
-    confirmClubBtn.onclick = () => {
-      const clubInput = clubNameInput.value.trim();
-      if (!clubInput) {
-        clubErrorMsg.textContent = 'Please enter your club name.';
-        return;
-      }
-      clubErrorMsg.textContent = '';
-      currentClubName = clubInput;
-      clubDisplay.textContent = currentClubName;
-      calendarInput.disabled = false; // enable calendar now
-      clubNameInput.disabled = true;
-      confirmClubBtn.disabled = true;
-    };
-
-    clubNameInput.addEventListener('input', () => {
-      clubErrorMsg.textContent = '';
-    });
-
-    function openEventModal(dateStr) {
-      selectedDateText.textContent = dateStr;
-      eventForm.reset();
-      multiDayDatesDiv.style.display = 'none';
-      additionalDatesFP.clear();
-      eventModal.style.display = 'flex';
-      eventForm.dataset.mainDate = dateStr;
-    }
-
-    multiDayCheckbox.addEventListener('change', () => {
-      multiDayDatesDiv.style.display = multiDayCheckbox.checked ? 'block' : 'none';
-      if (!multiDayCheckbox.checked) additionalDatesFP.clear();
-    });
-
-    eventForm.onsubmit = e => {
-      e.preventDefault();
-
-      const mainDate = eventForm.dataset.mainDate;
-      const eventName = eventForm.eventName.value.trim();
-      const eventTime = eventForm.eventTime.value.trim();
-      const isMultiDay = eventForm.multiDay.checked;
-      const description = eventForm.description.value.trim();
-      const location = eventForm.location.value.trim();
-      const additionalDates = additionalDatesFP.selectedDates.map(d => d.toISOString().slice(0, 10));
-
-      if (!eventName || !eventTime || !location) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      const allDates = [mainDate];
-      if (isMultiDay) {
-        additionalDates.forEach(d => {
-          if (!allDates.includes(d)) allDates.push(d);
-        });
-      }
-
-      eventsData.push({
-        club: currentClubName,
-        eventName,
-        eventTime,
-        description,
-        location,
-        dates: allDates
+      let additionalDatesFP = flatpickr(additionalDatesPicker, {
+        mode: "multiple",
+        dateFormat: "Y-m-d",
+        allowInput: true,
       });
 
-      allDates.forEach(date => {
-        const li = document.createElement('li');
-        li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
-        if (description) li.textContent += `, Description: ${description}`;
-        eventsList.appendChild(li);
+      let currentSelectedDate = null;
+      let currentClubName = "";
+      const eventsData = [];
+
+      // Initially disable calendar until club is confirmed
+      calendarInput.disabled = true;
+
+      flatpickr(calendarInput, {
+        dateFormat: "Y-m-d",
+        onChange: function (selectedDates) {
+          if (selectedDates.length === 0) return;
+          currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
+          openEventModal(currentSelectedDate);
+          calendarInput._flatpickr.clear();
+        },
       });
 
-      finalSubmitBtn.disabled = false;
-      eventModal.style.display = 'none';
-    };
+      confirmClubBtn.onclick = () => {
+        const clubInput = clubNameInput.value.trim();
+        if (!clubInput) {
+          clubErrorMsg.textContent = "Please enter your club name.";
+          return;
+        }
+        clubErrorMsg.textContent = "";
+        currentClubName = clubInput;
+        clubDisplay.textContent = currentClubName;
+        calendarInput.disabled = false; // enable calendar now
+        clubNameInput.disabled = true;
+        confirmClubBtn.disabled = true;
+      };
 
-    document.getElementById('eventCancelBtn').onclick = () => {
-      eventModal.style.display = 'none';
-    };
+      clubNameInput.addEventListener("input", () => {
+        clubErrorMsg.textContent = "";
+      });
 
-    // Close event modal if clicking outside modal content
-    eventModal.addEventListener('click', e => {
-      if (e.target === eventModal) eventModal.style.display = 'none';
-    });
-
-    finalSubmitBtn.onclick = () => {
-      if (eventsData.length === 0) {
-        alert("No events to submit.");
-        return;
+      function openEventModal(dateStr) {
+        selectedDateText.textContent = dateStr;
+        eventForm.reset();
+        multiDayDatesDiv.style.display = "none";
+        additionalDatesFP.clear();
+        eventModal.style.display = "flex";
+        eventForm.dataset.mainDate = dateStr;
       }
 
-      finalSubmitBtn.disabled = true;
+      multiDayCheckbox.addEventListener("change", () => {
+        multiDayDatesDiv.style.display = multiDayCheckbox.checked
+          ? "block"
+          : "none";
+        if (!multiDayCheckbox.checked) additionalDatesFP.clear();
+      });
 
-      const formData = new FormData();
-      formData.append("events", JSON.stringify(eventsData));
+      eventForm.onsubmit = (e) => {
+        e.preventDefault();
 
-      fetch('https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec', {
-        method: 'POST',
-        body: formData
-      })
-        .then(res => res.json())
-        .then(data => {
-          alert(data.message || 'Events submitted successfully!');
-          eventsData.length = 0;
-          eventsList.innerHTML = '';
-          finalSubmitBtn.disabled = true;
-        })
-        .catch(err => {
-          alert("Submission failed: " + err.message);
-          finalSubmitBtn.disabled = false;
+        const mainDate = eventForm.dataset.mainDate;
+        const eventName = eventForm.eventName.value.trim();
+        const eventTime = eventForm.eventTime.value.trim();
+        const isMultiDay = eventForm.multiDay.checked;
+        const description = eventForm.description.value.trim();
+        const location = eventForm.location.value.trim();
+        const additionalDates = additionalDatesFP.selectedDates.map((d) =>
+          d.toISOString().slice(0, 10)
+        );
+
+        if (!eventName || !eventTime || !location) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+
+        const allDates = [mainDate];
+        if (isMultiDay) {
+          additionalDates.forEach((d) => {
+            if (!allDates.includes(d)) allDates.push(d);
+          });
+        }
+
+        eventsData.push({
+          club: currentClubName,
+          eventName,
+          eventTime,
+          description,
+          location,
+          dates: allDates,
         });
-    };
-  </script>
-</body>
+
+        allDates.forEach((date) => {
+          const li = document.createElement("li");
+          li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
+          if (description) li.textContent += `, Description: ${description}`;
+          eventsList.appendChild(li);
+        });
+
+        finalSubmitBtn.disabled = false;
+        eventModal.style.display = "none";
+      };
+
+      document.getElementById("eventCancelBtn").onclick = () => {
+        eventModal.style.display = "none";
+      };
+
+      // Close event modal if clicking outside modal content
+      eventModal.addEventListener("click", (e) => {
+        if (e.target === eventModal) eventModal.style.display = "none";
+      });
+
+      finalSubmitBtn.onclick = () => {
+        if (eventsData.length === 0) {
+          alert("No events to submit.");
+          return;
+        }
+
+        finalSubmitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append("events", JSON.stringify(eventsData));
+
+        fetch(
+          "https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec",
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.message || "Events submitted successfully!");
+            eventsData.length = 0;
+            eventsList.innerHTML = "";
+            finalSubmitBtn.disabled = true;
+          })
+          .catch((err) => {
+            alert("Submission failed: " + err.message);
+            finalSubmitBtn.disabled = false;
+          });
+      };
+    </script>
+  </body>
 </html>
