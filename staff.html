@@ -142,51 +142,31 @@
   <button type="submit">Submit</button>
 </form>
 <iframe name="hidden_iframe" style="display:none;"></iframe>
-  <script>
-     // Attach the iframe listener on DOM ready
+<script>
+  let formSubmitted = false;
+
   document.addEventListener('DOMContentLoaded', () => {
     const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+
     iframe.addEventListener('load', () => {
-      // This fires when iframe loads a response after form submit
-      alert('Submission successful! Thank you.');
+      if (formSubmitted) {
+        alert('Submission successful! Thank you.');
+        formSubmitted = false; // reset for next submission
+      }
     });
-  });
-    
-    function addStaffEntry() {
-      const container = document.getElementById('staffEntries');
-      const template = container.firstElementChild.cloneNode(true);
 
-      template.querySelectorAll('input, select').forEach(input => {
-        if (input.type === 'checkbox') {
-          input.checked = false;
-        } else {
-          input.value = '';
-        }
-      });
-
-      container.appendChild(template);
-    }
-function removeStaffEntry() {
-  const container = document.getElementById('staffEntries');
-  const staffCount = container.querySelectorAll('.staff').length;
-  if (staffCount > 1) {  // always keep at least one
-    container.removeChild(container.lastElementChild);
-  } else {
-    alert("At least one staff member entry must remain.");
-  }
-}
-   document.getElementById('staffForm').addEventListener('submit', function(e) {
-    const staffList = [];
-    document.querySelectorAll('#staffEntries .staff').forEach(entry => {
-      const name = entry.querySelector('[name="name"]').value;
-      const email = entry.querySelector('[name="email"]').value;
-      const crc = entry.querySelector('[name="crc"]').value;
-      const firstAid = entry.querySelector('[name="firstAid"]').value;
-      const driversAbstract = entry.querySelector('[name="driversAbstract"]').value;
-      const insurance = entry.querySelector('[name="insurance"]').value;
-      const calendarApproved = entry.querySelector('[name="calendarApproved"]').value;
-      const volunteersApproved = entry.querySelector('[name="volunteersApproved"]').value;
-      const volunteerForm = entry.querySelector('[name="volunteerForm"]').checked;
+    document.getElementById('staffForm').addEventListener('submit', function(e) {
+      const staffList = [];
+      document.querySelectorAll('#staffEntries .staff').forEach(entry => {
+        const name = entry.querySelector('[name="name"]').value;
+        const email = entry.querySelector('[name="email"]').value;
+        const crc = entry.querySelector('[name="crc"]').value;
+        const firstAid = entry.querySelector('[name="firstAid"]').value;
+        const driversAbstract = entry.querySelector('[name="driversAbstract"]').value;
+        const insurance = entry.querySelector('[name="insurance"]').value;
+        const calendarApproved = entry.querySelector('[name="calendarApproved"]').value;
+        const volunteersApproved = entry.querySelector('[name="volunteersApproved"]').value;
+        const volunteerForm = entry.querySelector('[name="volunteerForm"]').checked;
 
         staffList.push({
           name,
@@ -201,9 +181,36 @@ function removeStaffEntry() {
         });
       });
 
-     // Put JSON string in hidden input
-    document.getElementById('staffListInput').value = JSON.stringify(staffList);
-   });
-  </script>
+      document.getElementById('staffListInput').value = JSON.stringify(staffList);
+      formSubmitted = true;
+    });
+  });
+
+  function addStaffEntry() {
+    const container = document.getElementById('staffEntries');
+    const template = container.firstElementChild.cloneNode(true);
+
+    template.querySelectorAll('input, select').forEach(input => {
+      if (input.type === 'checkbox') {
+        input.checked = false;
+      } else {
+        input.value = '';
+      }
+    });
+
+    container.appendChild(template);
+  }
+
+  function removeStaffEntry() {
+    const container = document.getElementById('staffEntries');
+    const staffCount = container.querySelectorAll('.staff').length;
+    if (staffCount > 1) {
+      container.removeChild(container.lastElementChild);
+    } else {
+      alert("At least one staff member entry must remain.");
+    }
+  }
+</script>
+
 </body>
 </html>
