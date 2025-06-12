@@ -163,29 +163,23 @@
     <ul id="eventsList"></ul>
 
     <!-- Board Approval Section -->
-    <div class="form-container calendarDateLabel" style="display: none; margin-top: 1rem;">
-      <label style="width: 100%;">
-        <form id="calendarApprovalForm">
-          <div class="form-container">
-            <div style="width: 100%;">
-              <label>
-                Calendar Approved:
-                <select name="calendarStatus" onchange="toggleDateInput(this)">
-                  <option value="Not Verified">Not Verified</option>
-                  <option value="Verified">Verified</option>
-                </select>
-              </label>
-              <label>
-                Select Date:
-                <input id="calendarInputHidden" type="text" placeholder="Pick a date" disabled />
-              </label>
-            </div>
-          </div>
-        </form>
-        Calendar Board Approval Date:
-        <input type="date" name="calendarExpirationDate" disabled required />
-      </label>
-    </div>
+<div class="form-container" style="margin-top: 1rem;">
+  <label>
+    Calendar Approved:
+    <select name="calendarStatus" onchange="toggleDateInput(this)">
+      <option value="Not Verified">Not Verified</option>
+      <option value="Verified">Verified</option>
+    </select>
+  </label>
+</div>
+
+<!-- Hidden calendar date input, shown only when 'Verified' is selected -->
+<div class="form-container calendarDateLabel" style="display: none;">
+  <label>
+    Calendar Board Approval Date:
+    <input type="date" name="calendarExpirationDate" disabled required />
+  </label>
+</div>
 
     <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
