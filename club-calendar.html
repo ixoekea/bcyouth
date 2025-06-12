@@ -155,8 +155,6 @@
   Enter Custom Event Type:
   <input type="text" id="customEventTypeInput" placeholder="Type your event type" />
 </label>
-
-<label>Name of Event: <input type="text" name="eventName" required /></label>
           <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
           <label>
             <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
@@ -298,7 +296,6 @@
       const mainDate = eventForm.dataset.mainDate;
       const selectedType = eventTypeSelect.value;
       const eventType = selectedType === "Other" ? customEventTypeInput.value.trim() : selectedType;
-      const eventName = eventForm.eventName.value.trim();
       const eventTime = eventForm.eventTime.value.trim();
       const isMultiDay = eventForm.multiDay.checked;
       const description = eventForm.description.value.trim();
