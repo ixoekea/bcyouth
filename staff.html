@@ -128,7 +128,6 @@
               <label>Criminal Record Check submitted at:
                 <br /><a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">https://justice.gov.bc.ca/criminalrecordcheck</a>
                 <br />Access Code: <strong>XRS5QDZLH6</strong>
-                
                 <select name="crc">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
@@ -267,6 +266,11 @@
         });
 
         container.appendChild(template);
+
+        const certSelect = template.querySelector('[name="certificationStatus"]');
+        const calSelect = template.querySelector('[name="calendarStatus"]');
+        if (certSelect) toggleDateInput(certSelect);
+        if (calSelect) toggleDateInput(calSelect);
       }
 
       function removeStaffEntry() {
