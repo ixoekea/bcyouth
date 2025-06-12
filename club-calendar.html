@@ -1,3 +1,10 @@
+Absolutely! Here's your full corrected HTML with the visible calendar and working "Add Events" feature. I’ve added the missing calendar input in a visible section (#calendarSection) and updated the JavaScript to show it after the club is confirmed.
+
+
+---
+
+✅ Full HTML with Fixed Calendar and Add Event Option
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -124,6 +131,11 @@
       <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
     </div>
 
+    <!-- ✅ New visible calendar section -->
+    <div id="calendarSection" style="margin: 2rem 0; display: none;">
+      <label for="calendarInput">Click a date to add an event:</label><br />
+      <input id="calendarInput" type="text" placeholder="Pick a date" />
+    </div>
 
     <!-- Event Modal -->
     <div id="eventModal">
@@ -155,32 +167,30 @@
     <h3>Events Added:</h3>
     <ul id="eventsList"></ul>
 
-    <!-- ✅ Moved Calendar Board Approval Date into form and centered -->
-<div class="form-container calendarDateLabel" style="display: none; margin-top: 1rem;">
-  <label style="width: 100%;">
-
-    <form id="calendarApprovalForm">
-      <div class="form-container">
-        <div style="width: 100%;">
-          <label>
-            Calendar Approved:
-            <select name="calendarStatus" onchange="toggleDateInput(this)">
-              <option value="Not Verified">Not Verified</option>
-              <option value="Verified">Verified</option>
-            </select>
-          </label>
-
-          <label>
-            Select Date:
-            <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
-          </label>
-        </div>
-      </div>
-    </form>
-    Calendar Board Approval Date:
-    <input type="date" name="calendarExpirationDate" disabled required />
-  </label>
-</div>
+    <!-- Board Approval Section -->
+    <div class="form-container calendarDateLabel" style="display: none; margin-top: 1rem;">
+      <label style="width: 100%;">
+        <form id="calendarApprovalForm">
+          <div class="form-container">
+            <div style="width: 100%;">
+              <label>
+                Calendar Approved:
+                <select name="calendarStatus" onchange="toggleDateInput(this)">
+                  <option value="Not Verified">Not Verified</option>
+                  <option value="Verified">Verified</option>
+                </select>
+              </label>
+              <label>
+                Select Date:
+                <input id="calendarInputHidden" type="text" placeholder="Pick a date" disabled />
+              </label>
+            </div>
+          </div>
+        </form>
+        Calendar Board Approval Date:
+        <input type="date" name="calendarExpirationDate" disabled required />
+      </label>
+    </div>
 
     <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
@@ -223,8 +233,6 @@
       let currentClubName = "";
       const eventsData = [];
 
-      calendarInput.disabled = true;
-
       flatpickr(calendarInput, {
         dateFormat: "Y-m-d",
         disableMobile: true,
@@ -245,9 +253,9 @@
         clubErrorMsg.textContent = "";
         currentClubName = clubInput;
         clubDisplay.textContent = currentClubName;
-        calendarInput.disabled = false;
         clubNameInput.disabled = true;
         confirmClubBtn.disabled = true;
+        document.getElementById("calendarSection").style.display = "block";
       };
 
       clubNameInput.addEventListener("input", () => {
@@ -351,3 +359,18 @@
     </script>
   </body>
 </html>
+
+
+---
+
+Let me know if you'd like to:
+
+Make it mobile-friendly.
+
+Automatically scroll to the calendar after confirmation.
+
+Display events grouped by date or club.
+
+
+I'm happy to help further!
+
