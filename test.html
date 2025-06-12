@@ -30,6 +30,11 @@
         margin: 0;
         font-size: 2rem;
       }
+.inline-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
       nav {
         background-color: #ffffff;
@@ -221,10 +226,10 @@
                   </select>
                 </label>
 
-                <label>
-                  <input type="checkbox" name="volunteerForm" /> Volunteer Form Submitted
-                </label>
-              </fieldset>
+                <label class="inline-checkbox-label">
+  <input type="checkbox" name="volunteerForm" />
+  Volunteer Form Submitted
+</label>
             </div>
           </div>
 
