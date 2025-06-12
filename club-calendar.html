@@ -126,7 +126,7 @@
         <button id="confirmClubBtn">Confirm</button></label
       >
       <div id="clubErrorMsg"></div>
-
+      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
       <label
         >Select Date:
         <input
@@ -223,7 +223,8 @@
 
       flatpickr(calendarInput, {
         dateFormat: "Y-m-d",
-         disableMobile: true, // Force flatpickr on mobile
+        disableMobile: true, // Force flatpickr on mobile
+
         onChange: function (selectedDates) {
           if (selectedDates.length === 0) return;
           currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
