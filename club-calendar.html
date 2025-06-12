@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -115,39 +114,35 @@
 
     <h2>Club Event Calendar Form</h2>
 
-   <div id="clubInputContainer">
-  <label for="clubNameInput">
-    Club Name:
-    <input id="clubNameInput" type="text" placeholder="Enter your club name" />
-    <button id="confirmClubBtn">Confirm</button>
-  </label>
-  <div id="clubErrorMsg"></div>
-  <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
-</div>
-
-<form id="calendarApprovalForm">
-  <div class="form-container">
-    <div style="width: 100%;">
-      <label>
-        Calendar Approved:
-        <select name="calendarStatus" onchange="toggleDateInput(this)">
-          <option value="Not Verified">Not Verified</option>
-          <option value="Verified">Verified</option>
-        </select>
+    <div id="clubInputContainer">
+      <label for="clubNameInput">
+        Club Name:
+        <input id="clubNameInput" type="text" placeholder="Enter your club name" />
+        <button id="confirmClubBtn">Confirm</button>
       </label>
-
-      <label class="calendarDateLabel">
-        Calendar Board Approval Date:
-        <input type="date" name="calendarExpirationDate" disabled />
-      </label>
-
-      <label>
-        Select Date:
-        <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
-      </label>
+      <div id="clubErrorMsg"></div>
+      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
     </div>
-  </div>
-</form>
+
+    <form id="calendarApprovalForm">
+      <div class="form-container">
+        <div style="width: 100%;">
+          <label>
+            Calendar Approved:
+            <select name="calendarStatus" onchange="toggleDateInput(this)">
+              <option value="Not Verified">Not Verified</option>
+              <option value="Verified">Verified</option>
+            </select>
+          </label>
+
+          <label>
+            Select Date:
+            <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
+          </label>
+        </div>
+      </div>
+    </form>
+
     <!-- Event Modal -->
     <div id="eventModal">
       <div class="modal-content">
@@ -178,18 +173,25 @@
     <h3>Events Added:</h3>
     <ul id="eventsList"></ul>
 
+    <!-- ✅ Moved Calendar Board Approval Date Here -->
+    <label class="calendarDateLabel" style="margin-top: 1rem;">
+      Calendar Board Approval Date:
+      <input type="date" name="calendarExpirationDate" disabled required />
+    </label>
+
     <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
     <script>
       function toggleDateInput(select) {
-        const container = select.closest("form, div");
-        const calLabel = container.querySelector(".calendarDateLabel");
+        const form = document.getElementById("calendarApprovalForm");
+        const calLabel = document.querySelector(".calendarDateLabel");
         const dateInput = calLabel?.querySelector('input[name="calendarExpirationDate"]');
 
         if (calLabel && dateInput) {
           const show = select.value === "Verified";
           calLabel.style.display = show ? "block" : "none";
           dateInput.disabled = !show;
+          dateInput.required = show;
         }
       }
 
@@ -346,5 +348,3 @@
     </script>
   </body>
 </html>
-
-
