@@ -75,6 +75,12 @@
         padding: 1rem;
         margin-bottom: 1rem;
       }
+
+      .instructions {
+        font-size: 0.95rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body>
@@ -95,8 +101,14 @@
         method="post"
         target="hidden_iframe"
       >
-        <label for="club"
-          >Club Name:
+        <div class="instructions">
+          <p>* Provide at least 2 or 3 emails for the distribution list.</p>
+          <p>* To add volunteers after October 1, submit a new form with only the additions.</p>
+          <p>* All adults 19+ must submit a Criminal Record Clearance Letter.</p>
+          <p>* Adults 19+ may only attend events if clearance is on file.</p>
+        </div>
+
+        <label for="club">Club Name:
           <input type="text" id="club" name="club" required />
         </label>
 
@@ -105,58 +117,70 @@
             <fieldset>
               <legend>Staff Member</legend>
 
-              <label
-                >Name:
+              <label>Name:
                 <input type="text" name="name" required />
               </label>
 
-              <label
-                >Email:
+              <label>Email:
                 <input type="email" name="email" required />
               </label>
 
-              <label
-                >CRC sent in to Shelly Gibbons at sgibbons@bcadventist.ca
+              <label>Criminal Record Check submitted at:
+                <br /><a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">https://justice.gov.bc.ca/criminalrecordcheck</a>
+                <br />Access Code: <strong>XRS5QDZLH6</strong>
+                
                 <select name="crc">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </label>
 
-              <label
-                >First Aid:
-                <select name="firstAid">
+              <label>ACL Abuse Certificate:
+                <select name="acl">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </label>
 
-              <label
-                >Driver's Abstract:
+              <label>First Aid Certification Status:
+                <select name="certificationStatus" onchange="toggleDateInput(this)">
+                  <option value="Not Certified">Not Certified</option>
+                  <option value="Certified">Certified</option>
+                </select>
+              </label>
+
+              <label class="certDateLabel" style="display: none;">
+                Certification Expiration Date:
+                <input type="date" name="certificationExpirationDate" />
+              </label>
+
+              <label>Driver's Abstract:
                 <select name="driversAbstract">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </label>
 
-              <label
-                >5 Million Vehicle Liability Insurance:
+              <label>5 Million Vehicle Liability Insurance:
                 <select name="insurance">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
                 </select>
               </label>
 
-              <label
-                >Calendar Approved:
-                <select name="calendarApproved">
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
+              <label>Calendar Approved:
+                <select name="calendarStatus" onchange="toggleDateInput(this)">
+                  <option value="Not Verified">Not Verified</option>
+                  <option value="Verified">Verified</option>
                 </select>
               </label>
 
-              <label
-                >Volunteers Approved:
+              <label class="calendarDateLabel" style="display: none;">
+                Calendar Board Approval Date:
+                <input type="date" name="calendarExpirationDate" />
+              </label>
+
+              <label>Volunteers Approved:
                 <select name="volunteersApproved">
                   <option value="Yes">Yes</option>
                   <option value="No">No</option>
@@ -164,8 +188,7 @@
               </label>
 
               <label>
-                <input type="checkbox" name="volunteerForm" /> Volunteer Form
-                Submitted
+                <input type="checkbox" name="volunteerForm" /> Volunteer Form Submitted
               </label>
             </fieldset>
           </div>
@@ -174,9 +197,14 @@
         <input type="hidden" name="staffList" id="staffListInput" />
 
         <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
-        <button type="button" onclick="removeStaffEntry()">
-          - Remove Last
-        </button>
+        <button type="button" onclick="removeStaffEntry()">- Remove Last</button>
+        <br /><br />
+
+        <label>
+          <input type="checkbox" name="CRC-FinalCheck" />
+          * I understand all volunteers, including parents, must complete their Criminal Records application.
+        </label>
+
         <br /><br />
         <button type="submit">Submit</button>
       </form>
@@ -193,55 +221,36 @@
         iframe.addEventListener("load", () => {
           if (formSubmitted) {
             alert("Submission successful! Thank you.");
-            formSubmitted = false; // reset for next submission
+            formSubmitted = false;
           }
         });
 
-        document
-          .getElementById("staffForm")
-          .addEventListener("submit", function (e) {
-            const staffList = [];
-            document
-              .querySelectorAll("#staffEntries .staff")
-              .forEach((entry) => {
-                const name = entry.querySelector('[name="name"]').value.trim();
-                const email = entry
-                  .querySelector('[name="email"]')
-                  .value.trim();
-                const crc = entry.querySelector('[name="crc"]').value;
-                const firstAid = entry.querySelector('[name="firstAid"]').value;
-                const driversAbstract = entry.querySelector(
-                  '[name="driversAbstract"]'
-                ).value;
-                const insurance =
-                  entry.querySelector('[name="insurance"]').value;
-                const calendarApproved = entry.querySelector(
-                  '[name="calendarApproved"]'
-                ).value;
-                const volunteersApproved = entry.querySelector(
-                  '[name="volunteersApproved"]'
-                ).value;
-                const volunteerForm = entry.querySelector(
-                  '[name="volunteerForm"]'
-                ).checked;
+        document.getElementById("staffForm").addEventListener("submit", function () {
+          const staffList = [];
+          document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
+            const get = (sel) => entry.querySelector(`[name="${sel}"]`);
+            const getVal = (sel) => get(sel)?.value?.trim() || "";
+            const getChecked = (sel) => get(sel)?.checked || false;
 
-                staffList.push({
-                  name,
-                  email,
-                  crc,
-                  firstAid,
-                  driversAbstract,
-                  insurance,
-                  calendarApproved,
-                  volunteersApproved,
-                  volunteerForm,
-                });
-              });
-
-            document.getElementById("staffListInput").value =
-              JSON.stringify(staffList);
-            formSubmitted = true;
+            staffList.push({
+              name: getVal("name"),
+              email: getVal("email"),
+              crc: getVal("crc"),
+              acl: getVal("acl"),
+              certificationStatus: getVal("certificationStatus"),
+              certificationExpirationDate: getVal("certificationExpirationDate"),
+              calendarStatus: getVal("calendarStatus"),
+              calendarExpirationDate: getVal("calendarExpirationDate"),
+              driversAbstract: getVal("driversAbstract"),
+              insurance: getVal("insurance"),
+              volunteersApproved: getVal("volunteersApproved"),
+              volunteerForm: getChecked("volunteerForm"),
+            });
           });
+
+          document.getElementById("staffListInput").value = JSON.stringify(staffList);
+          formSubmitted = true;
+        });
       });
 
       function addStaffEntry() {
@@ -249,11 +258,12 @@
         const template = container.firstElementChild.cloneNode(true);
 
         template.querySelectorAll("input, select").forEach((input) => {
-          if (input.type === "checkbox") {
-            input.checked = false;
-          } else {
-            input.value = "";
-          }
+          if (input.type === "checkbox") input.checked = false;
+          else input.value = "";
+        });
+
+        template.querySelectorAll(".certDateLabel, .calendarDateLabel").forEach(el => {
+          el.style.display = "none";
         });
 
         container.appendChild(template);
@@ -266,6 +276,20 @@
           container.removeChild(container.lastElementChild);
         } else {
           alert("At least one staff member entry must remain.");
+        }
+      }
+
+      function toggleDateInput(select) {
+        const staffBlock = select.closest(".staff");
+
+        if (select.name === "certificationStatus") {
+          const certLabel = staffBlock.querySelector(".certDateLabel");
+          if (certLabel) certLabel.style.display = select.value === "Certified" ? "block" : "none";
+        }
+
+        if (select.name === "calendarStatus") {
+          const calLabel = staffBlock.querySelector(".calendarDateLabel");
+          if (calLabel) calLabel.style.display = select.value === "Verified" ? "block" : "none";
         }
       }
     </script>
