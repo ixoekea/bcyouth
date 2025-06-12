@@ -2,55 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>BC Club Staff List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <title>Event Calendar with Club and Final Submit</title>
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: 'Inter', Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        color: #333;
-      }
-
-      header {
-        background: linear-gradient(135deg, #3f51b5, #2196f3);
-        color: white;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 2rem;
-      }
-
       nav {
-        background-color: #ffffff;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        margin-bottom: 1.5rem;
       }
 
       .nav-menu {
         list-style: none;
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin: 0;
         padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
       }
 
       .nav-menu a {
         text-decoration: none;
         color: #004080;
         font-weight: bold;
-        font-family: 'Inter', sans-serif;
+        font-family: Arial, sans-serif;
         padding: 6px 12px;
         border-radius: 4px;
         transition: background-color 0.3s ease;
@@ -68,300 +40,381 @@
         border-color: #003366;
       }
 
-      main {
-        padding: 2rem;
-        display: flex;
+      #eventModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
         justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 1rem;
+        border-radius: 5px;
+        width: 320px;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 2rem;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .form-container {
-        background: white;
-        padding: 2rem;
-        border-radius: 12px;
-        max-width: 700px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        margin-top: 2rem;
         width: 100%;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        max-width: 700px;
       }
 
-      .instructions {
-        font-size: 0.95rem;
-        color: #333;
+      form {
+        width: 100%;
+      }
+
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+
+      #clubInputContainer {
         margin-bottom: 1rem;
       }
 
-      fieldset {
-        border: 1px solid #ccc;
-        padding: 1rem;
-        margin-bottom: 1rem;
+      #clubErrorMsg {
+        color: red;
+        margin-top: 0.3rem;
+        height: 1.2em;
       }
-label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
 
-.inline-checkbox-label {
-  display: flex !important;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0; /* Match spacing with other labels */
-}
-      
-input, select, textarea {
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+      .calendarDateLabel {
+        display: none;
+      }
 
-/* Prevent checkboxes from stretching full width */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-textarea,
-select {
-  width: 100%;
-}
-      button {
-        margin-top: 1rem;
-        padding: 0.5rem 1rem;
-        background-color: #3f51b5;
-        color: white;
-        border: none;
-        border-radius: 6px;
+      /* --- Added for checkbox inline style --- */
+      .inline-checkbox-label {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        font-weight: normal;
         cursor: pointer;
+        user-select: none;
       }
 
-      button:hover {
-        background-color: #303f9f;
+      .inline-checkbox-label input[type="checkbox"] {
+        margin: 0;
+        vertical-align: middle;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <header>
-      <h1>BC Club Staff List</h1>
-    </header>
     <nav>
       <ul class="nav-menu">
         <li><a href="form3.html">Club Registration</a></li>
-        <li><a href="staff.html" class="active">Staff List</a></li>
-        <li><a href="club-calendar.html">Club Calendar</a></li>
+        <li><a href="staff.html">Staff List</a></li>
+        <li><a href="club-calendar.html" class="active">Club Calendar</a></li>
       </ul>
     </nav>
 
-    <!-- ✅ Centered form using main wrapper -->
-    <main>
-      <div class="form-container">
-        <form
-          id="staffForm"
-          action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec"
-          method="post"
-          target="hidden_iframe"
-        >
-          <div class="instructions">
-            <p>* Provide at least 2 or 3 emails for the distribution list.</p>
-            <p>* To add volunteers after October 1, submit a new form with only the additions.</p>
-            <p>* All adults 19+ must submit a Criminal Record Clearance Letter.</p>
-            <p>* Adults 19+ may only attend events if clearance is on file.</p>
-          </div>
+    <h2>Club Event Calendar Form</h2>
 
-          <label for="club">
-            Club Name:
-            <input type="text" id="club" name="club" required />
+    <div id="clubInputContainer">
+      <label for="clubNameInput">
+        Club Name:
+        <input id="clubNameInput" type="text" placeholder="Enter your club name" />
+        <button id="confirmClubBtn">Confirm</button>
+      </label>
+      <div id="clubErrorMsg"></div>
+      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
+    </div>
+
+    <!-- ✅ New visible calendar section -->
+    <div id="calendarSection" style="margin: 2rem 0; display: none;">
+      <label for="calendarInput">Click a date to add an event:</label><br />
+      <input id="calendarInput" type="text" placeholder="Pick a date" />
+    </div>
+
+    <!-- Event Modal -->
+    <div id="eventModal">
+      <div class="modal-content">
+        <h3>Add Event for <span id="selectedDateText"></span></h3>
+        <form id="eventForm">
+          <label>
+            Event Type:
+            <select id="eventTypeSelect" required>
+              <option value="" disabled selected>Select an event type</option>
+              <option value="Induction">Induction</option>
+              <option value="Youth Summit">Youth Summit</option>
+              <option value="Community Service">Community Service</option>
+              <option value="Pathfinder/Adventurer Sabbath">Pathfinder/Adventurer Sabbath</option>
+              <option value="Camporee">Camporee</option>
+              <option value="Investiture">Investiture</option>
+              <option value="Meetings">Meetings</option>
+              <option value="Other">Other</option>
+            </select>
           </label>
-
-          <div id="staffEntries">
-            <div class="staff">
-              <fieldset>
-                <legend>Staff Member</legend>
-
-                <label>Name: <input type="text" name="name" required /></label>
-                <label>Email: <input type="email" name="email" required /></label>
-
-                <label>
-                  Criminal Record Check submitted at: <br />
-                  <a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">
-                    https://justice.gov.bc.ca/criminalrecordcheck
-                  </a>
-                  <br />Access Code: <strong>XRS5QDZLH6</strong>
-                  <select name="crc">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-
-                <label>
-                  ACL Abuse Certificate:
-                  <select name="acl">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-
-                <label>
-                  First Aid Certification Status:
-                  <select name="certificationStatus" onchange="toggleDateInput(this)">
-                    <option value="Not Certified">Not Certified</option>
-                    <option value="Certified">Certified</option>
-                  </select>
-                </label>
-
-                <label class="certDateLabel" style="display: none">
-                  Certification Expiration Date:
-                  <input type="date" name="certificationExpirationDate" />
-                </label>
-
-                <label>
-                  Driver's Abstract:
-                  <select name="driversAbstract">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-
-                <label>
-                  5 Million Vehicle Liability Insurance:
-                  <select name="insurance">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-
-                <label>
-                  Volunteers Approved:
-                  <select name="volunteersApproved">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-
-                <label class="inline-checkbox-label">
-  <input type="checkbox" name="volunteerForm" />
-  Volunteer Form Submitted
-</label>
-</fieldset>
-            </div>
-          </div>
-
-          <input type="hidden" name="staffList" id="staffListInput" />
-
-          <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
-          <button type="button" onclick="removeStaffEntry()">- Remove Last</button>
-
-          <br /><br />
-          <label class="inline-checkbox-label">
-            <input type="checkbox" name="CRC-FinalCheck" required />
-            * I understand all volunteers, including parents, must complete their Criminal Records application.
+          <label id="customEventTypeLabel" style="display: none;">
+            Enter Custom Event Type:
+            <input type="text" id="customEventTypeInput" placeholder="Type your event type" />
           </label>
-
-          <br /><br />
-          <button type="submit">Submit</button>
+          <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
+          <label>
+            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
+            Multiday Event
+          </label>
+          <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
+            <label>Select additional dates:</label>
+            <input type="text" id="additionalDatesPicker" placeholder="Select additional dates" />
+          </div>
+          <label>Description:<br />
+            <textarea name="description" rows="3" style="width: 100%"></textarea>
+          </label>
+          <label>Location: <input type="text" name="location" required /></label>
+          <div style="margin-top: 1rem">
+            <button type="submit">Add Event</button>
+            <button type="button" id="eventCancelBtn">Cancel</button>
+          </div>
         </form>
       </div>
-    </main>
+    </div>
 
-    <iframe name="hidden_iframe" style="display: none"></iframe>
+    <h3>Events Added:</h3>
+    <ul id="eventsList"></ul>
+
+    <!-- Board Approval Section -->
+    <div class="form-container" style="margin-top: 1rem;">
+      <label>
+        Calendar Approved:
+        <select name="calendarStatus" onchange="toggleDateInput(this)">
+          <option value="Not Verified">Not Verified</option>
+          <option value="Verified">Verified</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- Hidden calendar date input, shown only when 'Verified' is selected -->
+    <div class="form-container calendarDateLabel" style="display: none;">
+      <label>
+        Calendar Board Approval Date:
+        <input type="date" name="calendarExpirationDate" disabled required />
+      </label>
+    </div>
+
+    <!-- Added Volunteer Form Submitted checkbox with inline label -->
+    <div class="form-container" style="margin-top: 1rem;">
+      <label class="inline-checkbox-label">
+        <input type="checkbox" name="volunteerForm" />
+        Volunteer Form Submitted
+      </label>
+    </div>
+
+    <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
     <script>
-      let formSubmitted = false;
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
-
-        iframe.addEventListener("load", () => {
-          if (formSubmitted) {
-            alert("Submission successful! Thank you.");
-            formSubmitted = false;
-            document.getElementById("staffForm").querySelector('button[type="submit"]').disabled = false;
-          }
-        });
-
-        document.getElementById("staffForm").addEventListener("submit", function (event) {
-          event.preventDefault();
-          if (formSubmitted) return;
-
-          formSubmitted = true;
-          this.querySelector('button[type="submit"]').disabled = true;
-
-          const staffList = [];
-          document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
-            const get = (sel) => entry.querySelector(`[name="${sel}"]`);
-            const getVal = (sel) => get(sel)?.value?.trim() || "";
-            const getChecked = (sel) => get(sel)?.checked || false;
-
-            staffList.push({
-              name: getVal("name"),
-              email: getVal("email"),
-              crc: getVal("crc"),
-              acl: getVal("acl"),
-              certificationStatus: getVal("certificationStatus"),
-              certificationExpirationDate: getVal("certificationExpirationDate"),
-              driversAbstract: getVal("driversAbstract"),
-              insurance: getVal("insurance"),
-              volunteersApproved: getVal("volunteersApproved"),
-              volunteerForm: getChecked("volunteerForm"),
-            });
-          });
-
-          document.getElementById("staffListInput").value = JSON.stringify(staffList);
-          this.submit();
-        });
-
-        initFlatpickrIn(document.getElementById("staffEntries"));
-      });
-
-      function addStaffEntry() {
-        const container = document.getElementById("staffEntries");
-        const template = container.firstElementChild.cloneNode(true);
-
-        template.querySelectorAll("input, select").forEach((input) => {
-          if (input.type === "checkbox") input.checked = false;
-          else input.value = "";
-        });
-
-        template.querySelectorAll(".certDateLabel").forEach((el) => {
-          el.style.display = "none";
-        });
-
-        const certDateInput = template.querySelector('input[name="certificationExpirationDate"]');
-        if (certDateInput) certDateInput.disabled = true;
-
-        container.appendChild(template);
-        initFlatpickrIn(template);
-      }
-
-      function removeStaffEntry() {
-        const container = document.getElementById("staffEntries");
-        const staffCount = container.querySelectorAll(".staff").length;
-        if (staffCount > 1) {
-          container.removeChild(container.lastElementChild);
-        } else {
-          alert("At least one staff member entry must remain.");
-        }
-      }
-
       function toggleDateInput(select) {
-        const staffBlock = select.closest(".staff");
+        const calLabel = document.querySelector(".calendarDateLabel");
+        const dateInput = calLabel?.querySelector('input[name="calendarExpirationDate"]');
 
-        if (select.name === "certificationStatus") {
-          const certLabel = staffBlock.querySelector(".certDateLabel");
-          const dateInput = certLabel?.querySelector('input[name="certificationExpirationDate"]');
-          if (certLabel && dateInput) {
-            const show = select.value === "Certified";
-            certLabel.style.display = show ? "block" : "none";
-            dateInput.disabled = !show;
-          }
+        if (calLabel && dateInput) {
+          const show = select.value === "Verified";
+          calLabel.style.display = show ? "block" : "none";
+          dateInput.disabled = !show;
+          dateInput.required = show;
         }
       }
 
-      function initFlatpickrIn(container) {
-        container.querySelectorAll('input[name="certificationExpirationDate"]').forEach((input) => {
-          flatpickr(input, {
-            dateFormat: "Y-m-d",
-            allowInput: true,
-            disableMobile: true,
-          });
+      document.addEventListener("DOMContentLoaded", function () {
+        const calendarInput = document.getElementById("calendarInput");
+        const eventModal = document.getElementById("eventModal");
+        const eventForm = document.getElementById("eventForm");
+        const selectedDateText = document.getElementById("selectedDateText");
+        const multiDayCheckbox = document.getElementById("multiDayCheckbox");
+        const multiDayDatesDiv = document.getElementById("multiDayDates");
+        const additionalDatesPicker = document.getElementById("additionalDatesPicker");
+        const eventsList = document.getElementById("eventsList");
+        const finalSubmitBtn = document.getElementById("finalSubmitBtn");
+        const clubDisplay = document.getElementById("clubDisplay");
+
+        const clubNameInput = document.getElementById("clubNameInput");
+        const confirmClubBtn = document.getElementById("confirmClubBtn");
+        const clubErrorMsg = document.getElementById("clubErrorMsg");
+
+        const eventTypeSelect = document.getElementById("eventTypeSelect");
+        const customEventTypeLabel = document.getElementById("customEventTypeLabel");
+        const customEventTypeInput = document.getElementById("customEventTypeInput");
+
+        let additionalDatesFP = flatpickr(additionalDatesPicker, {
+          mode: "multiple",
+          dateFormat: "Y-m-d",
+          allowInput: true,
         });
-      }
+
+        let currentSelectedDate = null;
+        let currentClubName = "";
+        const eventsData = [];
+
+        flatpickr(calendarInput, {
+          dateFormat: "Y-m-d",
+          disableMobile: true,
+          onChange: function (selectedDates) {
+            if (selectedDates.length === 0) return;
+            currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
+            openEventModal(currentSelectedDate);
+            calendarInput._flatpickr.clear();
+          },
+        });
+
+        confirmClubBtn.onclick = () => {
+          const clubInput = clubNameInput.value.trim();
+          if (!clubInput) {
+            clubErrorMsg.textContent = "Please enter your club name.";
+            return;
+          }
+          clubErrorMsg.textContent = "";
+          currentClubName = clubInput;
+          clubDisplay.textContent = currentClubName;
+          clubNameInput.disabled = true;
+          confirmClubBtn.disabled = true;
+          document.getElementById("calendarSection").style.display = "block";
+        };
+
+        clubNameInput.addEventListener("input", () => {
+          clubErrorMsg.textContent = "";
+        });
+
+        eventTypeSelect.addEventListener("change", () => {
+          customEventTypeLabel.style.display = eventTypeSelect.value === "Other" ? "block" : "none";
+        });
+
+        function openEventModal(dateStr) {
+          selectedDateText.textContent = dateStr;
+          eventForm.reset();
+          multiDayDatesDiv.style.display = "none";
+          additionalDatesFP.clear();
+          customEventTypeLabel.style.display = "none"; // hide custom field on reset
+          eventModal.style.display = "flex";
+          eventForm.dataset.mainDate = dateStr;
+        }
+
+        multiDayCheckbox.addEventListener("change", () => {
+          multiDayDatesDiv.style.display = multiDayCheckbox.checked ? "block" : "none";
+          if (!multiDayCheckbox.checked) additionalDatesFP.clear();
+        });
+
+        eventForm.onsubmit = (e) => {
+          e.preventDefault();
+
+          const mainDate = eventForm.dataset.mainDate;
+          const selectedType = eventTypeSelect.value;
+          const eventType = selectedType === "Other" ? customEventTypeInput.value.trim() : selectedType;
+          const eventTime = eventForm.eventTime.value.trim();
+          const isMultiDay = eventForm.multiDay.checked;
+          const description = eventForm.description.value.trim();
+          const location = eventForm.location.value.trim();
+          const additionalDates = additionalDatesFP.selectedDates.map((d) =>
+            d.toISOString().slice(0, 10)
+          );
+
+          if (!eventType || !eventTime || !location) {
+            alert("Please fill in all required fields, including event type.");
+            return;
+          }
+
+          const allDates = [mainDate];
+          if (isMultiDay) {
+            additionalDates.forEach((d) => {
+              if (!allDates.includes(d)) allDates.push(d);
+            });
+          }
+
+          const eventEntry = {
+            club: currentClubName,
+            eventType,
+            eventTime,
+            description,
+            location,
+            dates: allDates,
+          };
+          eventsData.push(eventEntry);
+
+          allDates.forEach((date) => {
+            const li = document.createElement("li");
+            li.textContent = `[${currentClubName}] ${date} - ${eventType} at ${eventTime}, Location: ${location}`;
+            if (description) li.textContent += `, Description: ${description}`;
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "🗑️ Delete";
+            deleteBtn.style.marginLeft = "10px";
+            deleteBtn.onclick = () => {
+              const index = eventsData.indexOf(eventEntry);
+              if (index !== -1) {
+                eventsData.splice(index, 1);
+                eventsList.removeChild(li);
+                if (eventsData.length === 0) {
+                  finalSubmitBtn.disabled = true;
+                }
+              }
+            };
+
+            li.appendChild(deleteBtn);
+            eventsList.appendChild(li);
+          });
+
+          finalSubmitBtn.disabled = false;
+          eventModal.style.display = "none";
+        };
+
+        document.getElementById("eventCancelBtn").onclick = () => {
+          eventModal.style.display = "none";
+        };
+
+        eventModal.addEventListener("click", (e) => {
+          if (e.target === eventModal) eventModal.style.display = "none";
+        });
+
+        finalSubmitBtn.onclick = () => {
+          if (eventsData.length === 0) {
+            alert("No events to submit.");
+            return;
+          }
+
+          finalSubmitBtn.disabled = true;
+
+          const formData = new FormData();
+          formData.append("events", JSON.stringify(eventsData));
+
+          fetch("https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec", {
+            method: "POST",
+            body: formData,
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              alert(data.message || "Events submitted successfully!");
+              eventsData.length = 0;
+              eventsList.innerHTML = "";
+              finalSubmitBtn.disabled = true;
+            })
+            .catch((err) => {
+              alert("Submission failed: " + err.message);
+              finalSubmitBtn.disabled = false;
+            });
+        };
+      });
     </script>
   </body>
 </html>
