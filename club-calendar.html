@@ -115,17 +115,19 @@
 
     <h2>Club Event Calendar Form</h2>
 
-    <div id="clubInputContainer">
-      <label for="clubNameInput">
-        Club Name:
-        <input id="clubNameInput" type="text" placeholder="Enter your club name" />
-        <button id="confirmClubBtn">Confirm</button>
-      </label>
-      <div id="clubErrorMsg"></div>
-      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
-   
+   <div id="clubInputContainer">
+  <label for="clubNameInput">
+    Club Name:
+    <input id="clubNameInput" type="text" placeholder="Enter your club name" />
+    <button id="confirmClubBtn">Confirm</button>
+  </label>
+  <div id="clubErrorMsg"></div>
+  <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
+</div>
 
-    <form id="calendarApprovalForm">
+<form id="calendarApprovalForm">
+  <div class="form-container">
+    <div style="width: 100%;">
       <label>
         Calendar Approved:
         <select name="calendarStatus" onchange="toggleDateInput(this)">
@@ -138,13 +140,14 @@
         Calendar Board Approval Date:
         <input type="date" name="calendarExpirationDate" disabled />
       </label>
+
+      <label>
+        Select Date:
+        <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
+      </label>
     </div>
-
-    <label>
-      Select Date:
-      <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
-    </label>
-
+  </div>
+</form>
     <!-- Event Modal -->
     <div id="eventModal">
       <div class="modal-content">
