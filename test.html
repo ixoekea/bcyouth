@@ -1,10 +1,8 @@
 <!DOCTYPE html><html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Club Event Calendar</title>
+    <title>BC Club Annual Application</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
       * {
         box-sizing: border-box;
@@ -75,34 +73,24 @@
     background: white;
     padding: 2rem;
     border-radius: 12px;
-    max-width: 700px;
+    max-width: 800px;
     width: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
+    display: block;
+    margin: 1rem 0 0.5rem;
+  }
 
-
-     .inline-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  justify-content: flex-start; /* <-- this forces left alignment */
-  text-align: left;            /* <-- ensures label text aligns left */
-}
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.checkbox-group input[type="checkbox"] {
-  margin: 0;
-}
+  .inline-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    justify-content: flex-start;
+    text-align: left;
+  }
 
   input, select, textarea {
     padding: 0.5rem;
@@ -110,6 +98,10 @@
     border-radius: 6px;
     border: 1px solid #ccc;
     width: 100%;
+  }
+
+  textarea {
+    resize: vertical;
   }
 
   button {
@@ -126,325 +118,420 @@
     background-color: #303f9f;
   }
 
-  #eventModal {
+  .club-section {
     display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+    margin-left: 1rem;
+    border-left: 2px solid #ccc;
+    padding-left: 1rem;
   }
 
-  .modal-content {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    width: 320px;
-  }
-
-  ul#eventsList {
-    margin-top: 1rem;
-  }
-
-  #clubDisplay {
-    font-weight: bold;
-    margin-top: 0.5rem;
+  canvas {
+    border: 1px solid #ccc;
+    display: block;
+    margin-bottom: 0.5rem;
+    width: 100%;
   }
 </style>
 
   </head>
   <body>
     <header>
-      <h1>Club Event Calendar</h1>
+      <h1>BC Club Annual Application</h1>
     </header>
     <nav>
       <ul class="nav-menu">
-        <li><a href="form3.html">Club Registration</a></li>
-        <li><a href="staff.html">Staff List</a></li>
-        <li><a href="club-calendar.html" class="active">Club Calendar</a></li>
-      </ul>
-    </nav>
-    <main>
-      <div class="form-container">
+        <li><a href="form3.html" class="active">Club Registration</a></li>
+      <li><a href="staff.html">Staff List</a></li>
+      <li><a href="club-calendar.html">Club Calendar</a></li>
+    </ul>
+  </nav>
 
-    <div id="clubInputContainer">
-      <label for="clubNameInput">
-        Club Name:
-        <input id="clubNameInput" type="text" placeholder="Enter your club name" />
-        <button id="confirmClubBtn">Confirm</button>
+    <form
+      id="bc-club-form"
+      method="post"
+      action="https://script.google.com/macros/s/AKfycbyfk3vKg11vqvSyekMjTLKL-DsHY7emM9Ajtk3YiPJpPpuvuJ_yFXBb0KwD0Oc9jFlo/exec"
+      onsubmit="return prepareSubmit(event)"
+    >
+      <!-- Checkboxes to Show/Hide Club Sections -->
+      <label>
+        <input
+          type="checkbox"
+          name="adventurers"
+          value="true"
+          id="adventurers-check"
+          onclick="toggleClubSection('adventurers')"
+        />
+        I am applying for Adventurers
       </label>
-      <div id="clubErrorMsg"></div>
-      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
-    </div>
 
-    <!-- ✅ New visible calendar section -->
-    <div id="calendarSection" style="margin: 2rem 0; display: none;">
-      <label for="calendarInput">Click a date to add an event:</label><br />
-      <input id="calendarInput" type="text" placeholder="Pick a date" />
-    </div>
-
-    <!-- Event Modal -->
-    <div id="eventModal">
-      <div class="modal-content">
-        <h3>Add Event for <span id="selectedDateText"></span></h3>
-        <form id="eventForm">
-          <label>
-            Event Type:
-            <select id="eventTypeSelect" required>
-              <option value="" disabled selected>Select an event type</option>
-              <option value="Induction">Induction</option>
-              <option value="Youth Summit">Youth Summit</option>
-              <option value="Community Service">Community Service</option>
-              <option value="Pathfinder/Adventurer Sabbath">Pathfinder/Adventurer Sabbath</option>
-              <option value="Camporee">Camporee</option>
-              <option value="Investiture">Investiture</option>
-              <option value="Meetings">Meetings</option>
-              <option value="Other">Other</option>
-            </select>
-          </label>
-          <label id="customEventTypeLabel" style="display: none;">
-            Enter Custom Event Type:
-            <input type="text" id="customEventTypeInput" placeholder="Type your event type" />
-          </label>
-          <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
-          <label>
-            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
-            Multiday Event
-          </label>
-          <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
-            <label>Select additional dates:</label>
-            <input type="text" id="additionalDatesPicker" placeholder="Select additional dates" />
-          </div>
-          <label>Description:<br />
-            <textarea name="description" rows="3" style="width: 100%"></textarea>
-          </label>
-          <label>Location: <input type="text" name="location" required /></label>
-          <div style="margin-top: 1rem">
-            <button type="submit">Add Event</button>
-            <button type="button" id="eventCancelBtn">Cancel</button>
-          </div>
-        </form>
+      <div id="adventurers-section" class="club-section">
+        <label
+          ><h2>Philosophy of Adventurer Ministry</h2>
+          <p>
+            The Adventurer Club is a Seventh-day Adventist Church-sponsored
+            ministry to children aged 6 to 9 years old. There are also the
+            Little Lamb and Eager Beaver segments for children aged 4 and 5,
+            respectively. Around the world we have nearly 700,000 enrolled
+            children in the Adventurer Ministry. This Ministry was created to
+            assist parents in their important responsibilities as a child’s
+            primary teachers and evangelizers. The program aims to strengthen
+            the parent/child relationship and further the child’s development in
+            spiritual, physical, mental and social areas. In this way the
+            church, home and school can work together with the parent to develop
+            a mature, happy child.
+          </p>
+          <p>
+            The Church’s greatest resource is our children; therefore, it is
+            imperative that as a church we meet the challenge to provide a
+            ministry for our children during their early formative years. We
+            want right habits, thoughts, motives, dispositions and attitudes to
+            be established.
+          </p>
+          <p>
+            The wise man wrote, “Bring up a child in the way he should go, and
+            when he is old he will not turn from it.” (Proverbs 22:6). This is
+            more than a cliché – it is a Bible principle which assures parents
+            that the lessons learned in childhood will last a lifetime.
+            Following the Lord will however, depend on the child’s choices. The
+            Adventurer Ministry assists parents in guiding children to Christ.
+          </p></label
+        ><h2>Adventurers Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="adventurers_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="adventurers_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="adventurers_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="adventurers_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="adventurers_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="adventurers_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="adventurers_director_workphone"
+        /></label>
       </div>
-    </div>
 
-    <h3>Events Added:</h3>
-    <ul id="eventsList"></ul>
-
-    <!-- Board Approval Section -->
-    <div class="form-container" style="margin-top: 1rem;">
       <label>
-        Calendar Approved:
-        <select name="calendarStatus" onchange="toggleDateInput(this)">
-          <option value="Not Verified">Not Verified</option>
-          <option value="Verified">Verified</option>
-        </select>
+        <input
+          type="checkbox"
+          name="pathfinders"
+          value="true"
+          id="pathfinders-check"
+          onclick="toggleClubSection('pathfinders')"
+        />
+        I am applying for Pathfinders
       </label>
-    </div>
 
-    <!-- Hidden calendar date input, shown only when 'Verified' is selected -->
-    <div class="form-container calendarDateLabel" style="display: none;">
+      <div id="pathfinders-section" class="club-section">
+        <label
+          ><h2>Philosophy of the Pathfinder Ministry</h2>
+          <p>
+            The purpose of having a Pathfinder Club is to lead its membership
+            into a growing, redemptive relationship with Christ, and to build
+            its membership into responsible, mature individuals in active
+            selfless service.
+          </p>
+          <p>
+            All pathfinder leaders are Christians, working hand in hand with
+            parents, teachers, and pastors providing optimum opportunities for
+            Christian development. The Pathfinder Club is an extension of the
+            home, school and church. It is an experimental laboratory where
+            growth and learning flourish.
+          </p>
+          <p>
+            The membership involves youth in grades 5 – 10 (age 10 – 15) who
+            have a desire for group activities ranging from community and world
+            mission projects to nature, outdoor and camping activities, Annual
+            BC Camporee, AY/Pathfinder class curriculum and AY Honors. Above
+            all, Pathfinders give youth an environment in which to actively
+            expand their personal experience with Christ.
+          </p></label
+        
+        <h2>Pathfinders Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="pathfinders_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="pathfinders_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="pathfinder_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="pathfinder_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="pathfinder_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="pathfinder_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="pathfinder_director_workphone"
+        /></label>
+      </div>
+
       <label>
-        Calendar Board Approval Date:
-        <input type="date" name="calendarExpirationDate" disabled required />
+        <input
+          type="checkbox"
+          name="master_guide"
+          value="true"
+          id="master_guide-check"
+          onclick="toggleClubSection('master_guide')"
+        />
+        I am applying for Master Guide
       </label>
-    </div>
 
-    <button id="finalSubmitBtn" disabled>Submit All Events</button>
-</main>
+      <div id="master_guide-section" class="club-section">
+        <label>
+          <h2>Philosophy of Master Guide Ministry</h2>
+          <p>
+            The Seventh-day Adventist Church is committed to training youth and
+            young adults for leadership and service to God and humanity.
+          </p>
+          <p>
+            Just as God has used young people to pioneer the Adventist Church,
+            He continually uses youth and young adults in this present
+            generation to fulfill the mission of the Church. One of the most
+            effective ways to cultivate their leadership potential is through
+            the Master Guide Club ministry.
+          </p>
+          <p>
+            The Master Guide Club provides a balanced approach to the
+            development of the spiritual, mental, physical, and social aspects
+            of life. Its philosophy is based on the premise that young people,
+            with the right training, will contribute to the finishing of God’s
+            work. When young people are given the opportunity to take leadership
+            roles, to be actively involved in discipling those in Adventurer
+            Club, Pathfinder Club, Youth Ministries, and church ministries, and
+            to take part in community service endeavors, they will be able to
+            take ownership of the mission of the Church and gain life-changing
+            experiences that will inspire their leadership and ministry.
+          </p>
+          <p>
+            In addition, the Master Guide Club exists to disciple children,
+            youth, and young adults in conjunction with the Great Commission
+            (Matt. 28:19–20). With love as the distinguishing mark of a true
+            disciple of Christ (John 13:35), the Master Guide Club will offer a
+            friendly environment where everyone is loved, trusted, and
+            supported, and meaningful relationships are forged. It is also a
+            place where candidates will grow together spiritually and learn to
+            work together using their God-given talents and spiritual gifts.
+          </p>
+          <p>
+            The Master Guide Club exists primarily for Adventurer Club,
+            Pathfinder Club, Youth Ministries, and church ministries.
+          </p></label
+        >
+        <h2>Master Guide Club Information</h2>
+        <label
+          >Club Name: <input type="text" name="master_guide_club_name"
+        /></label>
+        <label
+          >Director Name: <input type="text" name="master_guide_director_name"
+        /></label>
+        <label
+          >Mailing Address:
+          <input type="text" name="master_guide_mailing_address"
+        /></label>
+        <label
+          >Email: <input type="email" name="master_guide_director_email"
+        /></label>
+        <label
+          >Home Phone: <input type="tel" name="master_guide_director_homephone"
+        /></label>
+        <label
+          >Cell Phone: <input type="tel" name="master_guide_director_cellphone"
+        /></label>
+        <label
+          >Work Phone: <input type="tel" name="master_guide_director_workphone"
+        /></label>
+      </div>
+
+      <h2>General Info</h2>
+      
+      <h2>Your Commitment to Pathfinders and Adventurers</h2>
+      <p>
+        We, the undersigned, have read, understood, and are in full agreement
+        with the above Philosophy of the Pathfinder Ministry, Adventuer
+        Ministry, or Master Guide Ministry and agree to support our club(s) through those means with which
+        the Lord has blessed this church, including financially; Invoices for
+        supplies and Conference Sponsored Events (Camporee), securing a place to
+        meet, transportation on outings, and other such needs as may arise in
+        the fulfillment of this ministry, and to assist and support the work of
+        the these ministry's in the BC Conference and around the world.
+      </p>
+      <p>
+        We understand that all staff and volunteers 19 and older are required to
+        have a CRC from the Criminal Records Review Program (CRRP) prior to club
+        involvement. <br />
+        <strong>
+          *A valid Criminal Record Clearance Letter is required to be in our
+          files for all Leaders, Parents and Adults 19 years and older before
+          they are present at any meetings, activities or events.*
+        </strong>
+      </p>
+<label
+        >Sponsoring Church:
+        <input type="text" name="sponsoring_church" required
+      /></label>
+      <label
+        >Person Submitting Application:
+        <input type="text" name="club_director" required
+      /></label>
+
+      <h2>Pastor Signature</h2>
+      <canvas
+        id="pastor-signature"
+        width="400"
+        height="150"
+        style="border: 1px solid #000"
+      ></canvas>
+      <button type="button" onclick="clearSignature('pastor-signature')">
+        Clear Pastor Signature
+      </button>
+      <label
+        >Pastor Name: <input type="text" name="pastor_name" required
+      /></label>
+
+      <h2>Clerk/Treasurer Signature</h2>
+      <canvas
+        id="clerk-signature"
+        width="400"
+        height="150"
+        style="border: 1px solid #000"
+      ></canvas>
+      <button type="button" onclick="clearSignature('clerk-signature')">
+        Clear Clerk Signature
+      </button>
+      <label
+        >Clerk/Treasurer Name: <input type="text" name="board_name" required
+      /></label>
+
+      <label
+        >Date of Board Approval:
+        <input type="date" name="board_approval_date" required
+      /></label>
+
+      <!-- Hidden signature inputs -->
+      <input
+        type="hidden"
+        name="pastor_signature_data"
+        id="pastor_signature_data"
+      />
+      <input
+        type="hidden"
+        name="clerk_signature_data"
+        id="clerk_signature_data"
+      />
+
+      <button type="submit">Submit Application</button>
+    </form>
+
     <script>
-      function toggleDateInput(select) {
-        const calLabel = document.querySelector(".calendarDateLabel");
-        const dateInput = calLabel?.querySelector('input[name="calendarExpirationDate"]');
-
-        if (calLabel && dateInput) {
-          const show = select.value === "Verified";
-          calLabel.style.display = show ? "block" : "none";
-          dateInput.disabled = !show;
-          dateInput.required = show;
-        }
+      function toggleClubSection(club) {
+        const checkbox = document.getElementById(`${club}-check`);
+        const section = document.getElementById(`${club}-section`);
+        section.style.display = checkbox.checked ? "block" : "none";
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
-        const calendarInput = document.getElementById("calendarInput");
-        const eventModal = document.getElementById("eventModal");
-        const eventForm = document.getElementById("eventForm");
-        const selectedDateText = document.getElementById("selectedDateText");
-        const multiDayCheckbox = document.getElementById("multiDayCheckbox");
-        const multiDayDatesDiv = document.getElementById("multiDayDates");
-        const additionalDatesPicker = document.getElementById("additionalDatesPicker");
-        const eventsList = document.getElementById("eventsList");
-        const finalSubmitBtn = document.getElementById("finalSubmitBtn");
-        const clubDisplay = document.getElementById("clubDisplay");
+      function setupSignatureCanvas(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        let drawing = false;
 
-        const clubNameInput = document.getElementById("clubNameInput");
-        const confirmClubBtn = document.getElementById("confirmClubBtn");
-        const clubErrorMsg = document.getElementById("clubErrorMsg");
+        // Ensure canvas has explicit width and height attributes (important for mobile)
+        if (!canvas.width) canvas.width = canvas.offsetWidth || 300;
+        if (!canvas.height) canvas.height = canvas.offsetHeight || 150;
 
-        const eventTypeSelect = document.getElementById("eventTypeSelect");
-        const customEventTypeLabel = document.getElementById("customEventTypeLabel");
-        const customEventTypeInput = document.getElementById("customEventTypeInput");
-
-        let additionalDatesFP = flatpickr(additionalDatesPicker, {
-          mode: "multiple",
-          dateFormat: "Y-m-d",
-          allowInput: true,
-        });
-
-        let currentSelectedDate = null;
-        let currentClubName = "";
-        const eventsData = [];
-
-        flatpickr(calendarInput, {
-          dateFormat: "Y-m-d",
-          disableMobile: true,
-          onChange: function (selectedDates) {
-            if (selectedDates.length === 0) return;
-            currentSelectedDate = selectedDates[0].toISOString().slice(0, 10);
-            openEventModal(currentSelectedDate);
-            calendarInput._flatpickr.clear();
-          },
-        });
-
-        confirmClubBtn.onclick = () => {
-          const clubInput = clubNameInput.value.trim();
-          if (!clubInput) {
-            clubErrorMsg.textContent = "Please enter your club name.";
-            return;
+        function getPos(e) {
+          const rect = canvas.getBoundingClientRect();
+          if (e.touches) {
+            return {
+              x: e.touches[0].clientX - rect.left,
+              y: e.touches[0].clientY - rect.top,
+            };
+          } else {
+            return {
+              x: e.clientX - rect.left,
+              y: e.clientY - rect.top,
+            };
           }
-          clubErrorMsg.textContent = "";
-          currentClubName = clubInput;
-          clubDisplay.textContent = currentClubName;
-          clubNameInput.disabled = true;
-          confirmClubBtn.disabled = true;
-          document.getElementById("calendarSection").style.display = "block";
-        };
-
-        clubNameInput.addEventListener("input", () => {
-          clubErrorMsg.textContent = "";
-        });
-
-        eventTypeSelect.addEventListener("change", () => {
-          customEventTypeLabel.style.display = eventTypeSelect.value === "Other" ? "block" : "none";
-        });
-
-        function openEventModal(dateStr) {
-          selectedDateText.textContent = dateStr;
-          eventForm.reset();
-          multiDayDatesDiv.style.display = "none";
-          additionalDatesFP.clear();
-          customEventTypeLabel.style.display = "none"; // hide custom field on reset
-          eventModal.style.display = "flex";
-          eventForm.dataset.mainDate = dateStr;
         }
 
-        multiDayCheckbox.addEventListener("change", () => {
-          multiDayDatesDiv.style.display = multiDayCheckbox.checked ? "block" : "none";
-          if (!multiDayCheckbox.checked) additionalDatesFP.clear();
-        });
-
-        eventForm.onsubmit = (e) => {
+        function startDrawing(e) {
           e.preventDefault();
+          drawing = true;
+          const pos = getPos(e);
+          ctx.beginPath();
+          ctx.moveTo(pos.x, pos.y);
+        }
 
-          const mainDate = eventForm.dataset.mainDate;
-          const selectedType = eventTypeSelect.value;
-          const eventType = selectedType === "Other" ? customEventTypeInput.value.trim() : selectedType;
-          const eventTime = eventForm.eventTime.value.trim();
-          const isMultiDay = eventForm.multiDay.checked;
-          const description = eventForm.description.value.trim();
-          const location = eventForm.location.value.trim();
-          const additionalDates = additionalDatesFP.selectedDates.map((d) =>
-            d.toISOString().slice(0, 10)
-          );
+        function draw(e) {
+          if (!drawing) return;
+          e.preventDefault();
+          const pos = getPos(e);
+          ctx.lineWidth = 2;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = "black";
 
-          if (!eventType || !eventTime || !location) {
-            alert("Please fill in all required fields, including event type.");
-            return;
-          }
+          ctx.lineTo(pos.x, pos.y);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(pos.x, pos.y);
+        }
 
-          const allDates = [mainDate];
-          if (isMultiDay) {
-            additionalDates.forEach((d) => {
-              if (!allDates.includes(d)) allDates.push(d);
-            });
-          }
+        function stopDrawing(e) {
+          e.preventDefault();
+          drawing = false;
+          ctx.beginPath();
+        }
 
-          const eventEntry = {
-            club: currentClubName,
-            eventType,
-            eventTime,
-            description,
-            location,
-            dates: allDates,
-          };
-          eventsData.push(eventEntry);
+        // Mouse events
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", draw);
+        canvas.addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseout", stopDrawing);
 
-          allDates.forEach((date) => {
-            const li = document.createElement("li");
-            li.textContent = `[${currentClubName}] ${date} - ${eventType} at ${eventTime}, Location: ${location}`;
-            if (description) li.textContent += `, Description: ${description}`;
+        // Touch events with passive: false so preventDefault works
+        canvas.addEventListener("touchstart", startDrawing, { passive: false });
+        canvas.addEventListener("touchmove", draw, { passive: false });
+        canvas.addEventListener("touchend", stopDrawing, { passive: false });
+        canvas.addEventListener("touchcancel", stopDrawing, { passive: false });
+      }
 
-            const deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "🗑️ Delete";
-            deleteBtn.style.marginLeft = "10px";
-            deleteBtn.onclick = () => {
-              const index = eventsData.indexOf(eventEntry);
-              if (index !== -1) {
-                eventsData.splice(index, 1);
-                eventsList.removeChild(li);
-                if (eventsData.length === 0) {
-                  finalSubmitBtn.disabled = true;
-                }
-              }
-            };
+      function clearSignature(id) {
+        const canvas = document.getElementById(id);
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
 
-            li.appendChild(deleteBtn);
-            eventsList.appendChild(li);
-          });
+      function prepareSubmit() {
+        const pastorCanvas = document.getElementById("pastor-signature");
+        const clerkCanvas = document.getElementById("clerk-signature");
 
-          finalSubmitBtn.disabled = false;
-          eventModal.style.display = "none";
-        };
+        document.getElementById("pastor_signature_data").value =
+          pastorCanvas.toDataURL();
+        document.getElementById("clerk_signature_data").value =
+          clerkCanvas.toDataURL();
 
-        document.getElementById("eventCancelBtn").onclick = () => {
-          eventModal.style.display = "none";
-        };
+        return true;
+      }
 
-        eventModal.addEventListener("click", (e) => {
-          if (e.target === eventModal) eventModal.style.display = "none";
-        });
-
-        finalSubmitBtn.onclick = () => {
-          if (eventsData.length === 0) {
-            alert("No events to submit.");
-            return;
-          }
-
-          finalSubmitBtn.disabled = true;
-
-          const formData = new FormData();
-          formData.append("events", JSON.stringify(eventsData));
-
-          fetch("https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec", {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              alert(data.message || "Events submitted successfully!");
-              eventsData.length = 0;
-              eventsList.innerHTML = "";
-              finalSubmitBtn.disabled = true;
-            })
-            .catch((err) => {
-              alert("Submission failed: " + err.message);
-              finalSubmitBtn.disabled = false;
-            });
-        };
-      });
+      window.onload = function () {
+        setupSignatureCanvas("pastor-signature");
+        setupSignatureCanvas("clerk-signature");
+      };
     </script>
   </body>
 </html>
