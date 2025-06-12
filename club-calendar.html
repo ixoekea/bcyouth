@@ -301,10 +301,33 @@
 
         allDates.forEach((date) => {
           const li = document.createElement("li");
-          li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
-          if (description) li.textContent += `, Description: ${description}`;
-          eventsList.appendChild(li);
-        });
+li.textContent = `[${currentClubName}] ${date} - ${eventName} at ${eventTime}, Location: ${location}`;
+if (description) li.textContent += `, Description: ${description}`;
+
+// Create delete button
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "🗑️ Delete";
+deleteBtn.style.marginLeft = "10px";
+deleteBtn.onclick = () => {
+  // Remove from eventsData
+  const index = eventsData.findIndex(event =>
+    event.club === currentClubName &&
+    event.eventName === eventName &&
+    event.eventTime === eventTime &&
+    event.location === location &&
+    event.dates.includes(mainDate)
+  );
+  if (index !== -1) {
+    eventsData.splice(index, 1);
+    eventsList.removeChild(li);
+    if (eventsData.length === 0) {
+      finalSubmitBtn.disabled = true;
+    }
+  }
+};
+
+li.appendChild(deleteBtn);
+eventsList.appendChild(li);
 
         finalSubmitBtn.disabled = false;
         eventModal.style.display = "none";
