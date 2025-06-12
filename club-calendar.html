@@ -173,11 +173,13 @@
     <h3>Events Added:</h3>
     <ul id="eventsList"></ul>
 
-    <!-- ✅ Moved Calendar Board Approval Date Here -->
-    <label class="calendarDateLabel" style="margin-top: 1rem;">
-      Calendar Board Approval Date:
-      <input type="date" name="calendarExpirationDate" disabled required />
-    </label>
+    <!-- ✅ Moved Calendar Board Approval Date into form and centered -->
+<div class="form-container calendarDateLabel" style="display: none; margin-top: 1rem;">
+  <label style="width: 100%;">
+    Calendar Board Approval Date:
+    <input type="date" name="calendarExpirationDate" disabled required />
+  </label>
+</div>
 
     <button id="finalSubmitBtn" disabled>Submit All Events</button>
 
