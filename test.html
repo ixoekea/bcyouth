@@ -134,113 +134,116 @@
         <li><a href="club-calendar.html">Club Calendar</a></li>
       </ul>
     </nav>
+
+    <!-- ✅ Centered form using main wrapper -->
+    <main>
       <div class="form-container">
-
-<form
-        id="staffForm"
-        action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec"
-        method="post"
-        target="hidden_iframe"
-      >
-        <div class="instructions">
-          <p>* Provide at least 2 or 3 emails for the distribution list.</p>
-          <p>* To add volunteers after October 1, submit a new form with only the additions.</p>
-          <p>* All adults 19+ must submit a Criminal Record Clearance Letter.</p>
-          <p>* Adults 19+ may only attend events if clearance is on file.</p>
-        </div>
-
-        <label for="club">
-          Club Name:
-          <input type="text" id="club" name="club" required />
-        </label>
-
-        <div id="staffEntries">
-          <div class="staff">
-            <fieldset>
-              <legend>Staff Member</legend>
-
-              <label>Name: <input type="text" name="name" required /></label>
-              <label>Email: <input type="email" name="email" required /></label>
-
-              <label>
-                Criminal Record Check submitted at: <br />
-                <a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">
-                  https://justice.gov.bc.ca/criminalrecordcheck
-                </a>
-                <br />Access Code: <strong>XRS5QDZLH6</strong>
-                <select name="crc">
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </label>
-
-              <label>
-                ACL Abuse Certificate:
-                <select name="acl">
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </label>
-
-              <label>
-                First Aid Certification Status:
-                <select name="certificationStatus" onchange="toggleDateInput(this)">
-                  <option value="Not Certified">Not Certified</option>
-                  <option value="Certified">Certified</option>
-                </select>
-              </label>
-
-              <label class="certDateLabel" style="display: none">
-                Certification Expiration Date:
-                <input type="date" name="certificationExpirationDate" />
-              </label>
-
-              <label>
-                Driver's Abstract:
-                <select name="driversAbstract">
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </label>
-
-              <label>
-                5 Million Vehicle Liability Insurance:
-                <select name="insurance">
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </label>
-
-              <label>
-                Volunteers Approved:
-                <select name="volunteersApproved">
-                  <option value="No">No</option>
-                  <option value="Yes">Yes</option>
-                </select>
-              </label>
-
-              <label>
-                <input type="checkbox" name="volunteerForm" /> Volunteer Form Submitted
-              </label>
-            </fieldset>
+        <form
+          id="staffForm"
+          action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec"
+          method="post"
+          target="hidden_iframe"
+        >
+          <div class="instructions">
+            <p>* Provide at least 2 or 3 emails for the distribution list.</p>
+            <p>* To add volunteers after October 1, submit a new form with only the additions.</p>
+            <p>* All adults 19+ must submit a Criminal Record Clearance Letter.</p>
+            <p>* Adults 19+ may only attend events if clearance is on file.</p>
           </div>
-        </div>
 
-        <input type="hidden" name="staffList" id="staffListInput" />
+          <label for="club">
+            Club Name:
+            <input type="text" id="club" name="club" required />
+          </label>
 
-        <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
-        <button type="button" onclick="removeStaffEntry()">- Remove Last</button>
+          <div id="staffEntries">
+            <div class="staff">
+              <fieldset>
+                <legend>Staff Member</legend>
 
-        <br /><br />
-        <label>
-          <input type="checkbox" name="CRC-FinalCheck" required />
-          * I understand all volunteers, including parents, must complete their Criminal Records application.
-        </label>
+                <label>Name: <input type="text" name="name" required /></label>
+                <label>Email: <input type="email" name="email" required /></label>
 
-        <br /><br />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+                <label>
+                  Criminal Record Check submitted at: <br />
+                  <a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">
+                    https://justice.gov.bc.ca/criminalrecordcheck
+                  </a>
+                  <br />Access Code: <strong>XRS5QDZLH6</strong>
+                  <select name="crc">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  ACL Abuse Certificate:
+                  <select name="acl">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  First Aid Certification Status:
+                  <select name="certificationStatus" onchange="toggleDateInput(this)">
+                    <option value="Not Certified">Not Certified</option>
+                    <option value="Certified">Certified</option>
+                  </select>
+                </label>
+
+                <label class="certDateLabel" style="display: none">
+                  Certification Expiration Date:
+                  <input type="date" name="certificationExpirationDate" />
+                </label>
+
+                <label>
+                  Driver's Abstract:
+                  <select name="driversAbstract">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  5 Million Vehicle Liability Insurance:
+                  <select name="insurance">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  Volunteers Approved:
+                  <select name="volunteersApproved">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  <input type="checkbox" name="volunteerForm" /> Volunteer Form Submitted
+                </label>
+              </fieldset>
+            </div>
+          </div>
+
+          <input type="hidden" name="staffList" id="staffListInput" />
+
+          <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
+          <button type="button" onclick="removeStaffEntry()">- Remove Last</button>
+
+          <br /><br />
+          <label>
+            <input type="checkbox" name="CRC-FinalCheck" required />
+            * I understand all volunteers, including parents, must complete their Criminal Records application.
+          </label>
+
+          <br /><br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </main>
 
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
