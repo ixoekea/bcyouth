@@ -137,7 +137,26 @@
       <div class="modal-content">
         <h3>Add Event for <span id="selectedDateText"></span></h3>
         <form id="eventForm">
-          <label>Name of Event: <input type="text" name="eventName" required /></label>
+          <label>
+  Event Type:
+  <select id="eventTypeSelect" required>
+    <option value="" disabled selected>Select an event type</option>
+    <option value="Induction">Induction</option>
+    <option value="Youth Summit">Youth Summit</option>
+    <option value="Community Service">Community Service</option>
+    <option value="Pathfinder/Adventurer Sabbath">Pathfinder/Adventurer Sabbath</option>
+    <option value="Camporee">Camporee</option>
+    <option value="Investiture">Investiture</option>
+    <option value="Meetings">Meetings</option>
+    <option value="Other">Other</option>
+  </select>
+</label>
+<label id="customEventTypeLabel" style="display: none;">
+  Enter Custom Event Type:
+  <input type="text" id="customEventTypeInput" placeholder="Type your event type" />
+</label>
+
+<label>Name of Event: <input type="text" name="eventName" required /></label>
           <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" required /></label>
           <label>
             <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
