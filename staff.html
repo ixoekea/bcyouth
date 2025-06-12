@@ -236,7 +236,6 @@
     </div>
 
     <iframe name="hidden_iframe" style="display: none"></iframe>
-
     <script>
       let formSubmitted = false;
 
@@ -264,28 +263,33 @@
             this.querySelector('button[type="submit"]').disabled = true;
 
             const staffList = [];
-            document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
-              const get = (sel) => entry.querySelector(`[name="${sel}"]`);
-              const getVal = (sel) => get(sel)?.value?.trim() || "";
-              const getChecked = (sel) => get(sel)?.checked || false;
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const get = (sel) => entry.querySelector(`[name="${sel}"]`);
+                const getVal = (sel) => get(sel)?.value?.trim() || "";
+                const getChecked = (sel) => get(sel)?.checked || false;
 
-              staffList.push({
-                name: getVal("name"),
-                email: getVal("email"),
-                crc: getVal("crc"),
-                acl: getVal("acl"),
-                certificationStatus: getVal("certificationStatus"),
-                certificationExpirationDate: getVal("certificationExpirationDate"),
-                calendarStatus: getVal("calendarStatus"),
-                calendarExpirationDate: getVal("calendarExpirationDate"),
-                driversAbstract: getVal("driversAbstract"),
-                insurance: getVal("insurance"),
-                volunteersApproved: getVal("volunteersApproved"),
-                volunteerForm: getChecked("volunteerForm"),
+                staffList.push({
+                  name: getVal("name"),
+                  email: getVal("email"),
+                  crc: getVal("crc"),
+                  acl: getVal("acl"),
+                  certificationStatus: getVal("certificationStatus"),
+                  certificationExpirationDate: getVal(
+                    "certificationExpirationDate"
+                  ),
+                  calendarStatus: getVal("calendarStatus"),
+                  calendarExpirationDate: getVal("calendarExpirationDate"),
+                  driversAbstract: getVal("driversAbstract"),
+                  insurance: getVal("insurance"),
+                  volunteersApproved: getVal("volunteersApproved"),
+                  volunteerForm: getChecked("volunteerForm"),
+                });
               });
-            });
 
-            document.getElementById("staffListInput").value = JSON.stringify(staffList);
+            document.getElementById("staffListInput").value =
+              JSON.stringify(staffList);
 
             // Submit the form programmatically after setting hidden input
             this.submit();
@@ -307,6 +311,16 @@
             el.style.display = "none";
           });
 
+        // Also disable the date inputs initially in the new cloned block
+        const certDateInput = template.querySelector(
+          'input[name="certificationExpirationDate"]'
+        );
+        if (certDateInput) certDateInput.disabled = true;
+        const calDateInput = template.querySelector(
+          'input[name="calendarExpirationDate"]'
+        );
+        if (calDateInput) calDateInput.disabled = true;
+
         container.appendChild(template);
       }
 
@@ -325,16 +339,26 @@
 
         if (select.name === "certificationStatus") {
           const certLabel = staffBlock.querySelector(".certDateLabel");
-          if (certLabel)
-            certLabel.style.display =
-              select.value === "Certified" ? "block" : "none";
+          const dateInput = certLabel?.querySelector(
+            'input[name="certificationExpirationDate"]'
+          );
+          if (certLabel && dateInput) {
+            const show = select.value === "Certified";
+            certLabel.style.display = show ? "block" : "none";
+            dateInput.disabled = !show; // disable when hidden, enable when shown
+          }
         }
 
         if (select.name === "calendarStatus") {
           const calLabel = staffBlock.querySelector(".calendarDateLabel");
-          if (calLabel)
-            calLabel.style.display =
-              select.value === "Verified" ? "block" : "none";
+          const dateInput = calLabel?.querySelector(
+            'input[name="calendarExpirationDate"]'
+          );
+          if (calLabel && dateInput) {
+            const show = select.value === "Verified";
+            calLabel.style.display = show ? "block" : "none";
+            dateInput.disabled = !show;
+          }
         }
       }
     </script>
