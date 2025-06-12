@@ -124,24 +124,6 @@
       <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
     </div>
 
-    <form id="calendarApprovalForm">
-      <div class="form-container">
-        <div style="width: 100%;">
-          <label>
-            Calendar Approved:
-            <select name="calendarStatus" onchange="toggleDateInput(this)">
-              <option value="Not Verified">Not Verified</option>
-              <option value="Verified">Verified</option>
-            </select>
-          </label>
-
-          <label>
-            Select Date:
-            <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
-          </label>
-        </div>
-      </div>
-    </form>
 
     <!-- Event Modal -->
     <div id="eventModal">
@@ -176,6 +158,25 @@
     <!-- ✅ Moved Calendar Board Approval Date into form and centered -->
 <div class="form-container calendarDateLabel" style="display: none; margin-top: 1rem;">
   <label style="width: 100%;">
+
+    <form id="calendarApprovalForm">
+      <div class="form-container">
+        <div style="width: 100%;">
+          <label>
+            Calendar Approved:
+            <select name="calendarStatus" onchange="toggleDateInput(this)">
+              <option value="Not Verified">Not Verified</option>
+              <option value="Verified">Verified</option>
+            </select>
+          </label>
+
+          <label>
+            Select Date:
+            <input id="calendarInput" type="text" placeholder="Pick a date" disabled />
+          </label>
+        </div>
+      </div>
+    </form>
     Calendar Board Approval Date:
     <input type="date" name="calendarExpirationDate" disabled required />
   </label>
