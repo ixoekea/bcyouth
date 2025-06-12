@@ -94,6 +94,15 @@
   justify-content: flex-start; /* <-- this forces left alignment */
   text-align: left;            /* <-- ensures label text aligns left */
 }
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.checkbox-group input[type="checkbox"] {
+  margin: 0;
+}
 
   input, select, textarea {
     padding: 0.5rem;
@@ -246,10 +255,10 @@
 
     <!-- Added Volunteer Form Submitted checkbox with inline label -->
     <div class="form-container" style="margin-top: 1rem;">
-      <label class="inline-checkbox-label">
-        <input type="checkbox" name="volunteerForm" />
-        Volunteer Form Submitted
-      </label>
+     <div class="checkbox-group">
+  <input type="checkbox" id="volunteerForm" name="volunteerForm" />
+  <label for="volunteerForm">Volunteer Form Submitted</label>
+</div>
     </div>
 
     <button id="finalSubmitBtn" disabled>Submit All Events</button>
