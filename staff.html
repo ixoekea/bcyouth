@@ -82,6 +82,11 @@
         margin-bottom: 1rem;
       }
     </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
   <body>
     <nav>
@@ -290,10 +295,10 @@
 
             document.getElementById("staffListInput").value =
               JSON.stringify(staffList);
-
-            // Submit the form programmatically after setting hidden input
-            this.submit();
+            this.submit(); // Submit programmatically
           });
+
+        initFlatpickrIn(document.getElementById("staffEntries")); // Initialize dates on page load
       });
 
       function addStaffEntry() {
@@ -311,7 +316,6 @@
             el.style.display = "none";
           });
 
-        // Also disable the date inputs initially in the new cloned block
         const certDateInput = template.querySelector(
           'input[name="certificationExpirationDate"]'
         );
@@ -322,6 +326,7 @@
         if (calDateInput) calDateInput.disabled = true;
 
         container.appendChild(template);
+        initFlatpickrIn(template); // Initialize Flatpickr in new block
       }
 
       function removeStaffEntry() {
@@ -345,7 +350,7 @@
           if (certLabel && dateInput) {
             const show = select.value === "Certified";
             certLabel.style.display = show ? "block" : "none";
-            dateInput.disabled = !show; // disable when hidden, enable when shown
+            dateInput.disabled = !show;
           }
         }
 
@@ -360,6 +365,20 @@
             dateInput.disabled = !show;
           }
         }
+      }
+
+      function initFlatpickrIn(container) {
+        container
+          .querySelectorAll(
+            'input[name="certificationExpirationDate"], input[name="calendarExpirationDate"]'
+          )
+          .forEach((input) => {
+            flatpickr(input, {
+              dateFormat: "Y-m-d",
+              allowInput: true,
+              disableMobile: true,
+            });
+          });
       }
     </script>
   </body>
