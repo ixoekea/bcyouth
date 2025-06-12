@@ -81,9 +81,17 @@
   }
 
   label {
-    display: block;
-    margin: 1rem 0 0.5rem;
-  }
+  display: block;
+  margin: 1rem 0 0.5rem;
+}
+
+.inline-checkbox-label {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0; /* Match spacing with other labels */
+}
+      
 
   input, select, textarea {
     padding: 0.5rem;
