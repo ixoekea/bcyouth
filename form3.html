@@ -468,7 +468,7 @@
           type="hidden"
           name="clerk_signature_data"
           id="clerk_signature_data"
-        />
+        /><BR><BR>
 <button type="submit" id="submitBtn">Submit Application</button>
 </form>
 </main>
@@ -560,39 +560,48 @@
     return true;
   }
 
-  window.onload = function () {
-    setupSignatureCanvas("pastor-signature");
+document.addEventListener("DOMContentLoaded", () => {
+   setupSignatureCanvas("pastor-signature");
     setupSignatureCanvas("clerk-signature");
-  };
+  
+  const form = document.getElementById("bc-club-form"); // <-- Match the ID here
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const actionURL = form.getAttribute("action");
+  let formSubmitted = false;
 
- document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("staffForm");
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    if (formSubmitted) return;
 
-    // Listen for iframe load to detect form submission response
-    iframe.addEventListener("load", () => {
-      if (formSubmitted) {
+    prepareSubmit(); // Add signature data
+    formSubmitted = true;
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(actionURL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (result.result === "success") {
         alert("Submission successful! Thank you.");
-        formSubmitted = false;
-        submitBtn.disabled = false;
+        form.reset();
+      } else {
+        alert("Something went wrong. Please try again.");
       }
-    });
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      if (formSubmitted) return;
-
-      // Prepare signatures and other data if needed
-      prepareSubmit();
-
-      formSubmitted = true;
-      submitBtn.disabled = true;
-
-      // Submit the form manually (since we prevented default)
-      this.submit();
-    });
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting the form.");
+    } finally {
+      formSubmitted = false;
+      submitBtn.disabled = false;
+    }
   });
+});
 </script>
   </body>
 </html>
