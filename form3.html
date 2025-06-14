@@ -433,9 +433,9 @@
           Clear Pastor Signature
         </button>
         <BR><BR>
-        <label
-          >Pastor Name: <input type="text" name="pastor_name" required
-        /></label>
+       <label style="display: inline-block; max-width: 400px; width: 90%; margin-bottom: 1rem;">
+  Pastor Name: 
+  <input type="text" name="board_name" required style="width: 100%; box-sizing: border-box;" /></label>
 
         <h2>Clerk/Treasurer Signature</h2>
         <canvas
@@ -448,14 +448,15 @@
           Clear Clerk Signature
         </button>
         <BR><BR>
-        <label
-          >Clerk/Treasurer Name: <input type="text" name="board_name" required
-        /></label>
-        <BR><BR>
-        <label
-          >Date of Board Approval:
-          <input type="date" name="board_approval_date" required
-        /></label>
+       <label style="display: inline-block; max-width: 400px; width: 90%; margin-bottom: 1rem;">
+  Clerk/Treasurer Name: 
+  <input type="text" name="board_name" required style="width: 100%; box-sizing: border-box;" />
+</label>
+<br><br>
+<label style="display: inline-block; max-width: 400px; width: 90%; margin-bottom: 1rem;">
+  Date of Board Approval: 
+  <input type="date" name="board_approval_date" required style="width: 100%; box-sizing: border-box;" />
+</label>
 
         <!-- Hidden signature inputs -->
         <input
@@ -564,14 +565,34 @@
     setupSignatureCanvas("clerk-signature");
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("form"); // or use your form's id
-    const submitBtn = document.getElementById("submitBtn");
+ document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("staffForm");
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
-    form.addEventListener("submit", (e) => {
-      // Disable submit button immediately to prevent duplicates
-      submitBtn.disabled = true;
+    // Listen for iframe load to detect form submission response
+    iframe.addEventListener("load", () => {
+      if (formSubmitted) {
+        alert("Submission successful! Thank you.");
+        formSubmitted = false;
+        submitBtn.disabled = false;
+      }
     });
-  });    </script>
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      if (formSubmitted) return;
+
+      // Prepare signatures and other data if needed
+      prepareSubmit();
+
+      formSubmitted = true;
+      submitBtn.disabled = true;
+
+      // Submit the form manually (since we prevented default)
+      this.submit();
+    });
+  });
+</script>
   </body>
 </html>
