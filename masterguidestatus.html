@@ -178,38 +178,52 @@
     <main>
         <div class="form-container">
         <form id="mgForm" method="post">
-          <fieldset>
-            <legend>Master Guide Information</legend>
-            <label>Name: <input type="text" name="name" required /></label>
-            <label>Address: <input type="text" name="address" /></label>
-            <label>Phone Number: <input type="text" name="phone" /></label>
-            <label>Email: <input type="email" name="email" /></label>
-            <label>Date Invested: <input type="date" name="dateInvested" /></label>
-            <label>Location Invested: <input type="text" name="locationInvested" /></label>
-            <label>Province Invested: <input type="text" name="provinceInvested" /></label>
-            <label>Status:
-              <select name="status">
-                <option value="Invested">Invested</option>
-                <option value="Training">Training</option>
-                <option value="Out of Province/Country">Out of Province/Country</option>
-                <option value="Information Only">Information Only</option>
-              </select>
-            </label>
-          </fieldset><fieldset>
+         <label>Name: <input type="text" name="name" required /></label>
+  <label>Address: <input type="text" name="address" /></label>
+  <label>Phone Number: <input type="text" name="phone" /></label>
+  <label>Email: <input type="email" name="email" /></label>
+
+          <label>Certification Type:
+  <select name="certificationType" required>
+    <option value="">-- Select Certification --</option>
+    <option value="Adventurer">Adventurer</option>
+    <option value="Pathfinder">Pathfinder</option>
+    <option value="Both">Both</option>
+    <option value="None">None</option>
+  </select>
+</label>
+
+  <label>Status:
+    <select name="status" id="status-select">
+      <option value="Invested">Invested</option>
+      <option value="Training">Training</option>
+      <option value="Out of Province/Country">Out of Province/Country</option>
+      <option value="Information Only">Information Only</option>
+    </select>
+  </label>
+
+  <!-- Invested Info Group -->
+  <div id="invested-fields" style="display: none; margin-top: 10px;">
+    <label>Date Invested: <input type="date" name="dateInvested" /></label>
+    <label>Location Invested: <input type="text" name="locationInvested" /></label>
+    <label>Province Invested: <input type="text" name="provinceInvested" /></label>
+  </div>
+</fieldset>
+<fieldset>
         <legend>Other Certifications</legend>
-        <label>Basic Staff (Date & Location):
+        <label>Basic Staff Training(Date & Location):
           <input type="text" name="basicStaff" placeholder="YYYY-MM-DD - Location" />
         </label>
-        <label>Directors (Date & Location):
+        <label>Directors Training(Date & Location):
           <input type="text" name="directors" placeholder="YYYY-MM-DD - Location" />
         </label>
-        <label>Instructors (Date & Location):
+        <label>Instructors Training(Date & Location):
           <input type="text" name="instructors" placeholder="YYYY-MM-DD - Location" />
         </label>
-        <label>Staff (Date & Location):
+        <label>Counsellor Training(Date & Location):
           <input type="text" name="staff" placeholder="YYYY-MM-DD - Location" />
         </label>
-        <label>Treasurer (Date & Location):
+        <label>Treasurer and/or Secretary(Date & Location):
           <input type="text" name="treasurer" placeholder="YYYY-MM-DD - Location" />
         </label>
       </fieldset>
@@ -218,6 +232,27 @@
     </form>
   </div>
 </main>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const statusSelect = document.getElementById("status-select");
+    const investedFields = document.getElementById("invested-fields");
 
+    function toggleInvestedFields() {
+      const selected = statusSelect.value;
+      if (selected === "Invested" || selected === "Out of Province/Country") {
+        investedFields.style.display = "block";
+      } else {
+        investedFields.style.display = "none";
+      }
+    }
+
+    // Initial check on load
+    toggleInvestedFields();
+
+    // On change
+    statusSelect.addEventListener("change", toggleInvestedFields);
+  });
+</script>
   </body>
 </html>
+
