@@ -90,6 +90,9 @@
 }
 /*Main content*/
 
+.nav-links .dropdown {
+  position: relative;
+}
 .event1 {
   width: 200px;
 }
