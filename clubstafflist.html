@@ -3,8 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <title>BC Club Staff List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
       * {
@@ -12,7 +22,7 @@
       }
 
       body {
-        font-family: 'Inter', Arial, sans-serif;
+        font-family: "Inter", Arial, sans-serif;
         margin: 0;
         padding: 0;
         background-color: #f9f9f9;
@@ -50,7 +60,7 @@
         text-decoration: none;
         color: #004080;
         font-weight: bold;
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         padding: 6px 12px;
         border-radius: 4px;
         transition: background-color 0.3s ease;
@@ -94,33 +104,35 @@
         padding: 1rem;
         margin-bottom: 1rem;
       }
-label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
 
-.inline-checkbox-label {
-  display: flex !important;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0; /* Match spacing with other labels */
-}
-      
-input, select, textarea {
-  padding: 0.5rem;
-  margin-top: 0.25rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+      .inline-checkbox-label {
+        display: flex !important;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0; /* Match spacing with other labels */
+      }
 
-/* Prevent checkboxes from stretching full width */
-input[type="text"],
-input[type="email"],
-input[type="date"],
-textarea,
-select {
-  width: 100%;
-}
+      input,
+      select,
+      textarea {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      /* Prevent checkboxes from stretching full width */
+      input[type="text"],
+      input[type="email"],
+      input[type="date"],
+      textarea,
+      select {
+        width: 100%;
+      }
       button {
         margin-top: 1rem;
         padding: 0.5rem 1rem;
@@ -144,8 +156,19 @@ select {
       <ul class="nav-menu">
         <li><a href="clubregistration.html">Club Registration</a></li>
         <li><a href="clubstafflist.html" class="active">Staff List</a></li>
+        <li>
+          <a href="clubMemberRegistrationForm.pdf">Club Member Registration</a>
+        </li>
+
         <li><a href="clubcalendar.html">Club Calendar</a></li>
-        <li><a href="clubreports.html">Monthly Club Reports (Coming Soon)</a></li>
+        <li>
+          <a href="clubreports.html">Monthly Club Reports (Coming Soon)</a>
+        </li>
+        <li>
+          <a href="youthSummitRegistration.html"
+            >Youth Summit Registration (Coming Soon)</a
+          >
+        </li>
         <li><a href="masterguidestatus.html">Master Guide Registration</a></li>
       </ul>
     </nav>
@@ -161,11 +184,22 @@ select {
         >
           <div class="instructions">
             <p>* Provide at least 2 or 3 emails for the distribution list.</p>
-            <p>* To add volunteers after October 1, submit a new form with only the additions.</p>
-            <p>* All adults 19+ must submit a Criminal Record Clearance Letter.</p>
+            <p>
+              * To add volunteers after October 1, submit a new form with only
+              the additions.
+            </p>
+            <p>
+              * All adults 19+ must submit a Criminal Record Clearance Letter.
+            </p>
             <p>* Adults 19+ may only attend events if clearance is on file.</p>
           </div>
-
+          <p>
+            📄 Download the
+            <a href="/staffVolunteerForm.pdf" target="_blank" rel="noopener">
+              Staff Volunteer Form (PDF)
+            </a>
+            to print and submit.
+          </p>
           <label for="club">
             Club Name:
             <input type="text" id="club" name="club" required />
@@ -177,11 +211,16 @@ select {
                 <legend>Staff Member</legend>
 
                 <label>Name: <input type="text" name="name" required /></label>
-                <label>Email: <input type="email" name="email" required /></label>
+                <label
+                  >Email: <input type="email" name="email" required
+                /></label>
 
                 <label>
                   Criminal Record Check submitted at: <br />
-                  <a href="https://justice.gov.bc.ca/criminalrecordcheck" target="_blank">
+                  <a
+                    href="https://justice.gov.bc.ca/criminalrecordcheck"
+                    target="_blank"
+                  >
                     https://justice.gov.bc.ca/criminalrecordcheck
                   </a>
                   <br />Access Code: <strong>XRS5QDZLH6</strong>
@@ -189,6 +228,11 @@ select {
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
                   </select>
+                </label>
+
+                <label class="crcDateLabel" style="display: none">
+                  Criminal Record Check Expiration Date:
+                  <input type="date" name="crcExpirationDate" />
                 </label>
 
                 <label>
@@ -201,7 +245,10 @@ select {
 
                 <label>
                   First Aid Certification Status:
-                  <select name="certificationStatus" onchange="toggleDateInput(this)">
+                  <select
+                    name="certificationStatus"
+                    onchange="toggleDateInput(this)"
+                  >
                     <option value="Not Certified">Not Certified</option>
                     <option value="Certified">Certified</option>
                   </select>
@@ -237,30 +284,79 @@ select {
                 </label>
 
                 <label class="inline-checkbox-label">
-  <input type="checkbox" name="volunteerForm" />
-  Volunteer Form Submitted
-</label>
-</fieldset>
+                  <input type="checkbox" name="volunteerForm" />
+                  Volunteer Form Submitted
+                </label>
+              </fieldset>
             </div>
           </div>
 
           <input type="hidden" name="staffList" id="staffListInput" />
 
           <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
-          <button type="button" onclick="removeStaffEntry()">- Remove Last</button>
+          <button type="button" onclick="removeStaffEntry()">
+            - Remove Last
+          </button>
 
           <br /><br />
           <label class="inline-checkbox-label">
             <input type="checkbox" name="CRC-FinalCheck" required />
-            * I understand all volunteers, including parents, must complete their Criminal Records application.
+            * I understand all volunteers, including parents, must complete
+            their Criminal Records application.
           </label>
 
-          <br /><br />
+          <div id="whatsappSection" style="margin-top: 2em">
+            <fieldset>
+              <h3>WhatsApp Communication Contacts</h3>
+              <p>
+                Please select 2 staff members as contacts to represent your club
+                in the WhatsApp group chat.
+              </p>
+
+              <div class="whatsapp-entry">
+                <label>
+                  Contact 1:
+                  <input
+                    type="text"
+                    name="whatsappName1"
+                    placeholder="First contact name"
+                  />
+                </label>
+                <label>
+                  Phone 1:
+                  <input
+                    type="tel"
+                    name="whatsappPhone1"
+                    placeholder="Phone number with area code"
+                  />
+                </label>
+              </div>
+
+              <div class="whatsapp-entry">
+                <label>
+                  Contact 2 (optional):
+                  <input
+                    type="text"
+                    name="whatsappName2"
+                    placeholder="Second contact name"
+                  />
+                </label>
+                <label>
+                  Phone 2 (optional):
+                  <input
+                    type="tel"
+                    name="whatsappPhone2"
+                    placeholder="Phone number with area code"
+                  />
+                </label>
+              </div>
+            </fieldset>
+            <br /><br />
+          </div>
           <button type="submit">Submit</button>
         </form>
       </div>
     </main>
-
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
@@ -273,43 +369,63 @@ select {
           if (formSubmitted) {
             alert("Submission successful! Thank you.");
             formSubmitted = false;
-            document.getElementById("staffForm").querySelector('button[type="submit"]').disabled = false;
+            document
+              .getElementById("staffForm")
+              .querySelector('button[type="submit"]').disabled = false;
           }
         });
 
-        document.getElementById("staffForm").addEventListener("submit", function (event) {
-          event.preventDefault();
-          if (formSubmitted) return;
+        document
+          .getElementById("staffForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (formSubmitted) return;
 
-          formSubmitted = true;
-          this.querySelector('button[type="submit"]').disabled = true;
+            formSubmitted = true;
+            this.querySelector('button[type="submit"]').disabled = true;
 
-          const staffList = [];
-          document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
-            const get = (sel) => entry.querySelector(`[name="${sel}"]`);
-            const getVal = (sel) => get(sel)?.value?.trim() || "";
-            const getChecked = (sel) => get(sel)?.checked || false;
+            const staffList = [];
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const get = (sel) => entry.querySelector(`[name="${sel}"]`);
+                const getVal = (sel) => get(sel)?.value?.trim() || "";
+                const getChecked = (sel) => get(sel)?.checked || false;
 
-            staffList.push({
-              name: getVal("name"),
-              email: getVal("email"),
-              crc: getVal("crc"),
-              acl: getVal("acl"),
-              certificationStatus: getVal("certificationStatus"),
-              certificationExpirationDate: getVal("certificationExpirationDate"),
-              driversAbstract: getVal("driversAbstract"),
-              insurance: getVal("insurance"),
-              volunteersApproved: getVal("volunteersApproved"),
-              volunteerForm: getChecked("volunteerForm"),
-            });
+                staffList.push({
+                  name: getVal("name"),
+                  email: getVal("email"),
+                  crc: getVal("crc"),
+                  acl: getVal("acl"),
+                  certificationStatus: getVal("certificationStatus"),
+                  certificationExpirationDate: getVal(
+                    "certificationExpirationDate"
+                  ),
+                  driversAbstract: getVal("driversAbstract"),
+                  insurance: getVal("insurance"),
+                  volunteersApproved: getVal("volunteersApproved"),
+                  volunteerForm: getChecked("volunteerForm"),
+                });
+              });
+
+            document.getElementById("staffListInput").value =
+              JSON.stringify(staffList);
+            this.submit();
           });
-
-          document.getElementById("staffListInput").value = JSON.stringify(staffList);
-          this.submit();
-        });
 
         initFlatpickrIn(document.getElementById("staffEntries"));
       });
+      document.querySelectorAll('select[name="crc"]').forEach((select) => {
+        toggleCRCDateInput(select);
+        select.addEventListener("change", () => toggleCRCDateInput(select));
+      });
+
+      document
+        .querySelectorAll('select[name="certificationStatus"]')
+        .forEach((select) => {
+          toggleDateInput(select);
+          select.addEventListener("change", () => toggleDateInput(select));
+        });
 
       function addStaffEntry() {
         const container = document.getElementById("staffEntries");
@@ -319,12 +435,18 @@ select {
           if (input.type === "checkbox") input.checked = false;
           else input.value = "";
         });
-
+        template.querySelectorAll('select[name="crc"]').forEach((select) => {
+          select.addEventListener("change", () => toggleCRCDateInput(select));
+        });
         template.querySelectorAll(".certDateLabel").forEach((el) => {
           el.style.display = "none";
+          const input = el.querySelector('input[name="crcExpirationDate"]');
+          if (input) input.disabled = true;
         });
 
-        const certDateInput = template.querySelector('input[name="certificationExpirationDate"]');
+        const certDateInput = template.querySelector(
+          'input[name="certificationExpirationDate"]'
+        );
         if (certDateInput) certDateInput.disabled = true;
 
         container.appendChild(template);
@@ -340,13 +462,27 @@ select {
           alert("At least one staff member entry must remain.");
         }
       }
+      function toggleCRCDateInput(select) {
+        const staffBlock = select.closest(".staff");
+        const crcLabel = staffBlock.querySelector(".crcDateLabel");
+        const crcDateInput = crcLabel?.querySelector(
+          'input[name="crcExpirationDate"]'
+        );
 
+        if (crcLabel && crcDateInput) {
+          const show = select.value === "Yes";
+          crcLabel.style.display = show ? "block" : "none";
+          crcDateInput.disabled = !show;
+        }
+      }
       function toggleDateInput(select) {
         const staffBlock = select.closest(".staff");
 
         if (select.name === "certificationStatus") {
           const certLabel = staffBlock.querySelector(".certDateLabel");
-          const dateInput = certLabel?.querySelector('input[name="certificationExpirationDate"]');
+          const dateInput = certLabel?.querySelector(
+            'input[name="certificationExpirationDate"]'
+          );
           if (certLabel && dateInput) {
             const show = select.value === "Certified";
             certLabel.style.display = show ? "block" : "none";
@@ -356,13 +492,17 @@ select {
       }
 
       function initFlatpickrIn(container) {
-        container.querySelectorAll('input[name="certificationExpirationDate"]').forEach((input) => {
-          flatpickr(input, {
-            dateFormat: "Y-m-d",
-            allowInput: true,
-            disableMobile: true,
+        container
+          .querySelectorAll(
+            'input[name="certificationExpirationDate"], input[name="crcExpirationDate"]'
+          )
+          .forEach((input) => {
+            flatpickr(input, {
+              dateFormat: "Y-m-d",
+              allowInput: true,
+              disableMobile: true,
+            });
           });
-        });
       }
     </script>
   </body>

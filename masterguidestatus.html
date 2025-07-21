@@ -1,166 +1,174 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Club Event Calendar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
       * {
         box-sizing: border-box;
-      }body {
-    font-family: 'Inter', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-  }
+      }
+      body {
+        font-family: "Inter", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
 
-  header {
-    background: linear-gradient(135deg, #3f51b5, #2196f3);
-    color: white;
-    padding: 2rem;
-    text-align: center;
-  }
+      header {
+        background: linear-gradient(135deg, #3f51b5, #2196f3);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
 
-  header h1 {
-    margin: 0;
-    font-size: 2rem;
-  }
+      header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
 
-  nav {
-    background-color: #ffffff;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+      nav {
+        background-color: #ffffff;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
 
-  .nav-menu {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
-  }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+      }
 
-  .nav-menu a {
-    text-decoration: none;
-    color: #004080;
-    font-weight: bold;
-    font-family: 'Inter', sans-serif;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    border: 1px solid transparent;
-  }
+      .nav-menu a {
+        text-decoration: none;
+        color: #004080;
+        font-weight: bold;
+        font-family: "Inter", sans-serif;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        border: 1px solid transparent;
+      }
 
-  .nav-menu a:hover {
-    background-color: #e6f0ff;
-    border-color: #004080;
-  }
+      .nav-menu a:hover {
+        background-color: #e6f0ff;
+        border-color: #004080;
+      }
 
-  .nav-menu a.active {
-    background-color: #004080;
-    color: white;
-    border-color: #003366;
-  }
+      .nav-menu a.active {
+        background-color: #004080;
+        color: white;
+        border-color: #003366;
+      }
 
-  main {
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-  }
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
 
-  .form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    max-width: 700px;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
 
-  label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
 
+      .inline-checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        justify-content: flex-start;
+        text-align: left;
+      }
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .checkbox-group input[type="checkbox"] {
+        margin: 0;
+      }
 
-     .inline-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  justify-content: flex-start; 
-  text-align: left;           
-}
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.checkbox-group input[type="checkbox"] {
-  margin: 0;
-}
+      input,
+      select,
+      textarea {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
 
-  input, select, textarea {
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 100%;
-  }
+      button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-  button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #3f51b5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
+      button:hover {
+        background-color: #303f9f;
+      }
 
-  button:hover {
-    background-color: #303f9f;
-  }
+      #eventModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
 
-  #eventModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
+      .modal-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        width: 320px;
+      }
 
-  .modal-content {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    width: 320px;
-  }
+      ul#eventsList {
+        margin-top: 1rem;
+      }
 
-  ul#eventsList {
-    margin-top: 1rem;
-  }
-
-  #clubDisplay {
-    font-weight: bold;
-    margin-top: 0.5rem;
-  }
-       h2 {
+      #clubDisplay {
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+      h2 {
         font-size: 1.5rem;
         color: #3f51b5;
         margin-top: 2rem;
       }
-</style>
-
+    </style>
   </head>
   <body>
     <header>
@@ -170,90 +178,140 @@
       <ul class="nav-menu">
         <li><a href="clubregistration.html">Club Registration</a></li>
         <li><a href="clubstafflist.html">Staff List</a></li>
+        <li>
+          <a href="clubMemberRegistrationForm.pdf">Club Member Registration</a>
+        </li>
+
         <li><a href="clubcalendar.html">Club Calendar</a></li>
-          <li><a href="clubreports.html">Monthly Club Reports (Coming Soon)</a></li>
-        <li><a href="masterguidestatus.html" class="active">Master Guide Registration</a></li>
+        <li>
+          <a href="clubreports.html">Monthly Club Reports (Coming Soon)</a>
+        </li>
+        <li>
+          <a href="youthSummitRegistration.html"
+            >Youth Summit Registration (Coming Soon)</a
+          >
+        </li>
+        <li>
+          <a href="masterguidestatus.html" class="active"
+            >Master Guide Registration</a
+          >
+        </li>
       </ul>
     </nav>
     <main>
-        <div class="form-container">
+      <div class="form-container">
         <form id="mgForm" method="post">
-         <label>Name: <input type="text" name="name" required /></label>
-  <label>Address: <input type="text" name="address" /></label>
-  <label>Phone Number: <input type="text" name="phone" /></label>
-  <label>Email: <input type="email" name="email" /></label>
+          <label>Name: <input type="text" name="name" required /></label>
+          <label>Address: <input type="text" name="address" /></label>
+          <label>Phone Number: <input type="text" name="phone" /></label>
+          <label>Email: <input type="email" name="email" /></label>
 
-          <label>Certification Type:
-  <select name="certificationType" required>
-    <option value="">-- Select Certification --</option>
-    <option value="Adventurer">Adventurer</option>
-    <option value="Pathfinder">Pathfinder</option>
-    <option value="Both">Both</option>
-    <option value="None">None</option>
-  </select>
-</label>
+          <label
+            >Certification Type:
+            <select name="certificationType" required>
+              <option value="">-- Select Certification --</option>
+              <option value="Adventurer">Adventurer</option>
+              <option value="Pathfinder">Pathfinder</option>
+              <option value="Both">Both</option>
+              <option value="None">None</option>
+            </select>
+          </label>
 
-  <label>Status:
-    <select name="status" id="status-select">
-      <option value="Information Only">Information Only</option>
-      <option value="Invested">Invested</option>
-      <option value="Training">MG in Training</option>
-      <option value="Out of Province/Country">Out of Province/Country Invested</option>
-      
-    </select>
-  </label>
+          <label
+            >Status:
+            <select name="status" id="status-select">
+              <option value="Information Only">Information Only</option>
+              <option value="Invested">Invested</option>
+              <option value="Training">MG in Training</option>
+              <option value="Out of Province/Country">
+                Out of Province/Country Invested
+              </option>
+            </select>
+          </label>
 
-  <!-- Invested Info Group -->
-  <div id="invested-fields" style="display: none; margin-top: 10px;">
-    <label>Date Invested: <input type="date" name="dateInvested" /></label>
-    <label>Location Invested: <input type="text" name="locationInvested" /></label>
-    <label>Province Invested: <input type="text" name="provinceInvested" /></label>
-  </div>
-</fieldset>
-<fieldset>
-        <legend>Other Certifications</legend>
-        <label>Basic Staff Training(Date & Location):
-          <input type="text" name="basicStaff" placeholder="YYYY-MM-DD - Location" />
-        </label>
-        <label>Directors Training(Date & Location):
-          <input type="text" name="directors" placeholder="YYYY-MM-DD - Location" />
-        </label>
-        <label>Instructors Training(Date & Location):
-          <input type="text" name="instructors" placeholder="YYYY-MM-DD - Location" />
-        </label>
-        <label>Counsellor Training(Date & Location):
-          <input type="text" name="staff" placeholder="YYYY-MM-DD - Location" />
-        </label>
-        <label>Treasurer and/or Secretary(Date & Location):
-          <input type="text" name="treasurer" placeholder="YYYY-MM-DD - Location" />
-        </label>
-      </fieldset>
+          <!-- Invested Info Group -->
+          <div id="invested-fields" style="display: none; margin-top: 10px">
+            <label
+              >Date Invested: <input type="date" name="dateInvested"
+            /></label>
+            <label
+              >Location Invested: <input type="text" name="locationInvested"
+            /></label>
+            <label
+              >Province Invested: <input type="text" name="provinceInvested"
+            /></label>
+          </div>
+          <fieldset>
+            <legend>Other Certifications</legend>
+            <label
+              >Basic Staff Training(Date & Location):
+              <input
+                type="text"
+                name="basicStaff"
+                placeholder="YYYY-MM-DD - Location"
+              />
+            </label>
+            <label
+              >Directors Training(Date & Location):
+              <input
+                type="text"
+                name="directors"
+                placeholder="YYYY-MM-DD - Location"
+              />
+            </label>
+            <label
+              >Instructors Training(Date & Location):
+              <input
+                type="text"
+                name="instructors"
+                placeholder="YYYY-MM-DD - Location"
+              />
+            </label>
+            <label
+              >Counsellor Training(Date & Location):
+              <input
+                type="text"
+                name="staff"
+                placeholder="YYYY-MM-DD - Location"
+              />
+            </label>
+            <label
+              >Treasurer and/or Secretary(Date & Location):
+              <input
+                type="text"
+                name="treasurer"
+                placeholder="YYYY-MM-DD - Location"
+              />
+            </label>
+          </fieldset>
 
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</main>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const statusSelect = document.getElementById("status-select");
-    const investedFields = document.getElementById("invested-fields");
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const statusSelect = document.getElementById("status-select");
+        const investedFields = document.getElementById("invested-fields");
 
-    function toggleInvestedFields() {
-      const selected = statusSelect.value;
-      if (selected === "Invested" || selected === "Out of Province/Country") {
-        investedFields.style.display = "block";
-      } else {
-        investedFields.style.display = "none";
-      }
-    }
+        function toggleInvestedFields() {
+          const selected = statusSelect.value;
+          if (
+            selected === "Invested" ||
+            selected === "Out of Province/Country"
+          ) {
+            investedFields.style.display = "block";
+          } else {
+            investedFields.style.display = "none";
+          }
+        }
 
-    // Initial check on load
-    toggleInvestedFields();
+        // Initial check on load
+        toggleInvestedFields();
 
-    // On change
-    statusSelect.addEventListener("change", toggleInvestedFields);
-  });
-</script>
+        // On change
+        statusSelect.addEventListener("change", toggleInvestedFields);
+      });
+    </script>
   </body>
 </html>
-

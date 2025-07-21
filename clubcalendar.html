@@ -1,166 +1,174 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Club Event Calendar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
       * {
         box-sizing: border-box;
-      }body {
-    font-family: 'Inter', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-  }
+      }
+      body {
+        font-family: "Inter", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f9f9f9;
+        color: #333;
+      }
 
-  header {
-    background: linear-gradient(135deg, #3f51b5, #2196f3);
-    color: white;
-    padding: 2rem;
-    text-align: center;
-  }
+      header {
+        background: linear-gradient(135deg, #3f51b5, #2196f3);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+      }
 
-  header h1 {
-    margin: 0;
-    font-size: 2rem;
-  }
+      header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
 
-  nav {
-    background-color: #ffffff;
-    padding: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
+      nav {
+        background-color: #ffffff;
+        padding: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
 
-  .nav-menu {
-    list-style: none;
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
-  }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+      }
 
-  .nav-menu a {
-    text-decoration: none;
-    color: #004080;
-    font-weight: bold;
-    font-family: 'Inter', sans-serif;
-    padding: 6px 12px;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-    border: 1px solid transparent;
-  }
+      .nav-menu a {
+        text-decoration: none;
+        color: #004080;
+        font-weight: bold;
+        font-family: "Inter", sans-serif;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        border: 1px solid transparent;
+      }
 
-  .nav-menu a:hover {
-    background-color: #e6f0ff;
-    border-color: #004080;
-  }
+      .nav-menu a:hover {
+        background-color: #e6f0ff;
+        border-color: #004080;
+      }
 
-  .nav-menu a.active {
-    background-color: #004080;
-    color: white;
-    border-color: #003366;
-  }
+      .nav-menu a.active {
+        background-color: #004080;
+        color: white;
+        border-color: #003366;
+      }
 
-  main {
-    padding: 2rem;
-    display: flex;
-    justify-content: center;
-  }
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
 
-  .form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    max-width: 700px;
-    width: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
 
-  label {
-  display: block;
-  margin: 1rem 0 0.5rem;
-}
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
 
+      .inline-checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        justify-content: flex-start;
+        text-align: left;
+      }
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .checkbox-group input[type="checkbox"] {
+        margin: 0;
+      }
 
-     .inline-checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 1rem 0;
-  justify-content: flex-start; 
-  text-align: left;           
-}
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-.checkbox-group input[type="checkbox"] {
-  margin: 0;
-}
+      input,
+      select,
+      textarea {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
 
-  input, select, textarea {
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 100%;
-  }
+      button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
 
-  button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #3f51b5;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
+      button:hover {
+        background-color: #303f9f;
+      }
 
-  button:hover {
-    background-color: #303f9f;
-  }
+      #eventModal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
 
-  #eventModal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
+      .modal-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        width: 320px;
+      }
 
-  .modal-content {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    width: 320px;
-  }
+      ul#eventsList {
+        margin-top: 1rem;
+      }
 
-  ul#eventsList {
-    margin-top: 1rem;
-  }
-
-  #clubDisplay {
-    font-weight: bold;
-    margin-top: 0.5rem;
-  }
-       h2 {
+      #clubDisplay {
+        font-weight: bold;
+        margin-top: 0.5rem;
+      }
+      h2 {
         font-size: 1.5rem;
         color: #3f51b5;
         margin-top: 2rem;
       }
-</style>
-
+    </style>
   </head>
   <body>
     <header>
@@ -169,103 +177,147 @@
     <nav>
       <ul class="nav-menu">
         <li><a href="clubregistration.html">Club Registration</a></li>
+        <li>
+          <a href="clubMemberRegistrationForm.pdf">Club Member Registration</a>
+        </li>
         <li><a href="clubstafflist.html">Staff List</a></li>
         <li><a href="clubcalendar.html" class="active">Club Calendar</a></li>
-               <li><a href="clubreports.html">Monthly Club Reports (Coming Soon)</a></li>
+        <li>
+          <a href="clubreports.html">Monthly Club Reports (Coming Soon)</a>
+        </li>
+        <li>
+          <a href="youthSummitRegistration.html"
+            >Youth Summit Registration (Coming Soon)</a
+          >
+        </li>
         <li><a href="masterguidestatus.html">Master Guide Registration</a></li>
       </ul>
     </nav>
     <main>
       <div class="form-container">
+        <div id="clubInputContainer">
+          <label for="clubNameInput">
+            Club Name:
+            <input
+              id="clubNameInput"
+              type="text"
+              placeholder="Enter your club name"
+            />
+            <button id="confirmClubBtn">Confirm</button>
+          </label>
+          <div id="clubErrorMsg"></div>
+          <div
+            id="clubDisplay"
+            style="margin-top: 0.5rem; font-weight: bold"
+          ></div>
+        </div>
 
-    <div id="clubInputContainer">
-      <label for="clubNameInput">
-        Club Name:
-        <input id="clubNameInput" type="text" placeholder="Enter your club name" />
-        <button id="confirmClubBtn">Confirm</button>
-      </label>
-      <div id="clubErrorMsg"></div>
-      <div id="clubDisplay" style="margin-top: 0.5rem; font-weight: bold;"></div>
-    </div>
+        <!-- ✅ New visible calendar section -->
+        <div id="calendarSection" style="margin: 2rem 0; display: none">
+          <label for="calendarInput">Click a date to add an event:</label><br />
+          <input id="calendarInput" type="text" placeholder="Pick a date" />
+        </div>
 
-    <!-- ✅ New visible calendar section -->
-    <div id="calendarSection" style="margin: 2rem 0; display: none;">
-      <label for="calendarInput">Click a date to add an event:</label><br />
-      <input id="calendarInput" type="text" placeholder="Pick a date" />
-    </div>
+        <!-- Event Modal -->
+        <div id="eventModal">
+          <div class="modal-content">
+            <h3>Add Event for <span id="selectedDateText"></span></h3>
+            <form id="eventForm">
+              <label>
+                Event Type:
+                <select id="eventTypeSelect" required>
+                  <option value="" disabled selected>
+                    Select an event type
+                  </option>
+                  <option value="Induction">Induction</option>
+                  <option value="Youth Summit">Youth Summit</option>
+                  <option value="Community Service">Community Service</option>
+                  <option value="Pathfinder/Adventurer Sabbath">
+                    Pathfinder/Adventurer Sabbath
+                  </option>
+                  <option value="Camporee">Camporee</option>
+                  <option value="Investiture">Investiture</option>
+                  <option value="Meetings">Meetings</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label id="customEventTypeLabel" style="display: none">
+                Enter Custom Event Type:
+                <input
+                  type="text"
+                  id="customEventTypeInput"
+                  placeholder="Type your event type"
+                />
+              </label>
+              <label
+                >Time:
+                <input type="text" name="eventTime" placeholder="e.g. 3:00 PM"
+              /></label>
+              <label>
+                <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
+                Multiday Event
+              </label>
+              <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
+                <label>Select additional dates:</label>
+                <input
+                  type="text"
+                  id="additionalDatesPicker"
+                  placeholder="Select additional dates"
+                />
+              </div>
+              <label
+                >Description:<br />
+                <textarea
+                  name="description"
+                  rows="3"
+                  style="width: 100%"
+                ></textarea>
+              </label>
+              <label>Location: <input type="text" name="location" /></label>
+              <div style="margin-top: 1rem">
+                <button type="submit">Add Event</button>
+                <button type="button" id="eventCancelBtn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-    <!-- Event Modal -->
-    <div id="eventModal">
-      <div class="modal-content">
-        <h3>Add Event for <span id="selectedDateText"></span></h3>
-        <form id="eventForm">
+        <h3>Events Added:</h3>
+        <ul id="eventsList"></ul>
+
+        <!-- Board Approval Section -->
+        <div class="form-container" style="margin-top: 1rem">
           <label>
-            Event Type:
-            <select id="eventTypeSelect" required>
-              <option value="" disabled selected>Select an event type</option>
-              <option value="Induction">Induction</option>
-              <option value="Youth Summit">Youth Summit</option>
-              <option value="Community Service">Community Service</option>
-              <option value="Pathfinder/Adventurer Sabbath">Pathfinder/Adventurer Sabbath</option>
-              <option value="Camporee">Camporee</option>
-              <option value="Investiture">Investiture</option>
-              <option value="Meetings">Meetings</option>
-              <option value="Other">Other</option>
+            Calendar Approved:
+            <select name="calendarStatus" onchange="toggleDateInput(this)">
+              <option value="Not Verified">Not Verified</option>
+              <option value="Verified">Verified</option>
             </select>
           </label>
-          <label id="customEventTypeLabel" style="display: none;">
-            Enter Custom Event Type:
-            <input type="text" id="customEventTypeInput" placeholder="Type your event type" />
-          </label>
-          <label>Time: <input type="text" name="eventTime" placeholder="e.g. 3:00 PM" /></label>
+        </div>
+
+        <!-- Hidden calendar date input, shown only when 'Verified' is selected -->
+        <div class="form-container calendarDateLabel" style="display: none">
           <label>
-            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
-            Multiday Event
+            Calendar Board Approval Date:
+            <input
+              type="date"
+              name="calendarExpirationDate"
+              disabled
+              required
+            />
           </label>
-          <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
-            <label>Select additional dates:</label>
-            <input type="text" id="additionalDatesPicker" placeholder="Select additional dates" />
-          </div>
-          <label>Description:<br />
-            <textarea name="description" rows="3" style="width: 100%"></textarea>
-          </label>
-          <label>Location: <input type="text" name="location" /></label>
-          <div style="margin-top: 1rem">
-            <button type="submit">Add Event</button>
-            <button type="button" id="eventCancelBtn">Cancel</button>
-          </div>
-        </form>
+        </div>
+
+        <button id="finalSubmitBtn" disabled>Submit All Events</button>
       </div>
-    </div>
-
-    <h3>Events Added:</h3>
-    <ul id="eventsList"></ul>
-
-    <!-- Board Approval Section -->
-    <div class="form-container" style="margin-top: 1rem;">
-      <label>
-        Calendar Approved:
-        <select name="calendarStatus" onchange="toggleDateInput(this)">
-          <option value="Not Verified">Not Verified</option>
-          <option value="Verified">Verified</option>
-        </select>
-      </label>
-    </div>
-
-    <!-- Hidden calendar date input, shown only when 'Verified' is selected -->
-    <div class="form-container calendarDateLabel" style="display: none;">
-      <label>
-        Calendar Board Approval Date:
-        <input type="date" name="calendarExpirationDate" disabled required />
-      </label>
-    </div>
-
-    <button id="finalSubmitBtn" disabled>Submit All Events</button>
-</main>
+    </main>
     <script>
       function toggleDateInput(select) {
         const calLabel = document.querySelector(".calendarDateLabel");
-        const dateInput = calLabel?.querySelector('input[name="calendarExpirationDate"]');
+        const dateInput = calLabel?.querySelector(
+          'input[name="calendarExpirationDate"]'
+        );
 
         if (calLabel && dateInput) {
           const show = select.value === "Verified";
@@ -282,7 +334,9 @@
         const selectedDateText = document.getElementById("selectedDateText");
         const multiDayCheckbox = document.getElementById("multiDayCheckbox");
         const multiDayDatesDiv = document.getElementById("multiDayDates");
-        const additionalDatesPicker = document.getElementById("additionalDatesPicker");
+        const additionalDatesPicker = document.getElementById(
+          "additionalDatesPicker"
+        );
         const eventsList = document.getElementById("eventsList");
         const finalSubmitBtn = document.getElementById("finalSubmitBtn");
         const clubDisplay = document.getElementById("clubDisplay");
@@ -292,8 +346,12 @@
         const clubErrorMsg = document.getElementById("clubErrorMsg");
 
         const eventTypeSelect = document.getElementById("eventTypeSelect");
-        const customEventTypeLabel = document.getElementById("customEventTypeLabel");
-        const customEventTypeInput = document.getElementById("customEventTypeInput");
+        const customEventTypeLabel = document.getElementById(
+          "customEventTypeLabel"
+        );
+        const customEventTypeInput = document.getElementById(
+          "customEventTypeInput"
+        );
 
         let additionalDatesFP = flatpickr(additionalDatesPicker, {
           mode: "multiple",
@@ -335,7 +393,8 @@
         });
 
         eventTypeSelect.addEventListener("change", () => {
-          customEventTypeLabel.style.display = eventTypeSelect.value === "Other" ? "block" : "none";
+          customEventTypeLabel.style.display =
+            eventTypeSelect.value === "Other" ? "block" : "none";
         });
 
         function openEventModal(dateStr) {
@@ -349,7 +408,9 @@
         }
 
         multiDayCheckbox.addEventListener("change", () => {
-          multiDayDatesDiv.style.display = multiDayCheckbox.checked ? "block" : "none";
+          multiDayDatesDiv.style.display = multiDayCheckbox.checked
+            ? "block"
+            : "none";
           if (!multiDayCheckbox.checked) additionalDatesFP.clear();
         });
 
@@ -358,7 +419,10 @@
 
           const mainDate = eventForm.dataset.mainDate;
           const selectedType = eventTypeSelect.value;
-          const eventType = selectedType === "Other" ? customEventTypeInput.value.trim() : selectedType;
+          const eventType =
+            selectedType === "Other"
+              ? customEventTypeInput.value.trim()
+              : selectedType;
           const eventTime = eventForm.eventTime.value.trim();
           const isMultiDay = eventForm.multiDay.checked;
           const description = eventForm.description.value.trim();
@@ -435,10 +499,13 @@
           const formData = new FormData();
           formData.append("events", JSON.stringify(eventsData));
 
-          fetch("https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec", {
-            method: "POST",
-            body: formData,
-          })
+          fetch(
+            "https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec",
+            {
+              method: "POST",
+              body: formData,
+            }
+          )
             .then((res) => res.json())
             .then((data) => {
               alert(data.message || "Events submitted successfully!");
