@@ -30,42 +30,42 @@
         margin: 0;
         font-size: 2.25rem;
       }
-/* Dropdown container */
-.dropdown {
-  position: relative;
-}
+      /* Dropdown container */
+      .dropdown {
+        position: relative;
+      }
 
-/* Hidden submenu by default */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem 0;
-  list-style: none;
-  min-width: 220px;
-  z-index: 1000;
-}
+      /* Hidden submenu by default */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 0.5rem 0;
+        list-style: none;
+        min-width: 220px;
+        z-index: 1000;
+      }
 
-/* Show dropdown on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
+      /* Show dropdown on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
 
-/* Style for dropdown items */
-.dropdown-content li a {
-  display: block;
-  padding: 8px 16px;
-  color: #004080;
-  text-decoration: none;
-  white-space: nowrap;
-}
+      /* Style for dropdown items */
+      .dropdown-content li a {
+        display: block;
+        padding: 8px 16px;
+        color: #004080;
+        text-decoration: none;
+        white-space: nowrap;
+      }
 
-.dropdown-content li a:hover {
-  background-color: #e6f0ff;
-}
+      .dropdown-content li a:hover {
+        background-color: #e6f0ff;
+      }
 
       nav {
         background-color: #ffffff;
@@ -201,17 +201,25 @@
     <nav>
       <ul class="nav-menu">
         <li class="dropdown">
-         <li><a href="clubregistration.html" class="active">Club Registration</a></li>
-        <ul class="dropdown-content">
-          <li><a href="clubstafflist.html">Staff List</a></li>
-          <li><a href="clubMemberRegistrationForm.pdf">Club Member Registration</a></li>
-          <li><a href="clubcalendar.html">Club Calendar</a></li>
+          <a href="#">Club Forms</a>
+          <ul class="dropdown-content">
+            <li>
+              <a href="clubregistration.html" class="active"
+                >Club Registration</a
+              >
+            </li>
+            <li><a href="clubstafflist.html">Staff List</a></li>
+            <li>
+              <a href="clubMemberRegistrationForm.pdf"
+                >Club Member Registration</a
+              >
+            </li>
+            <li><a href="clubcalendar.html">Club Calendar</a></li>
+          </ul>
+        </li>
+        <li><a href="clubreports.html">Monthly Club Reports</a></li>
         <li>
-          <a href="clubreports.html">Monthly Club Reports</a>
-        </li><li>
-          <a href="youthSummitRegistration.html"
-            >Youth Summit Registration</a
-          >
+          <a href="youthSummitRegistration.html">Youth Summit Registration</a>
         </li>
         <li><a href="masterguidestatus.html">Master Guide Registration</a></li>
       </ul>
