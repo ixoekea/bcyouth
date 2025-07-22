@@ -337,7 +337,7 @@
             Facebook Page:
             <input
               type="url"
-              name="adventurersfacebook"
+              name="adventurersFacebook"
               placeholder="https://facebook.com/yourclub"
             />
           </label>
@@ -345,7 +345,7 @@
             Instagram:
             <input
               type="url"
-              name="adventurersinstagram"
+              name="adventurersInstagram"
               placeholder="https://instagram.com/yourclub"
             />
           </label>
@@ -353,7 +353,7 @@
             YouTube Channel:
             <input
               type="url"
-              name="adventurersyoutube"
+              name="adventurersYoutube"
               placeholder="https://youtube.com/yourchannel"
             />
           </label>
@@ -574,7 +574,7 @@
         <h2>Your Commitment to Pathfinders and Adventurers</h2>
         <p>
           We, the undersigned, have read, understood, and are in full agreement
-          with the above Philosophy of the Pathfinder Ministry, Adventuer
+          with the above Philosophy of the Pathfinder Ministry, Adventurer
           Ministry, or Master Guide Ministry and agree to support our club(s)
           through those means with which the Lord has blessed this church,
           including financially; Invoices for supplies and Conference Sponsored
@@ -601,7 +601,7 @@
           >Person Submitting Application:
           <input type="text" name="club_director" required
         /></label>
-
+        <!--
         <h2>Pastor Signature</h2>
         <canvas
           id="pastor-signature"
@@ -624,7 +624,7 @@
           Pastor Name:
           <input
             type="text"
-            name="board_name"
+            name="pastor_name"
             required
             style="width: 100%; box-sizing: border-box"
         /></label>
@@ -651,11 +651,12 @@
           Clerk/Treasurer Name:
           <input
             type="text"
-            name="board_name"
+            name="clerk_name"
             required
             style="width: 100%; box-sizing: border-box"
           />
         </label>
+      -->
         <br /><br />
         <label
           style="
@@ -674,21 +675,22 @@
           />
         </label>
 
-        <!-- Hidden signature inputs -->
-        <input
-          type="hidden"
-          name="pastor_signature_data"
-          id="pastor_signature_data"
-        />
-        <input
-          type="hidden"
-          name="clerk_signature_data"
-          id="clerk_signature_data"
-        /><br /><br />
+        <h2>Pastor Email</h2>
+        <label
+          >Pastor's Email:<input type="email" name="pastor_email" required
+        /></label>
+        <h2>Clerk/Treasurer Email</h2>
+        <label
+          >Clerk/Treasurer Email:<input
+            type="email"
+            name="clerk_email"
+            required
+        /></label>
+
+        <br /><br />
         <button type="submit" id="submitBtn">Submit Application</button>
       </form>
     </main>
-
     <script>
       function toggleClubSection(club) {
         const checkbox = document.getElementById(`${club}-check`);
@@ -696,91 +698,12 @@
         section.style.display = checkbox.checked ? "block" : "none";
       }
 
-      function setupSignatureCanvas(id) {
-        const canvas = document.getElementById(id);
-        const ctx = canvas.getContext("2d");
-        let drawing = false;
-
-        if (!canvas.width) canvas.width = canvas.offsetWidth || 300;
-        if (!canvas.height) canvas.height = canvas.offsetHeight || 150;
-
-        function getPos(e) {
-          const rect = canvas.getBoundingClientRect();
-          if (e.touches) {
-            return {
-              x: e.touches[0].clientX - rect.left,
-              y: e.touches[0].clientY - rect.top,
-            };
-          } else {
-            return {
-              x: e.clientX - rect.left,
-              y: e.clientY - rect.top,
-            };
-          }
-        }
-
-        function startDrawing(e) {
-          e.preventDefault();
-          drawing = true;
-          const pos = getPos(e);
-          ctx.beginPath();
-          ctx.moveTo(pos.x, pos.y);
-        }
-
-        function draw(e) {
-          if (!drawing) return;
-          e.preventDefault();
-          const pos = getPos(e);
-          ctx.lineWidth = 2;
-          ctx.lineCap = "round";
-          ctx.strokeStyle = "black";
-
-          ctx.lineTo(pos.x, pos.y);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(pos.x, pos.y);
-        }
-
-        function stopDrawing(e) {
-          e.preventDefault();
-          drawing = false;
-          ctx.beginPath();
-        }
-
-        canvas.addEventListener("mousedown", startDrawing);
-        canvas.addEventListener("mousemove", draw);
-        canvas.addEventListener("mouseup", stopDrawing);
-        canvas.addEventListener("mouseout", stopDrawing);
-
-        canvas.addEventListener("touchstart", startDrawing, { passive: false });
-        canvas.addEventListener("touchmove", draw, { passive: false });
-        canvas.addEventListener("touchend", stopDrawing, { passive: false });
-        canvas.addEventListener("touchcancel", stopDrawing, { passive: false });
-      }
-
-      function clearSignature(id) {
-        const canvas = document.getElementById(id);
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-
       function prepareSubmit() {
-        const pastorCanvas = document.getElementById("pastor-signature");
-        const clerkCanvas = document.getElementById("clerk-signature");
-
-        document.getElementById("pastor_signature_data").value =
-          pastorCanvas.toDataURL();
-        document.getElementById("clerk_signature_data").value =
-          clerkCanvas.toDataURL();
-
         return true;
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        setupSignatureCanvas("pastor-signature");
-        setupSignatureCanvas("clerk-signature");
-
-        const form = document.getElementById("bc-club-form"); // <-- Match the ID here
+        const form = document.getElementById("bc-club-form");
         const submitBtn = form.querySelector('button[type="submit"]');
         const actionURL = form.getAttribute("action");
         let formSubmitted = false;
@@ -789,7 +712,7 @@
           event.preventDefault();
           if (formSubmitted) return;
 
-          prepareSubmit(); // Add signature data
+          prepareSubmit(); // no-op now
           formSubmitted = true;
           submitBtn.disabled = true;
 
