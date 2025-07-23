@@ -423,6 +423,20 @@
             formSubmitted = true;
             this.querySelector('button[type="submit"]').disabled = true;
 
+            // Enable all date inputs before collecting data
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const crcInput = entry.querySelector(
+                  'input[name="crcExpirationDate"]'
+                );
+                const certInput = entry.querySelector(
+                  'input[name="certificationExpirationDate"]'
+                );
+                if (crcInput) crcInput.disabled = false;
+                if (certInput) certInput.disabled = false;
+              });
+
             const staffList = [];
             document
               .querySelectorAll("#staffEntries .staff")
@@ -435,7 +449,7 @@
                   name: getVal("name"),
                   email: getVal("email"),
                   crc: getVal("crc"),
-                  crcExpirationDate: getVal("crcExpirationDate"), // 🔹 Add this line
+                  crcExpirationDate: getVal("crcExpirationDate"),
                   acl: getVal("acl"),
                   certificationStatus: getVal("certificationStatus"),
                   certificationExpirationDate: getVal(
@@ -451,107 +465,36 @@
             document.getElementById("staffListInput").value =
               JSON.stringify(staffList);
             this.submit();
+
+            // Re-disable inputs after submission
+            setTimeout(() => {
+              document
+                .querySelectorAll("#staffEntries .staff")
+                .forEach((entry) => {
+                  const crcInput = entry.querySelector(
+                    'input[name="crcExpirationDate"]'
+                  );
+                  const certInput = entry.querySelector(
+                    'input[name="certificationExpirationDate"]'
+                  );
+                  if (
+                    crcInput &&
+                    crcInput.closest(".crcDateLabel").style.display === "none"
+                  ) {
+                    crcInput.disabled = true;
+                  }
+                  if (
+                    certInput &&
+                    certInput.closest(".certDateLabel").style.display === "none"
+                  ) {
+                    certInput.disabled = true;
+                  }
+                });
+            }, 500);
           });
 
         initFlatpickrIn(document.getElementById("staffEntries"));
       });
-      document.querySelectorAll('select[name="crc"]').forEach((select) => {
-        toggleCRCDateInput(select);
-        select.addEventListener("change", () => toggleCRCDateInput(select));
-      });
-      document.querySelectorAll('select[name="crc"]').forEach((select) => {
-        toggleCRCDateInput(select); // already here
-        select.dispatchEvent(new Event("change")); // ✅ force initial update
-      });
-      document
-        .querySelectorAll('select[name="certificationStatus"]')
-        .forEach((select) => {
-          toggleDateInput(select);
-          select.addEventListener("change", () => toggleDateInput(select));
-        });
-
-      function addStaffEntry() {
-        const container = document.getElementById("staffEntries");
-        const template = container.firstElementChild.cloneNode(true);
-
-        template.querySelectorAll("input, select").forEach((input) => {
-          if (input.type === "checkbox") input.checked = false;
-          else input.value = "";
-        });
-        template.querySelectorAll(".crcDateLabel").forEach((el) => {
-          el.style.display = "none";
-          const input = el.querySelector('input[name="crcExpirationDate"]');
-          if (input) input.disabled = true;
-        });
-        template.querySelectorAll('select[name="crc"]').forEach((select) => {
-          select.addEventListener("change", () => toggleCRCDateInput(select));
-        });
-        template.querySelectorAll(".certDateLabel").forEach((el) => {
-          el.style.display = "none";
-          const input = el.querySelector('input[name="crcExpirationDate"]');
-          if (input) input.disabled = true;
-        });
-
-        const certDateInput = template.querySelector(
-          'input[name="certificationExpirationDate"]'
-        );
-        if (certDateInput) certDateInput.disabled = true;
-
-        container.appendChild(template);
-        initFlatpickrIn(template);
-      }
-
-      function removeStaffEntry() {
-        const container = document.getElementById("staffEntries");
-        const staffCount = container.querySelectorAll(".staff").length;
-        if (staffCount > 1) {
-          container.removeChild(container.lastElementChild);
-        } else {
-          alert("At least one staff member entry must remain.");
-        }
-      }
-      function toggleCRCDateInput(select) {
-        const staffBlock = select.closest(".staff");
-        const crcLabel = staffBlock.querySelector(".crcDateLabel");
-        const crcDateInput = crcLabel?.querySelector(
-          'input[name="crcExpirationDate"]'
-        );
-
-        if (crcLabel && crcDateInput) {
-          const show = select.value === "Yes";
-          crcLabel.style.display = show ? "block" : "none";
-          crcDateInput.disabled = !show;
-        }
-      }
-      function toggleDateInput(select) {
-        const staffBlock = select.closest(".staff");
-
-        if (select.name === "certificationStatus") {
-          const certLabel = staffBlock.querySelector(".certDateLabel");
-          const dateInput = certLabel?.querySelector(
-            'input[name="certificationExpirationDate"]'
-          );
-          if (certLabel && dateInput) {
-            const show = select.value === "Certified";
-            certLabel.style.display = show ? "block" : "none";
-            dateInput.disabled = !show;
-          }
-        }
-      }
-
-      function initFlatpickrIn(container) {
-        container
-          .querySelectorAll(
-            'input[name="certificationExpirationDate"], input[name="crcExpirationDate"]'
-          )
-          .forEach((input) => {
-            flatpickr(input, {
-              dateFormat: "Y-m-d",
-              allowInput: true,
-              disableMobile: true,
-            });
-          });
-      }
     </script>
   </body>
 </html>
