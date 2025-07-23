@@ -459,7 +459,10 @@
         toggleCRCDateInput(select);
         select.addEventListener("change", () => toggleCRCDateInput(select));
       });
-
+      document.querySelectorAll('select[name="crc"]').forEach((select) => {
+        toggleCRCDateInput(select); // already here
+        select.dispatchEvent(new Event("change")); // ✅ force initial update
+      });
       document
         .querySelectorAll('select[name="certificationStatus"]')
         .forEach((select) => {
@@ -474,6 +477,11 @@
         template.querySelectorAll("input, select").forEach((input) => {
           if (input.type === "checkbox") input.checked = false;
           else input.value = "";
+        });
+        template.querySelectorAll(".crcDateLabel").forEach((el) => {
+          el.style.display = "none";
+          const input = el.querySelector('input[name="crcExpirationDate"]');
+          if (input) input.disabled = true;
         });
         template.querySelectorAll('select[name="crc"]').forEach((select) => {
           select.addEventListener("change", () => toggleCRCDateInput(select));
