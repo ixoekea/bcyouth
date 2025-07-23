@@ -550,9 +550,22 @@
           }
 
           finalSubmitBtn.disabled = true;
+          // ✅ Add these two lines for approval status and board date
+          const calendarStatus = document.querySelector(
+            '[name="calendarStatus"]'
+          ).value;
+          const boardDateInput = document.querySelector(
+            '[name="calendarExpirationDate"]'
+          );
+          const boardApprovalDate =
+            boardDateInput && !boardDateInput.disabled
+              ? boardDateInput.value
+              : "";
 
           const formData = new FormData();
           formData.append("events", JSON.stringify(eventsData));
+          formData.append("calendarApproved", calendarStatus);
+          formData.append("boardApprovalDate", boardApprovalDate);
 
           fetch(
             "https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec",
