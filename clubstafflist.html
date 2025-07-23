@@ -17,6 +17,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
+      /* ... your existing styles unchanged ... */
       * {
         box-sizing: border-box;
       }
@@ -268,7 +269,7 @@
                     https://justice.gov.bc.ca/criminalrecordcheck
                   </a>
                   <br />Access Code: <strong>XRS5QDZLH6</strong>
-                  <select name="crc">
+                  <select name="crc" onchange="toggleDateInput(this)">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
                   </select>
@@ -276,7 +277,7 @@
 
                 <label class="crcDateLabel" style="display: none">
                   Criminal Record Check Expiration Date:
-                  <input type="date" name="crcExpirationDate" />
+                  <input type="date" name="crcExpirationDate" disabled />
                 </label>
 
                 <label>
@@ -300,7 +301,11 @@
 
                 <label class="certDateLabel" style="display: none">
                   Certification Expiration Date:
-                  <input type="date" name="certificationExpirationDate" />
+                  <input
+                    type="date"
+                    name="certificationExpirationDate"
+                    disabled
+                  />
                 </label>
 
                 <label>
@@ -406,6 +411,34 @@
     <script>
       let formSubmitted = false;
 
+      // Function to toggle date inputs based on select values
+      function toggleDateInput(selectElement) {
+        let dateLabel;
+
+        if (selectElement.name === "crc") {
+          dateLabel = selectElement
+            .closest(".staff")
+            .querySelector(".crcDateLabel");
+        } else if (selectElement.name === "certificationStatus") {
+          dateLabel = selectElement
+            .closest(".staff")
+            .querySelector(".certDateLabel");
+        }
+
+        if (!dateLabel) return;
+
+        if (
+          selectElement.value === "Yes" ||
+          selectElement.value === "Certified"
+        ) {
+          dateLabel.style.display = "block";
+          dateLabel.querySelector("input").disabled = false;
+        } else {
+          dateLabel.style.display = "none";
+          dateLabel.querySelector("input").disabled = true;
+        }
+      }
+
       document.addEventListener("DOMContentLoaded", () => {
         const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
@@ -496,6 +529,15 @@
                   }
                 });
             }, 500);
+          });
+
+        // Initialize date input visibility on page load
+        document
+          .querySelectorAll(
+            'select[name="crc"], select[name="certificationStatus"]'
+          )
+          .forEach((select) => {
+            toggleDateInput(select);
           });
 
         initFlatpickrIn(document.getElementById("staffEntries"));
