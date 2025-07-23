@@ -17,7 +17,6 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
-      /* ... your existing styles unchanged ... */
       * {
         box-sizing: border-box;
       }
@@ -409,35 +408,107 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      let formSubmitted = false;
-
-      // Function to toggle date inputs based on select values
-      function toggleDateInput(selectElement) {
-        let dateLabel;
-
-        if (selectElement.name === "crc") {
-          dateLabel = selectElement
-            .closest(".staff")
-            .querySelector(".crcDateLabel");
-        } else if (selectElement.name === "certificationStatus") {
-          dateLabel = selectElement
-            .closest(".staff")
-            .querySelector(".certDateLabel");
-        }
-
-        if (!dateLabel) return;
-
-        if (
-          selectElement.value === "Yes" ||
-          selectElement.value === "Certified"
-        ) {
-          dateLabel.style.display = "block";
-          dateLabel.querySelector("input").disabled = false;
-        } else {
-          dateLabel.style.display = "none";
-          dateLabel.querySelector("input").disabled = true;
+      // Show/hide date input based on "Yes"/"No" selection for CRC and certification
+      function toggleDateInput(selectElem) {
+        const value = selectElem.value;
+        if (selectElem.name === "crc") {
+          const label = selectElem.closest("label").nextElementSibling;
+          if (label && label.classList.contains("crcDateLabel")) {
+            if (value === "Yes") {
+              label.style.display = "block";
+              label.querySelector("input").disabled = false;
+            } else {
+              label.style.display = "none";
+              label.querySelector("input").disabled = true;
+              label.querySelector("input").value = "";
+            }
+          }
+        } else if (selectElem.name === "certificationStatus") {
+          const label = selectElem.closest("label").nextElementSibling;
+          if (label && label.classList.contains("certDateLabel")) {
+            if (value === "Certified") {
+              label.style.display = "block";
+              label.querySelector("input").disabled = false;
+            } else {
+              label.style.display = "none";
+              label.querySelector("input").disabled = true;
+              label.querySelector("input").value = "";
+            }
+          }
         }
       }
+
+      function addStaffEntry() {
+        const staffEntries = document.getElementById("staffEntries");
+        const staffList = staffEntries.querySelectorAll(".staff");
+        const lastStaff = staffList[staffList.length - 1];
+        const newStaff = lastStaff.cloneNode(true);
+
+        // Clear input values in the cloned block
+        newStaff.querySelectorAll("input, select").forEach((el) => {
+          if (el.type === "checkbox") {
+            el.checked = false;
+          } else {
+            el.value = "";
+          }
+        });
+
+        // Hide and disable date inputs in cloned block
+        const crcDateLabel = newStaff.querySelector(".crcDateLabel");
+        const certDateLabel = newStaff.querySelector(".certDateLabel");
+
+        if (crcDateLabel) {
+          crcDateLabel.style.display = "none";
+          const input = crcDateLabel.querySelector("input");
+          if (input) {
+            input.disabled = true;
+            input.value = "";
+          }
+        }
+        if (certDateLabel) {
+          certDateLabel.style.display = "none";
+          const input = certDateLabel.querySelector("input");
+          if (input) {
+            input.disabled = true;
+            input.value = "";
+          }
+        }
+
+        // Add event listeners for the new select elements to toggle date inputs
+        const crcSelect = newStaff.querySelector('select[name="crc"]');
+        const certSelect = newStaff.querySelector(
+          'select[name="certificationStatus"]'
+        );
+
+        if (crcSelect) {
+          crcSelect.addEventListener("change", function () {
+            toggleDateInput(this);
+          });
+        }
+        if (certSelect) {
+          certSelect.addEventListener("change", function () {
+            toggleDateInput(this);
+          });
+        }
+
+        // Append new staff entry
+        staffEntries.appendChild(newStaff);
+
+        // Initialize flatpickr for any date inputs inside newStaff
+        flatpickr(newStaff.querySelectorAll('input[type="date"]'));
+      }
+
+      function removeStaffEntry() {
+        const staffEntries = document.getElementById("staffEntries");
+        const staffList = staffEntries.querySelectorAll(".staff");
+        if (staffList.length > 1) {
+          staffEntries.removeChild(staffList[staffList.length - 1]);
+        } else {
+          alert("You must keep at least one staff entry.");
+        }
+      }
+
+      let formSubmitted = false;
 
       document.addEventListener("DOMContentLoaded", () => {
         const iframe = document.querySelector('iframe[name="hidden_iframe"]');
@@ -451,6 +522,25 @@
               .querySelector('button[type="submit"]').disabled = false;
           }
         });
+
+        // Attach change listeners on initial selects for toggleDateInput
+        document
+          .querySelectorAll("#staffEntries select[name='crc']")
+          .forEach((sel) => {
+            sel.addEventListener("change", function () {
+              toggleDateInput(this);
+            });
+          });
+        document
+          .querySelectorAll("#staffEntries select[name='certificationStatus']")
+          .forEach((sel) => {
+            sel.addEventListener("change", function () {
+              toggleDateInput(this);
+            });
+          });
+
+        // Initialize flatpickr for any existing date inputs
+        flatpickr(document.querySelectorAll('input[type="date"]'));
 
         document
           .getElementById("staffForm")
@@ -504,7 +594,7 @@
               JSON.stringify(staffList);
             this.submit();
 
-            // Re-disable inputs after submission
+            // Re-disable inputs after submission if hidden
             setTimeout(() => {
               document
                 .querySelectorAll("#staffEntries .staff")
@@ -530,17 +620,6 @@
                 });
             }, 500);
           });
-
-        // Initialize date input visibility on page load
-        document
-          .querySelectorAll(
-            'select[name="crc"], select[name="certificationStatus"]'
-          )
-          .forEach((select) => {
-            toggleDateInput(select);
-          });
-
-        initFlatpickrIn(document.getElementById("staffEntries"));
       });
     </script>
   </body>
