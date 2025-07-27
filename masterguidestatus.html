@@ -170,6 +170,16 @@
       button:hover {
         background-color: #303f9f;
       }
+      .training-entry {
+        display: flex;
+        gap: 1rem; /* space between columns */
+        align-items: flex-start; /* align labels nicely */
+      }
+      .training-entry label {
+        flex: 1; /* each label/input pair takes equal space */
+        display: flex;
+        flex-direction: column;
+      }
 
       #eventModal {
         display: none;
@@ -248,90 +258,154 @@
     </nav>
     <main>
       <div class="form-container">
-        <form id="mgForm" method="post">
+        <form
+          id="mgForm"
+          method="post"
+          action="https://script.google.com/macros/s/AKfycbw-4WYqH76J4tMqQzAgXg4UqvPX_OO_pN2tjzVX76oSiGrGWmFpWYXwlQ-XvYmfkHM-/exec"
+        >
           <label>Name: <input type="text" name="name" required /></label>
           <label>Address: <input type="text" name="address" /></label>
           <label>City: <input type="text" name="city" /></label>
           <label>Phone Number: <input type="text" name="phone" /></label>
           <label>Email: <input type="email" name="email" /></label>
 
-          <label
-            >Certification Type:
-            <select name="certificationType" required>
-              <option value="">-- Select Certification --</option>
-              <option value="Adventurer">Adventurer</option>
-              <option value="Pathfinder">Pathfinder</option>
-              <option value="Both">Both</option>
-              <option value="None">None</option>
-            </select>
-          </label>
+          <label for="certificationType">Certification Type:</label>
+          <select name="certificationType" id="certificationType" required>
+            <option value="">-- Select Certification --</option>
+            <option value="Adventurer">Adventurer</option>
+            <option value="Pathfinder">Pathfinder</option>
+            <option value="Both">Both</option></select
+          ><br /><br />
 
-          <label
-            >Status:
-            <select name="status" id="status-select">
-              <option value="Information Only">Information Only</option>
-              <option value="Invested">Invested</option>
-              <option value="Training">MG in Training</option>
-              <option value="Out of Province/Country">
-                Out of Province/Country Invested
-              </option>
-            </select>
-          </label>
-
-          <!-- Invested Info Group -->
-          <div id="invested-fields" style="display: none; margin-top: 10px">
-            <label
-              >Date Invested: <input type="date" name="dateInvested"
-            /></label>
-            <label
-              >Location Invested: <input type="text" name="locationInvested"
-            /></label>
-            <label
-              >Province Invested: <input type="text" name="provinceInvested"
-            /></label>
-          </div>
           <fieldset>
-            <legend>Other Certifications</legend>
-            <label
-              >Basic Staff Training(Date & Location):
-              <input
-                type="text"
-                name="basicStaff"
-                placeholder="YYYY-MM-DD - Location"
-              />
-            </label>
-            <label
-              >Directors Training(Date & Location):
-              <input
-                type="text"
-                name="directors"
-                placeholder="YYYY-MM-DD - Location"
-              />
-            </label>
-            <label
-              >Instructors Training(Date & Location):
-              <input
-                type="text"
-                name="instructors"
-                placeholder="YYYY-MM-DD - Location"
-              />
-            </label>
-            <label
-              >Counsellor Training(Date & Location):
-              <input
-                type="text"
-                name="staff"
-                placeholder="YYYY-MM-DD - Location"
-              />
-            </label>
-            <label
-              >Treasurer and/or Secretary(Date & Location):
-              <input
-                type="text"
-                name="treasurer"
-                placeholder="YYYY-MM-DD - Location"
-              />
-            </label>
+            <legend>Status and Invested Information</legend>
+
+            <div
+              class="training-entry"
+              id="status-container"
+              style="display: none; margin-top: 10px"
+            >
+              <legend>
+                <label for="status">Status:</label>
+                <select name="status" id="status" required></select>
+              </legend>
+            </div>
+            <!-- Invested Info Group -->
+            <div id="invested-fields" style="display: none; margin-top: 10px">
+              <!-- Row 1 -->
+              <div style="display: flex; gap: 10px; margin-bottom: 10px">
+                <label for="dateInvested"
+                  >Date Invested:
+                  <input type="date" name="dateInvested" id="dateInvested" />
+                </label>
+
+                <label for="locationInvested"
+                  >Location Invested:
+                  <input
+                    type="text"
+                    name="locationInvested"
+                    id="locationInvested"
+                  />
+                </label>
+              </div>
+
+              <!-- Row 2 -->
+              <div style="display: flex; gap: 10px">
+                <label for="provinceInvested"
+                  >Province Invested:
+                  <input
+                    type="text"
+                    name="provinceInvested"
+                    id="provinceInvested"
+                  />
+                </label>
+
+                <label for="countryInvested"
+                  >Country Invested:
+                  <input
+                    type="text"
+                    name="countryInvested"
+                    id="countryInvested"
+                  />
+                </label>
+              </div>
+            </div>
+          </fieldset>
+          <br />
+          <fieldset>
+            <legend>Do you have Other Certifications?</legend>
+
+            <div class="training-entry">
+              <label>
+                Basic Staff Training Date:
+                <input type="date" name="basicStaffDate" />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="basicStaffLocation"
+                  placeholder="Location"
+                />
+              </label>
+            </div>
+            <div class="training-entry">
+              <label>
+                Directors Training Date:
+                <input type="date" name="directorsDate" />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="directorsLocation"
+                  placeholder="Location"
+                />
+              </label>
+            </div>
+            <div class="training-entry">
+              <label>
+                Instructors Training Date:
+                <input type="date" name="instructorsDate" />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="instructorsLocation"
+                  placeholder="Location"
+                />
+              </label>
+            </div>
+            <div class="training-entry">
+              <label>
+                Counsellors Training Date:
+                <input type="date" name="counsellorDate" />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="counsellorLocation"
+                  placeholder="Location"
+                />
+              </label>
+            </div>
+
+            <div class="training-entry">
+              <label>
+                Treasurers/Secretarys Training Date:
+                <input type="date" name="treasurersDate" />
+              </label>
+              <label>
+                Location:
+                <input
+                  type="text"
+                  name="treasurersLocation"
+                  placeholder="Location"
+                />
+              </label>
+            </div>
           </fieldset>
 
           <button type="submit">Submit</button>
@@ -340,14 +414,60 @@
     </main>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const statusSelect = document.getElementById("status-select");
+        const certSelect = document.getElementById("certificationType");
+        const statusSelect = document.getElementById("status");
+        const statusContainer = document.getElementById("status-container");
         const investedFields = document.getElementById("invested-fields");
 
+        const statusOptions = {
+          Adventurer: [
+            "Information Only",
+            "Pathfinder Registration",
+            "Invested",
+            "Currently a MG in Training",
+            "Out of Province/Country Invested",
+          ],
+          Pathfinder: [
+            "Information Only",
+            "Pathfinder Registration",
+            "Invested",
+            "Currently a MG in Training",
+            "Out of Province/Country Invested",
+          ],
+          Both: [
+            "Information Only",
+            "Adventurer and Pathfinder Registration",
+            "Invested",
+            "Currently a MG in Training",
+            "Out of Province/Country Invested",
+          ],
+        };
+
+        function populateStatusOptions(selectedCert) {
+          const options = statusOptions[selectedCert] || [];
+
+          // Clear previous options
+          statusSelect.innerHTML = "";
+
+          if (options.length > 0) {
+            statusContainer.style.display = "block";
+            options.forEach((status) => {
+              const option = document.createElement("option");
+              option.value = status;
+              option.textContent = status;
+              statusSelect.appendChild(option);
+            });
+          } else {
+            statusContainer.style.display = "none";
+            investedFields.style.display = "none"; // also hide invested fields
+          }
+        }
+
         function toggleInvestedFields() {
-          const selected = statusSelect.value;
+          const selectedStatus = statusSelect.value;
           if (
-            selected === "Invested" ||
-            selected === "Out of Province/Country"
+            selectedStatus === "Invested" ||
+            selectedStatus === "Out of Province/Country Invested"
           ) {
             investedFields.style.display = "block";
           } else {
@@ -355,15 +475,18 @@
           }
         }
 
-        // Initial check on load
-        toggleInvestedFields();
+        // When certification changes, populate statuses & reset invested fields
+        certSelect.addEventListener("change", () => {
+          populateStatusOptions(certSelect.value);
+          investedFields.style.display = "none";
+        });
 
-        // On change
+        // When status changes, toggle invested fields visibility
         statusSelect.addEventListener("change", toggleInvestedFields);
-      });
-      fetch("https://script.google.com/macros/s/AKfycb.../exec", {
-        method: "POST",
-        body: formData,
+
+        // Initial setup - hide status and invested fields
+        statusContainer.style.display = "none";
+        investedFields.style.display = "none";
       });
     </script>
   </body>
