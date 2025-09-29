@@ -6,97 +6,96 @@
     <title>BC Youth</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header class="site-header">
-      <nav class="navigation">
-        <img class="bc" src="bclogo.png" alt="BC Logo" />
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        <ul class="nav-links" id="navLinks">
-          <li><a href="#">Home</a></li>
-          <li class="dropdown">
-            <p>Registration</p>
-            <ul class="dropdown-menu">
-              <li>
-                <a
-                  href="https://ixoekea.github.io/bcyouth/clubregistration.html"
-                  >Club Registration</a
-                >
-              </li>
-              <li>
-                <a href="https://ixoekea.github.io/bcyouth/clubstafflist.html"
-                  >Staff List</a
-                >
-              </li>
-              <li>
-                <a href="https://ixoekea.github.io/bcyouth/clubcalendar.html"
-                  >Club Calendar</a
-                >
-              </li>
-              <li>
-                <a href="https://ixoekea.github.io/bcyouth/clubreports.html"
-                  >Monthly Club Reports (Coming Soon)</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://ixoekea.github.io/bcyouth/masterguidestatus.html"
-                  >Master Guide Registration</a
-                >
-              </li>
-            </ul>
-          </li>
-        </ul>
-        <a href="https://www.clubministries.org/adventurers/"
-          ><img class="mG" src="adventurer_logo.png" alt="Adventurer Logo"
-        /></a>
-        <a href="https://www.clubministries.org/pathfinders/"
-          ><img class="mG" src="pathfinder_logo.png" alt="Pathfinder Logo"
-        /></a>
-        <a href="https://www.clubministries.org/masterguides/"
-          ><img
-            class="mG"
-            src="NAD-MG_Logo_Small.png"
-            alt="BC Master Guide Logo"
-        /></a>
-      </nav>
-    </header>
-    <article>
-      <div class="main">
-        <video src="2025video.mp4" controls autoplay muted></video>
-      </div>
-      <div class="mainCategory">
-        <div class="box">
-          <a href="https://www.clubministries.org/"><img src="nad.png" /></a>
-        </div>
-        <div class="box">
-          <a href="https://bcyouth.com/clubs/">
-            <img
-              src="https://bcyouth.com/wp-content/uploads/2020/03/Logo-Youth-1.png"
-            />
-          </a>
-        </div>
-      </div>
-      <div class="grid-container">
-        <img src="image1.jpeg" alt="Image 1" />
-        <img src="image2.jpeg" alt="Image 2" />
-        <img src="image3.jpeg" alt="Image 3" />
-      </div>
+  <style>
+    .mainCategory {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* centers everything horizontally */
+      gap: 20px; /* space between rows */
+    }
 
-      <div class="center-calendar">
-        <iframe
-          src="https://calendar.google.com/calendar/embed?src=ad282cb6b32f46d34b92ce32f7ad74b706981b90a0c81fd794dc372faf8f7822%40group.calendar.google.com&ctz=America%2FEdmonton"
-          style="border: 0"
-          width="400"
-          height="600"
-          frameborder="0"
-          scrolling="no"
-        ></iframe>
+    .boxes-container {
+      display: flex;
+      gap: 20px; /* space between the two boxes */
+    }
+    .box {
+      width: 220px; /* fixed width for both boxes */
+      height: 220px; /* fixed height for both boxes */
+      display: flex;
+      align-items: center; /* vertically center image */
+      justify-content: center; /* horizontally center image */
+      background: linear-gradient(135deg, #3f51b5, #2196f3);
+      border-radius: 12px; /* optional: rounded corners */
+      overflow: hidden; /* ensures image doesn't overflow box */
+    }
+    .box img {
+      max-width: 90%; /* image fits nicely inside box */
+      max-height: 90%; /* maintain aspect ratio */
+      object-fit: contain; /* ensures image isn't stretched */
+      background: linear-gradient(135deg, #3f51b5, #2196f3);
+    }
+
+    .center-calendar iframe {
+      display: block;
+      margin: 0 auto; /* centers the calendar */
+    }
+  </style>
+  <body>
+    <div id="nav-placeholder"></div>
+
+    <main>
+      <div class="mainCategory">
+        <div class="boxes-container">
+          <div class="box">
+            <a href="https://bcyouth.com/clubs/">
+              <img
+                src="https://bcyouth.com/wp-content/uploads/2020/03/Logo-Youth-1.png"
+              />
+            </a>
+          </div>
+          <div class="box">
+            <a href="https://www.clubministries.org/">
+              <img src="images/nad.png" />
+            </a>
+          </div>
+          <div class="box">
+            <a href="https://nadpbe.org/">
+              <img
+                src="https://nadpbe.org/wp-content/uploads/2021/01/PBE_logo.png"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="center-calendar">
+          <iframe
+            src="https://calendar.google.com/calendar/embed?src=ad282cb6b32f46d34b92ce32f7ad74b706981b90a0c81fd794dc372faf8f7822%40group.calendar.google.com&ctz=America%2FEdmonton"
+            style="border: 0"
+            width="600"
+            height="600"
+            frameborder="0"
+            scrolling="no"
+          ></iframe>
+        </div>
       </div>
-    </article>
+    </main>
     <script>
-      function toggleMenu() {
-        document.getElementById("navLinks").classList.toggle("active");
-      }
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          // Insert nav.html into placeholder
+          document.getElementById("nav-placeholder").innerHTML = data;
+
+          // Highlight current page link
+          const currentPage = location.pathname.split("/").pop();
+          const links = document.querySelectorAll("#nav-placeholder a");
+          links.forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        })
+        .catch((err) => console.error("Failed to load nav:", err));
     </script>
   </body>
 </html>
