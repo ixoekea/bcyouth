@@ -34,14 +34,18 @@ header h1 {
   font-size: 1.75rem;
 }
 header nav {
-  margin-top: 1rem;
+  display: flex; /* Lay out items horizontally */
+  align-items: center; /* Vertically center logo & menu */
+  justify-content: center; /* Center everything, or use space-between */
+  gap: 2rem; /* Space between logo and menu */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 .nav-menu {
+  display: flex; /* Horizontal menu items */
+  gap: 1.5rem; /* Space between menu items */
   list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
 }
 .nav-menu a {
   color: white;
@@ -88,7 +92,14 @@ header nav {
 }
 .dropdown-content li a:hover {
   background-color: #e6f0ff;
-} /* Main Content & Form */
+}
+
+.logo {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+}
+
+/* Main Content & Form */
 main {
   padding: 2rem;
   display: flex;
