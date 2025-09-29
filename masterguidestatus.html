@@ -13,102 +13,6 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Inter", Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        color: #333;
-      }
-
-      header {
-        background: linear-gradient(135deg, #3f51b5, #2196f3);
-        color: white;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 2rem;
-      }
-      /* Dropdown container */
-      .dropdown {
-        position: relative;
-      }
-
-      /* Hidden submenu by default */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 0;
-        list-style: none;
-        min-width: 220px;
-        z-index: 1000;
-      }
-
-      /* Show dropdown on hover */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-
-      /* Style for dropdown items */
-      .dropdown-content li a {
-        display: block;
-        padding: 8px 16px;
-        color: #004080;
-        text-decoration: none;
-        white-space: nowrap;
-      }
-
-      .dropdown-content li a:hover {
-        background-color: #e6f0ff;
-      }
-
-      nav {
-        background-color: #ffffff;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .nav-menu {
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin: 0;
-        padding: 0;
-      }
-
-      .nav-menu a {
-        text-decoration: none;
-        color: #004080;
-        font-weight: bold;
-        font-family: "Inter", sans-serif;
-        padding: 6px 12px;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        border: 1px solid transparent;
-      }
-
-      .nav-menu a:hover {
-        background-color: #e6f0ff;
-        border-color: #004080;
-      }
-
-      .nav-menu a.active {
-        background-color: #004080;
-        color: white;
-        border-color: #003366;
-      }
-
       main {
         padding: 2rem;
         display: flex;
@@ -217,45 +121,7 @@
     </style>
   </head>
   <body>
-    <header>
-      <h1>Club Event Calendar</h1>
-    </header>
-    <nav>
-      <ul class="nav-menu">
-        <li class="dropdown">
-          <a href="#">Club Forms</a>
-          <ul class="dropdown-content">
-            <li>
-              <a href="clubregistration.html">Club Registration</a>
-            </li>
-            <li><a href="clubstafflist.html">Staff List</a></li>
-            <li></li>
-            <li>
-              <a href="staffVolunteerForm.pdf">Staff Volunteer Form (PDF)</a>
-            </li>
-            <li>
-              <a href="clubMemberRegistrationForm.pdf"
-                >Club Member Registration (PDF)</a
-              >
-            </li>
-
-            <li><a href="clubcalendar.html">Club Calendar</a></li>
-          </ul>
-        </li>
-        <li><a href="clubreports.html">Monthly Club Reports</a></li>
-        <li>
-          <a href="youthSummitRegistration.html">Youth Summit Registration</a>
-        </li>
-        <li>
-          <a href="masterguidestatus.html" class="active"
-            >Master Guide Registration</a
-          >
-        </li>
-        <li>
-          <a href="clubcalendar.html">Club Calendar</a>
-        </li>
-      </ul>
-    </nav>
+    <div id="nav-placeholder"></div>
     <main>
       <div class="form-container">
         <form
@@ -413,6 +279,23 @@
       </div>
     </main>
     <script>
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          // Insert nav.html into placeholder
+          document.getElementById("nav-placeholder").innerHTML = data;
+
+          // Highlight current page link
+          const currentPage = location.pathname.split("/").pop();
+          const links = document.querySelectorAll("#nav-placeholder a");
+          links.forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        })
+        .catch((err) => console.error("Failed to load nav:", err));
+
       document.addEventListener("DOMContentLoaded", () => {
         const certSelect = document.getElementById("certificationType");
         const statusSelect = document.getElementById("status");
@@ -466,7 +349,7 @@
         function toggleInvestedFields() {
           const selectedStatus = statusSelect.value;
           if (
-            selectedStatus === "Invested" ||
+            selectedStatus === "Invested MG" ||
             selectedStatus === "Out of Province/Country Invested"
           ) {
             investedFields.style.display = "block";

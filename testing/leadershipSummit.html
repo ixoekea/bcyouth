@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youth Leadership Summit Registration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 20px;
+      }
+      h2 {
+        color: #003366;
+      }
+      form {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: auto;
+      }
+      .form-section {
+        display: none;
+      }
+      .form-section.active {
+        display: block;
+      }
+      label {
+        display: block;
+        margin-top: 10px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+      }
+      .checkbox-group,
+      .roles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .checkbox-group label,
+      .roles label {
+        flex: 1 1 45%;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background: #003366;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="nav-placeholder"></div>
+    <main>
+      <h2>Youth Leadership Summit Registration</h2>
+
+      <form id="registrationForm">
+        <!-- Page 1 -->
+        <div class="form-section active" id="page1">
+          <label
+            >First Name: <input type="text" name="firstName" required
+          /></label>
+          <label
+            >Last Name: <input type="text" name="lastName" required
+          /></label>
+          <label
+            >Phone Number: <input type="tel" name="phone" required
+          /></label>
+          <label>Address: <input type="text" name="address" required /></label>
+          <label
+            >Postal Code: <input type="text" name="postal" required
+          /></label>
+          <label>Club Name: <input type="text" name="club" required /></label>
+          <label
+            >Church Name: <input type="text" name="church" required
+          /></label>
+
+          <label
+            >Will you be sharing a cabin? (List names)
+            <textarea
+              name="cabinMates"
+              placeholder="List individuals here"
+            ></textarea>
+          </label>
+          <small
+            >MVSC reserves the right to fill each cabin with 4–9 individuals.
+            *Private Accommodations available.</small
+          >
+
+          <label
+            ><input type="checkbox" name="fridaySupper" value="Yes" /> Yes, I
+            will be there on Friday for supper on October 25, 2025 @
+            6:00pm</label
+          >
+          <small
+            >Supper begins at 6:00pm. Food is removed after 30 minutes. Please
+            bring your own bedding and towels.</small
+          >
+
+          <label
+            >Sweater Size:
+            <select name="sweaterSize" required>
+              <option value="">-- Select Size --</option>
+              <option>Small</option>
+              <option>Medium</option>
+              <option>Large</option>
+              <option>XLarge</option>
+              <option>XXLarge</option>
+            </select>
+          </label>
+
+          <label>Roles (Select all that apply):</label>
+          <div class="roles">
+            <label
+              ><input type="checkbox" name="role" value="Pathfinders" />
+              Pathfinders</label
+            >
+            <label
+              ><input type="checkbox" name="role" value="Adventurers" />
+              Adventurers</label
+            >
+            <label
+              ><input type="checkbox" name="role" value="Teen Leader" /> Teen
+              Leader</label
+            >
+            <label
+              ><input type="checkbox" name="role" value="Master Guide" /> Master
+              Guide</label
+            >
+            <label
+              ><input type="checkbox" name="role" value="Youth" /> Youth</label
+            >
+          </div>
+
+          <button type="button" onclick="goToPage2()">Next</button>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="form-section" id="page2">
+          <h3>Financial Summary</h3>
+
+          <label
+            >Retreat Fee:
+            <input type="number" name="retreatFee" value="100" readonly
+          /></label>
+          <label
+            >Registration Fee:
+            <input type="number" name="regFee" value="25" readonly
+          /></label>
+          <label
+            >Late Registration Fee (if applicable):
+            <input type="number" name="lateFee" value="0" />
+          </label>
+          <label
+            >Private Accommodations Fee (if applicable):
+            <input type="number" name="privateFee" value="0" />
+          </label>
+
+          <label
+            >Total Due: <input type="number" id="totalDue" readonly
+          /></label>
+          <button type="button" onclick="calculateTotal()">
+            Calculate Total
+          </button>
+
+          <label>Payment Method:</label>
+          <div class="checkbox-group">
+            <label
+              ><input type="radio" name="payment" value="Credit" />
+              Visa/MasterCard</label
+            >
+            <label
+              ><input type="radio" name="payment" value="Cash" /> Cash</label
+            >
+            <label
+              ><input type="radio" name="payment" value="Church" /> Church will
+              pay</label
+            >
+          </div>
+
+          <label
+            >If Church is Paying, Amount they will pay:
+            <input
+              type="number"
+              name="churchPayAmount"
+              placeholder="Enter amount or leave blank"
+            />
+          </label>
+
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("nav-placeholder").innerHTML = data;
+
+          // Highlight current page automatically
+          const currentPage = location.pathname.split("/").pop();
+          const links = document.querySelectorAll("#nav-placeholder a");
+          links.forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        })
+        .catch((err) => console.error("Failed to load nav:", err));
+
+      function goToPage2() {
+        document.getElementById("page1").classList.remove("active");
+        document.getElementById("page2").classList.add("active");
+      }
+
+      function calculateTotal() {
+        const retreatFee =
+          parseFloat(document.querySelector('[name="retreatFee"]').value) || 0;
+        const regFee =
+          parseFloat(document.querySelector('[name="regFee"]').value) || 0;
+        const lateFee =
+          parseFloat(document.querySelector('[name="lateFee"]').value) || 0;
+        const privateFee =
+          parseFloat(document.querySelector('[name="privateFee"]').value) || 0;
+        const total = retreatFee + regFee + lateFee + privateFee;
+        document.getElementById("totalDue").value = total.toFixed(2);
+      }
+
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          alert("Form submitted successfully! (Connect to backend here)");
+          // You can post to Firebase/Google Sheets here
+        });
+    </script>
+  </body>
+</html>

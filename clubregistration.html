@@ -8,103 +8,7 @@
       rel="stylesheet"
     />
     <style>
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        font-family: "Inter", Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-        color: #333;
-      }
-
-      header {
-        background: linear-gradient(135deg, #3f51b5, #2196f3);
-        color: white;
-        padding: 2rem 1rem;
-        text-align: center;
-      }
-
-      header h1 {
-        margin: 0;
-        font-size: 2.25rem;
-      }
-      /* Dropdown container */
-      .dropdown {
-        position: relative;
-      }
-
-      /* Hidden submenu by default */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 0.5rem 0;
-        list-style: none;
-        min-width: 220px;
-        z-index: 1000;
-      }
-
-      /* Show dropdown on hover */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-
-      /* Style for dropdown items */
-      .dropdown-content li a {
-        display: block;
-        padding: 8px 16px;
-        color: #004080;
-        text-decoration: none;
-        white-space: nowrap;
-      }
-
-      .dropdown-content li a:hover {
-        background-color: #e6f0ff;
-      }
-
-      nav {
-        background-color: #ffffff;
-        padding: 1rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .nav-menu {
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin: 0;
-        padding: 0;
-      }
-
-      .nav-menu a {
-        text-decoration: none;
-        color: #004080;
-        font-weight: bold;
-        font-family: "Inter", sans-serif;
-        padding: 6px 12px;
-        border-radius: 4px;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
-        border: 1px solid transparent;
-        white-space: nowrap;
-      }
-
-      .nav-menu a:hover {
-        background-color: #e6f0ff;
-        border-color: #004080;
-      }
-
-      .nav-menu a.active {
-        background-color: #004080;
-        color: white;
-        border-color: #003366;
-      }
-
+      /* Main content styling */
       main {
         padding: 2rem;
         display: flex;
@@ -134,9 +38,9 @@
       .inline-checkbox-label {
         display: inline-flex !important;
         align-items: center;
-        margin: 0.5rem 1rem 0.5rem 0; /* some margin right to separate each label */
+        margin: 0.5rem 1rem 0.5rem 0;
         font-weight: 600;
-        gap: 0.4em; /* space between checkbox and label text */
+        gap: 0.4em;
       }
 
       .checkbox-group {
@@ -193,517 +97,507 @@
         line-height: 1.6;
       }
     </style>
-  </head>
-  <body>
-    <header>
-      <h1>BC Club Annual Application</h1>
-    </header>
-    <nav>
-      <ul class="nav-menu">
-        <li class="dropdown">
-          <a href="#">Club Forms</a>
-          <ul class="dropdown-content">
-            <li>
-              <a href="clubregistration.html" class="active"
-                >Club Registration</a
+    <html>
+      <body>
+        <div id="nav-placeholder"></div>
+        <main>
+          <form
+            id="bc-club-form"
+            method="post"
+            action="https://script.google.com/macros/s/AKfycbyfk3vKg11vqvSyekMjTLKL-DsHY7emM9Ajtk3YiPJpPpuvuJ_yFXBb0KwD0Oc9jFlo/exec"
+            onsubmit="return prepareSubmit(event)"
+          >
+            <div class="checkbox-group">
+              <p>I am applying for:</p>
+              <!-- Checkboxes to Show/Hide Club Sections -->
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="adventurers"
+                  value="true"
+                  id="adventurers-check"
+                  onclick="toggleClubSection('adventurers')"
+              /></label>
+              Adventurers
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="pathfinders"
+                  value="true"
+                  id="pathfinders-check"
+                  onclick="toggleClubSection('pathfinders')"
+              /></label>
+              Pathfinders
+
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="master_guide"
+                  value="true"
+                  id="master_guide-check"
+                  onclick="toggleClubSection('master_guide')"
+              /></label>
+              Master Guide
+            </div>
+
+            <div id="adventurers-section" class="club-section">
+              <label
+                ><h2>Philosophy of Adventurer Ministry</h2>
+                <p>
+                  The Adventurer Club is a Seventh-day Adventist
+                  Church-sponsored ministry to children aged 6 to 9 years old.
+                  There are also the Little Lamb and Eager Beaver segments for
+                  children aged 4 and 5, respectively. Around the world we have
+                  nearly 700,000 enrolled children in the Adventurer Ministry.
+                  This Ministry was created to assist parents in their important
+                  responsibilities as a child’s primary teachers and
+                  evangelizers. The program aims to strengthen the parent/child
+                  relationship and further the child’s development in spiritual,
+                  physical, mental and social areas. In this way the church,
+                  home and school can work together with the parent to develop a
+                  mature, happy child.
+                </p>
+                <p>
+                  The Church’s greatest resource is our children; therefore, it
+                  is imperative that as a church we meet the challenge to
+                  provide a ministry for our children during their early
+                  formative years. We want right habits, thoughts, motives,
+                  dispositions and attitudes to be established.
+                </p>
+                <p>
+                  The wise man wrote, “Bring up a child in the way he should go,
+                  and when he is old he will not turn from it.” (Proverbs 22:6).
+                  This is more than a cliché – it is a Bible principle which
+                  assures parents that the lessons learned in childhood will
+                  last a lifetime. Following the Lord will however, depend on
+                  the child’s choices. The Adventurer Ministry assists parents
+                  in guiding children to Christ.
+                </p></label
               >
-            </li>
-            <li><a href="clubstafflist.html">Staff List</a></li>
-            <li>
-              <a href="staffVolunteerForm.pdf">Staff Volunteer Form (PDF)</a>
-            </li>
-            <li>
-              <a href="clubMemberRegistrationForm.pdf"
-                >Club Member Registration (PDF)</a
+              <h2>Adventurers Club Information</h2>
+              <label
+                >Club Name: <input type="text" name="adventurers_club_name"
+              /></label>
+              <label
+                >Director Name:
+                <input type="text" name="adventurers_director_name"
+              /></label>
+              <label
+                >Mailing Address:
+                <input type="text" name="adventurers_mailing_address"
+              /></label>
+              <label
+                >Email: <input type="email" name="adventurers_director_email"
+              /></label>
+              <label
+                >Home Phone:
+                <input type="tel" name="adventurers_director_homephone"
+              /></label>
+              <label
+                >Cell Phone:
+                <input type="tel" name="adventurers_director_cellphone"
+              /></label>
+              <label
+                >Work Phone:
+                <input type="tel" name="adventurers_director_workphone"
+              /></label>
+              <p></p>
+              <h2>Club Online Presence</h2>
+              <label>
+                Club Website:
+                <input
+                  type="url"
+                  name="adventurersWebsite"
+                  placeholder="https://yourclubwebsite.com"
+                />
+              </label>
+              <label>
+                Facebook Page:
+                <input
+                  type="url"
+                  name="adventurersFacebook"
+                  placeholder="https://facebook.com/yourclub"
+                />
+              </label>
+              <label>
+                Instagram:
+                <input
+                  type="url"
+                  name="adventurersInstagram"
+                  placeholder="https://instagram.com/yourclub"
+                />
+              </label>
+              <label>
+                YouTube Channel:
+                <input
+                  type="url"
+                  name="adventurersYoutube"
+                  placeholder="https://youtube.com/yourchannel"
+                />
+              </label>
+              <label>
+                Other Social Media:
+                <input
+                  type="url"
+                  name="adventurersOtherSocial"
+                  placeholder="https://tiktok.com/@yourclub or other"
+                />
+              </label>
+            </div>
+
+            <div id="pathfinders-section" class="club-section">
+              <label
+                ><h2>Philosophy of the Pathfinder Ministry</h2>
+                <p>
+                  The purpose of having a Pathfinder Club is to lead its
+                  membership into a growing, redemptive relationship with
+                  Christ, and to build its membership into responsible, mature
+                  individuals in active selfless service.
+                </p>
+                <p>
+                  All pathfinder leaders are Christians, working hand in hand
+                  with parents, teachers, and pastors providing optimum
+                  opportunities for Christian development. The Pathfinder Club
+                  is an extension of the home, school and church. It is an
+                  experimental laboratory where growth and learning flourish.
+                </p>
+                <p>
+                  The membership involves youth in grades 5 – 10 (age 10 – 15)
+                  who have a desire for group activities ranging from community
+                  and world mission projects to nature, outdoor and camping
+                  activities, Annual BC Camporee, AY/Pathfinder class curriculum
+                  and AY Honors. Above all, Pathfinders give youth an
+                  environment in which to actively expand their personal
+                  experience with Christ.
+                </p></label
               >
-            </li>
-            <li><a href="clubcalendar.html">Club Calendar</a></li>
-          </ul>
-        </li>
-        <li><a href="clubreports.html">Monthly Club Reports</a></li>
-        <li>
-          <a href="youthSummitRegistration.html">Youth Summit Registration</a>
-        </li>
-        <li><a href="masterguidestatus.html">Master Guide Registration</a></li>
-        <li>
-          <a
-            href="https://calendar.google.com/calendar/u/0?cid=YWQyODJjYjZiMzJmNDZkMzRiOTJjZTMyZjdhZDc0YjcwNjk4MWI5MGEwYzgxZmQ3OTRkYzM3MmZhZjhmNzgyMkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"
-            target="_blank"
-          >
-            BC Youth Calendar
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <main>
-      <form
-        id="bc-club-form"
-        method="post"
-        action="https://script.google.com/macros/s/AKfycbyfk3vKg11vqvSyekMjTLKL-DsHY7emM9Ajtk3YiPJpPpuvuJ_yFXBb0KwD0Oc9jFlo/exec"
-        onsubmit="return prepareSubmit(event)"
-      >
-        <div class="checkbox-group">
-          <p>I am applying for:</p>
-          <!-- Checkboxes to Show/Hide Club Sections -->
-          <label class="inline-checkbox-label">
-            <input
-              type="checkbox"
-              name="adventurers"
-              value="true"
-              id="adventurers-check"
-              onclick="toggleClubSection('adventurers')"
-          /></label>
-          Adventurers
-          <label class="inline-checkbox-label">
-            <input
-              type="checkbox"
-              name="pathfinders"
-              value="true"
-              id="pathfinders-check"
-              onclick="toggleClubSection('pathfinders')"
-          /></label>
-          Pathfinders
 
-          <label class="inline-checkbox-label">
-            <input
-              type="checkbox"
-              name="master_guide"
-              value="true"
-              id="master_guide-check"
-              onclick="toggleClubSection('master_guide')"
-          /></label>
-          Master Guide
-        </div>
+              <h2>Pathfinders Club Information</h2>
+              <label
+                >Club Name: <input type="text" name="pathfinders_club_name"
+              /></label>
+              <label
+                >Director Name:
+                <input type="text" name="pathfinders_director_name"
+              /></label>
+              <label
+                >Mailing Address:
+                <input type="text" name="pathfinder_mailing_address"
+              /></label>
+              <label
+                >Email: <input type="email" name="pathfinder_director_email"
+              /></label>
+              <label
+                >Home Phone:
+                <input type="tel" name="pathfinder_director_homephone"
+              /></label>
+              <label
+                >Cell Phone:
+                <input type="tel" name="pathfinder_director_cellphone"
+              /></label>
+              <label
+                >Work Phone:
+                <input type="tel" name="pathfinder_director_workphone"
+              /></label>
+              <h2>Club Online Presence</h2>
+              <label>
+                Club Website:
+                <input
+                  type="url"
+                  name="pathfindersWebsite"
+                  placeholder="https://yourclubwebsite.com"
+                />
+              </label>
+              <label>
+                Facebook Page:
+                <input
+                  type="url"
+                  name="pathfindersFacebook"
+                  placeholder="https://facebook.com/yourclub"
+                />
+              </label>
+              <label>
+                Instagram:
+                <input
+                  type="url"
+                  name="pathfindersInstagram"
+                  placeholder="https://instagram.com/yourclub"
+                />
+              </label>
+              <label>
+                YouTube Channel:
+                <input
+                  type="url"
+                  name="pathfindersYoutube"
+                  placeholder="https://youtube.com/yourchannel"
+                />
+              </label>
+              <label>
+                Other Social Media:
+                <input
+                  type="url"
+                  name="pathfindersOtherSocial"
+                  placeholder="https://tiktok.com/@yourclub or other"
+                />
+              </label>
+            </div>
 
-        <div id="adventurers-section" class="club-section">
-          <label
-            ><h2>Philosophy of Adventurer Ministry</h2>
+            <div id="master_guide-section" class="club-section">
+              <label>
+                <h2>Philosophy of Master Guide Ministry</h2>
+                <p>
+                  The Seventh-day Adventist Church is committed to training
+                  youth and young adults for leadership and service to God and
+                  humanity.
+                </p>
+                <p>
+                  Just as God has used young people to pioneer the Adventist
+                  Church, He continually uses youth and young adults in this
+                  present generation to fulfill the mission of the Church. One
+                  of the most effective ways to cultivate their leadership
+                  potential is through the Master Guide Club ministry.
+                </p>
+                <p>
+                  The Master Guide Club provides a balanced approach to the
+                  development of the spiritual, mental, physical, and social
+                  aspects of life. Its philosophy is based on the premise that
+                  young people, with the right training, will contribute to the
+                  finishing of God’s work. When young people are given the
+                  opportunity to take leadership roles, to be actively involved
+                  in discipling those in Adventurer Club, Pathfinder Club, Youth
+                  Ministries, and church ministries, and to take part in
+                  community service endeavors, they will be able to take
+                  ownership of the mission of the Church and gain life-changing
+                  experiences that will inspire their leadership and ministry.
+                </p>
+                <p>
+                  In addition, the Master Guide Club exists to disciple
+                  children, youth, and young adults in conjunction with the
+                  Great Commission (Matt. 28:19–20). With love as the
+                  distinguishing mark of a true disciple of Christ (John 13:35),
+                  the Master Guide Club will offer a friendly environment where
+                  everyone is loved, trusted, and supported, and meaningful
+                  relationships are forged. It is also a place where candidates
+                  will grow together spiritually and learn to work together
+                  using their God-given talents and spiritual gifts.
+                </p>
+                <p>
+                  The Master Guide Club exists primarily for Adventurer Club,
+                  Pathfinder Club, Youth Ministries, and church ministries.
+                </p></label
+              >
+              <h2>Master Guide Club Information</h2>
+              <label
+                >Club Name: <input type="text" name="master_guide_club_name"
+              /></label>
+              <label
+                >Director Name:
+                <input type="text" name="master_guide_director_name"
+              /></label>
+              <label
+                >Mailing Address:
+                <input type="text" name="master_guide_mailing_address"
+              /></label>
+              <label
+                >Email: <input type="email" name="master_guide_director_email"
+              /></label>
+              <label
+                >Home Phone:
+                <input type="tel" name="master_guide_director_homephone"
+              /></label>
+              <label
+                >Cell Phone:
+                <input type="tel" name="master_guide_director_cellphone"
+              /></label>
+              <label
+                >Work Phone:
+                <input type="tel" name="master_guide_director_workphone"
+              /></label>
+              <h2>Club Online Presence</h2>
+              <label>
+                Club Website:
+                <input
+                  type="url"
+                  name="masterguideWebsite"
+                  placeholder="https://yourclubwebsite.com"
+                />
+              </label>
+              <label>
+                Facebook Page:
+                <input
+                  type="url"
+                  name="masterguideFacebook"
+                  placeholder="https://facebook.com/yourclub"
+                />
+              </label>
+              <label>
+                Instagram:
+                <input
+                  type="url"
+                  name="masterguideInstagram"
+                  placeholder="https://instagram.com/yourclub"
+                />
+              </label>
+              <label>
+                YouTube Channel:
+                <input
+                  type="url"
+                  name="masterguideYoutube"
+                  placeholder="https://youtube.com/yourchannel"
+                />
+              </label>
+              <label>
+                Other Social Media:
+                <input
+                  type="url"
+                  name="masterguideOtherSocial"
+                  placeholder="https://tiktok.com/@yourclub or other"
+                />
+              </label>
+            </div>
+
+            <h2>Your Commitment to Pathfinders and Adventurers</h2>
             <p>
-              The Adventurer Club is a Seventh-day Adventist Church-sponsored
-              ministry to children aged 6 to 9 years old. There are also the
-              Little Lamb and Eager Beaver segments for children aged 4 and 5,
-              respectively. Around the world we have nearly 700,000 enrolled
-              children in the Adventurer Ministry. This Ministry was created to
-              assist parents in their important responsibilities as a child’s
-              primary teachers and evangelizers. The program aims to strengthen
-              the parent/child relationship and further the child’s development
-              in spiritual, physical, mental and social areas. In this way the
-              church, home and school can work together with the parent to
-              develop a mature, happy child.
+              We, the undersigned, have read, understood, and are in full
+              agreement with the above Philosophy of the Pathfinder Ministry,
+              Adventurer Ministry, or Master Guide Ministry and agree to support
+              our club(s) through those means with which the Lord has blessed
+              this church, including financially; Invoices for supplies and
+              Conference Sponsored Events (Camporee), securing a place to meet,
+              transportation on outings, and other such needs as may arise in
+              the fulfillment of this ministry, and to assist and support the
+              work of the these ministry's in the BC Conference and around the
+              world.
             </p>
             <p>
-              The Church’s greatest resource is our children; therefore, it is
-              imperative that as a church we meet the challenge to provide a
-              ministry for our children during their early formative years. We
-              want right habits, thoughts, motives, dispositions and attitudes
-              to be established.
+              We understand that all staff and volunteers 19 and older are
+              required to have a CRC from the Criminal Records Review Program
+              (CRRP) prior to club involvement. <br />
+              <strong>
+                *A valid Criminal Record Clearance Letter is required to be in
+                our files for all Leaders, Parents and Adults 19 years and older
+                before they are present at any meetings, activities or events.*
+              </strong>
             </p>
-            <p>
-              The wise man wrote, “Bring up a child in the way he should go, and
-              when he is old he will not turn from it.” (Proverbs 22:6). This is
-              more than a cliché – it is a Bible principle which assures parents
-              that the lessons learned in childhood will last a lifetime.
-              Following the Lord will however, depend on the child’s choices.
-              The Adventurer Ministry assists parents in guiding children to
-              Christ.
-            </p></label
-          >
-          <h2>Adventurers Club Information</h2>
-          <label
-            >Club Name: <input type="text" name="adventurers_club_name"
-          /></label>
-          <label
-            >Director Name: <input type="text" name="adventurers_director_name"
-          /></label>
-          <label
-            >Mailing Address:
-            <input type="text" name="adventurers_mailing_address"
-          /></label>
-          <label
-            >Email: <input type="email" name="adventurers_director_email"
-          /></label>
-          <label
-            >Home Phone:
-            <input type="tel" name="adventurers_director_homephone"
-          /></label>
-          <label
-            >Cell Phone:
-            <input type="tel" name="adventurers_director_cellphone"
-          /></label>
-          <label
-            >Work Phone:
-            <input type="tel" name="adventurers_director_workphone"
-          /></label>
-          <p></p>
-          <h2>Club Online Presence</h2>
-          <label>
-            Club Website:
-            <input
-              type="url"
-              name="adventurersWebsite"
-              placeholder="https://yourclubwebsite.com"
-            />
-          </label>
-          <label>
-            Facebook Page:
-            <input
-              type="url"
-              name="adventurersFacebook"
-              placeholder="https://facebook.com/yourclub"
-            />
-          </label>
-          <label>
-            Instagram:
-            <input
-              type="url"
-              name="adventurersInstagram"
-              placeholder="https://instagram.com/yourclub"
-            />
-          </label>
-          <label>
-            YouTube Channel:
-            <input
-              type="url"
-              name="adventurersYoutube"
-              placeholder="https://youtube.com/yourchannel"
-            />
-          </label>
-          <label>
-            Other Social Media:
-            <input
-              type="url"
-              name="adventurersOtherSocial"
-              placeholder="https://tiktok.com/@yourclub or other"
-            />
-          </label>
-        </div>
+            <label
+              >Sponsoring Church:
+              <input type="text" name="sponsoring_church" required
+            /></label>
+            <label
+              >Person Submitting Application:
+              <input type="text" name="club_director" required
+            /></label>
+            <br /><br />
+            <label
+              style="
+                display: inline-block;
+                max-width: 400px;
+                width: 90%;
+                margin-bottom: 1rem;
+              "
+            >
+              Date of Board Approval:
+              <input
+                type="date"
+                name="board_approval_date"
+                required
+                style="width: 100%; box-sizing: border-box"
+              />
+            </label>
 
-        <div id="pathfinders-section" class="club-section">
-          <label
-            ><h2>Philosophy of the Pathfinder Ministry</h2>
-            <p>
-              The purpose of having a Pathfinder Club is to lead its membership
-              into a growing, redemptive relationship with Christ, and to build
-              its membership into responsible, mature individuals in active
-              selfless service.
-            </p>
-            <p>
-              All pathfinder leaders are Christians, working hand in hand with
-              parents, teachers, and pastors providing optimum opportunities for
-              Christian development. The Pathfinder Club is an extension of the
-              home, school and church. It is an experimental laboratory where
-              growth and learning flourish.
-            </p>
-            <p>
-              The membership involves youth in grades 5 – 10 (age 10 – 15) who
-              have a desire for group activities ranging from community and
-              world mission projects to nature, outdoor and camping activities,
-              Annual BC Camporee, AY/Pathfinder class curriculum and AY Honors.
-              Above all, Pathfinders give youth an environment in which to
-              actively expand their personal experience with Christ.
-            </p></label
-          >
+            <h2>Pastor Email</h2>
+            <label
+              >Pastor's Email:<input type="email" name="pastor_email" required
+            /></label>
+            <h2>Clerk/Treasurer Email</h2>
+            <label
+              >Clerk/Treasurer Email:<input
+                type="email"
+                name="clerk_email"
+                required
+            /></label>
 
-          <h2>Pathfinders Club Information</h2>
-          <label
-            >Club Name: <input type="text" name="pathfinders_club_name"
-          /></label>
-          <label
-            >Director Name: <input type="text" name="pathfinders_director_name"
-          /></label>
-          <label
-            >Mailing Address:
-            <input type="text" name="pathfinder_mailing_address"
-          /></label>
-          <label
-            >Email: <input type="email" name="pathfinder_director_email"
-          /></label>
-          <label
-            >Home Phone: <input type="tel" name="pathfinder_director_homephone"
-          /></label>
-          <label
-            >Cell Phone: <input type="tel" name="pathfinder_director_cellphone"
-          /></label>
-          <label
-            >Work Phone: <input type="tel" name="pathfinder_director_workphone"
-          /></label>
-          <h2>Club Online Presence</h2>
-          <label>
-            Club Website:
-            <input
-              type="url"
-              name="pathfindersWebsite"
-              placeholder="https://yourclubwebsite.com"
-            />
-          </label>
-          <label>
-            Facebook Page:
-            <input
-              type="url"
-              name="pathfindersFacebook"
-              placeholder="https://facebook.com/yourclub"
-            />
-          </label>
-          <label>
-            Instagram:
-            <input
-              type="url"
-              name="pathfindersInstagram"
-              placeholder="https://instagram.com/yourclub"
-            />
-          </label>
-          <label>
-            YouTube Channel:
-            <input
-              type="url"
-              name="pathfindersYoutube"
-              placeholder="https://youtube.com/yourchannel"
-            />
-          </label>
-          <label>
-            Other Social Media:
-            <input
-              type="url"
-              name="pathfindersOtherSocial"
-              placeholder="https://tiktok.com/@yourclub or other"
-            />
-          </label>
-        </div>
+            <br /><br />
+            <button type="submit" id="submitBtn">Submit Application</button>
+          </form>
+        </main>
+        <script>
+          fetch("nav.html")
+            .then((res) => res.text())
+            .then((data) => {
+              document.getElementById("nav-placeholder").innerHTML = data;
 
-        <div id="master_guide-section" class="club-section">
-          <label>
-            <h2>Philosophy of Master Guide Ministry</h2>
-            <p>
-              The Seventh-day Adventist Church is committed to training youth
-              and young adults for leadership and service to God and humanity.
-            </p>
-            <p>
-              Just as God has used young people to pioneer the Adventist Church,
-              He continually uses youth and young adults in this present
-              generation to fulfill the mission of the Church. One of the most
-              effective ways to cultivate their leadership potential is through
-              the Master Guide Club ministry.
-            </p>
-            <p>
-              The Master Guide Club provides a balanced approach to the
-              development of the spiritual, mental, physical, and social aspects
-              of life. Its philosophy is based on the premise that young people,
-              with the right training, will contribute to the finishing of God’s
-              work. When young people are given the opportunity to take
-              leadership roles, to be actively involved in discipling those in
-              Adventurer Club, Pathfinder Club, Youth Ministries, and church
-              ministries, and to take part in community service endeavors, they
-              will be able to take ownership of the mission of the Church and
-              gain life-changing experiences that will inspire their leadership
-              and ministry.
-            </p>
-            <p>
-              In addition, the Master Guide Club exists to disciple children,
-              youth, and young adults in conjunction with the Great Commission
-              (Matt. 28:19–20). With love as the distinguishing mark of a true
-              disciple of Christ (John 13:35), the Master Guide Club will offer
-              a friendly environment where everyone is loved, trusted, and
-              supported, and meaningful relationships are forged. It is also a
-              place where candidates will grow together spiritually and learn to
-              work together using their God-given talents and spiritual gifts.
-            </p>
-            <p>
-              The Master Guide Club exists primarily for Adventurer Club,
-              Pathfinder Club, Youth Ministries, and church ministries.
-            </p></label
-          >
-          <h2>Master Guide Club Information</h2>
-          <label
-            >Club Name: <input type="text" name="master_guide_club_name"
-          /></label>
-          <label
-            >Director Name:
-            <input type="text" name="master_guide_director_name"
-          /></label>
-          <label
-            >Mailing Address:
-            <input type="text" name="master_guide_mailing_address"
-          /></label>
-          <label
-            >Email: <input type="email" name="master_guide_director_email"
-          /></label>
-          <label
-            >Home Phone:
-            <input type="tel" name="master_guide_director_homephone"
-          /></label>
-          <label
-            >Cell Phone:
-            <input type="tel" name="master_guide_director_cellphone"
-          /></label>
-          <label
-            >Work Phone:
-            <input type="tel" name="master_guide_director_workphone"
-          /></label>
-          <h2>Club Online Presence</h2>
-          <label>
-            Club Website:
-            <input
-              type="url"
-              name="masterguideWebsite"
-              placeholder="https://yourclubwebsite.com"
-            />
-          </label>
-          <label>
-            Facebook Page:
-            <input
-              type="url"
-              name="masterguideFacebook"
-              placeholder="https://facebook.com/yourclub"
-            />
-          </label>
-          <label>
-            Instagram:
-            <input
-              type="url"
-              name="masterguideInstagram"
-              placeholder="https://instagram.com/yourclub"
-            />
-          </label>
-          <label>
-            YouTube Channel:
-            <input
-              type="url"
-              name="masterguideYoutube"
-              placeholder="https://youtube.com/yourchannel"
-            />
-          </label>
-          <label>
-            Other Social Media:
-            <input
-              type="url"
-              name="masterguideOtherSocial"
-              placeholder="https://tiktok.com/@yourclub or other"
-            />
-          </label>
-        </div>
+              // Dynamically set "active" class on current page link
+              const currentPage = location.pathname.split("/").pop(); // gets e.g., 'clubcalendar.html'
+              const links = document.querySelectorAll("#nav-placeholder a");
+              links.forEach((link) => {
+                // Check if the href ends with current page
+                if (link.getAttribute("href") === currentPage) {
+                  link.classList.add("active");
+                }
+              });
+            })
+            .catch((err) => console.error("Failed to load nav:", err));
 
-        <h2>Your Commitment to Pathfinders and Adventurers</h2>
-        <p>
-          We, the undersigned, have read, understood, and are in full agreement
-          with the above Philosophy of the Pathfinder Ministry, Adventurer
-          Ministry, or Master Guide Ministry and agree to support our club(s)
-          through those means with which the Lord has blessed this church,
-          including financially; Invoices for supplies and Conference Sponsored
-          Events (Camporee), securing a place to meet, transportation on
-          outings, and other such needs as may arise in the fulfillment of this
-          ministry, and to assist and support the work of the these ministry's
-          in the BC Conference and around the world.
-        </p>
-        <p>
-          We understand that all staff and volunteers 19 and older are required
-          to have a CRC from the Criminal Records Review Program (CRRP) prior to
-          club involvement. <br />
-          <strong>
-            *A valid Criminal Record Clearance Letter is required to be in our
-            files for all Leaders, Parents and Adults 19 years and older before
-            they are present at any meetings, activities or events.*
-          </strong>
-        </p>
-        <label
-          >Sponsoring Church:
-          <input type="text" name="sponsoring_church" required
-        /></label>
-        <label
-          >Person Submitting Application:
-          <input type="text" name="club_director" required
-        /></label>
-        <br /><br />
-        <label
-          style="
-            display: inline-block;
-            max-width: 400px;
-            width: 90%;
-            margin-bottom: 1rem;
-          "
-        >
-          Date of Board Approval:
-          <input
-            type="date"
-            name="board_approval_date"
-            required
-            style="width: 100%; box-sizing: border-box"
-          />
-        </label>
-
-        <h2>Pastor Email</h2>
-        <label
-          >Pastor's Email:<input type="email" name="pastor_email" required
-        /></label>
-        <h2>Clerk/Treasurer Email</h2>
-        <label
-          >Clerk/Treasurer Email:<input
-            type="email"
-            name="clerk_email"
-            required
-        /></label>
-
-        <br /><br />
-        <button type="submit" id="submitBtn">Submit Application</button>
-      </form>
-    </main>
-    <script>
-      function toggleClubSection(club) {
-        const checkbox = document.getElementById(`${club}-check`);
-        const section = document.getElementById(`${club}-section`);
-        section.style.display = checkbox.checked ? "block" : "none";
-      }
-
-      function prepareSubmit() {
-        return true;
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("bc-club-form");
-        const submitBtn = form.querySelector('button[type="submit"]');
-        const actionURL = form.getAttribute("action");
-        let formSubmitted = false;
-
-        form.addEventListener("submit", async function (event) {
-          event.preventDefault();
-          if (formSubmitted) return;
-
-          prepareSubmit(); // no-op now
-          formSubmitted = true;
-          submitBtn.disabled = true;
-
-          const formData = new FormData(form);
-          const params = new URLSearchParams();
-
-          for (const [key, value] of formData.entries()) {
-            params.append(key, value);
+          function toggleClubSection(club) {
+            const checkbox = document.getElementById(`${club}-check`);
+            const section = document.getElementById(`${club}-section`);
+            section.style.display = checkbox.checked ? "block" : "none";
           }
-          try {
-            const response = await fetch(actionURL, {
-              method: "POST",
-              headers: {
-                "Content-Type":
-                  "application/x-www-form-urlencoded;charset=UTF-8",
-              },
-              body: params.toString(),
+
+          function prepareSubmit() {
+            return true;
+          }
+
+          document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("bc-club-form");
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const actionURL = form.getAttribute("action");
+            let formSubmitted = false;
+
+            form.addEventListener("submit", async function (event) {
+              event.preventDefault();
+              if (formSubmitted) return;
+
+              prepareSubmit(); // no-op now
+              formSubmitted = true;
+              submitBtn.disabled = true;
+
+              const formData = new FormData(form);
+              const params = new URLSearchParams();
+
+              for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+              }
+              try {
+                const response = await fetch(actionURL, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type":
+                      "application/x-www-form-urlencoded;charset=UTF-8",
+                  },
+                  body: params.toString(),
+                });
+
+                const result = await response.json();
+
+                if (result.result === "success") {
+                  alert("Submission successful! Thank you.");
+                  form.reset();
+                } else {
+                  alert("Something went wrong. Please try again.");
+                }
+              } catch (error) {
+                console.error(error);
+                alert("Error submitting the form.");
+              } finally {
+                formSubmitted = false;
+                submitBtn.disabled = false;
+              }
             });
-
-            const result = await response.json();
-
-            if (result.result === "success") {
-              alert("Submission successful! Thank you.");
-              form.reset();
-            } else {
-              alert("Something went wrong. Please try again.");
-            }
-          } catch (error) {
-            console.error(error);
-            alert("Error submitting the form.");
-          } finally {
-            formSubmitted = false;
-            submitBtn.disabled = false;
-          }
-        });
-      });
-    </script>
-  </body>
+          });
+        </script>
+      </body>
+    </html>
+  </head>
 </html>
