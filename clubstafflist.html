@@ -11,10 +11,6 @@
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
       main {
@@ -43,6 +39,7 @@
         padding: 1rem;
         margin-bottom: 1rem;
       }
+
       label {
         display: block;
         margin: 1rem 0 0.5rem;
@@ -52,7 +49,7 @@
         display: flex !important;
         align-items: center;
         gap: 0.5rem;
-        margin: 1rem 0; /* Match spacing with other labels */
+        margin: 1rem 0;
       }
 
       input,
@@ -64,7 +61,6 @@
         border: 1px solid #ccc;
       }
 
-      /* Prevent checkboxes from stretching full width */
       input[type="text"],
       input[type="email"],
       input[type="date"],
@@ -72,6 +68,7 @@
       select {
         width: 100%;
       }
+
       button {
         margin-top: 1rem;
         padding: 0.5rem 1rem;
@@ -90,7 +87,6 @@
   <body>
     <div id="nav-placeholder"></div>
 
-    <!-- ✅ Centered form using main wrapper -->
     <main>
       <div class="form-container">
         <form
@@ -110,6 +106,7 @@
             </p>
             <p>* Adults 19+ may only attend events if clearance is on file.</p>
           </div>
+
           <p>
             📄 Download the
             <a
@@ -121,6 +118,7 @@
             </a>
             to print and file in the church records.
           </p>
+
           <label for="club">
             Club Name:
             <input type="text" id="club" name="club" required />
@@ -132,10 +130,11 @@
                 <legend>Staff Member</legend>
 
                 <label>Name: <input type="text" name="name" required /></label>
-                <label
-                  >Email: **Only Required for E-mail Distribution list**
-                  <input type="email" name="email" required
-                /></label>
+
+                <label>
+                  Email: **Only Required for E-mail Distribution list**
+                  <input type="email" name="email" required />
+                </label>
 
                 <label>
                   Criminal Record Check submitted at: <br />
@@ -278,25 +277,22 @@
                 </label>
               </div>
             </fieldset>
-            <br /><br />
           </div>
           <button type="submit">Submit</button>
         </form>
       </div>
     </main>
+
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
+      // Navigation loading
       fetch("nav.html")
         .then((res) => res.text())
         .then((data) => {
-          // Insert nav.html into placeholder
           document.getElementById("nav-placeholder").innerHTML = data;
-
-          // Highlight current page link
           const currentPage = location.pathname.split("/").pop();
-          const links = document.querySelectorAll("#nav-placeholder a");
-          links.forEach((link) => {
+          document.querySelectorAll("#nav-placeholder a").forEach((link) => {
             if (link.getAttribute("href") === currentPage) {
               link.classList.add("active");
             }
@@ -304,108 +300,100 @@
         })
         .catch((err) => console.error("Failed to load nav:", err));
 
-      // Show/hide date input based on "Yes"/"No" selection for CRC and certification
+      // Flatpickr helper
+      function initFlatpickrFor(input) {
+        if (!input._flatpickr) {
+          flatpickr(input, {
+            dateFormat: "Y-m-d",
+            allowInput: true,
+          });
+        }
+      }
+
+      // Toggle date input display
       function toggleDateInput(selectElem) {
         const value = selectElem.value;
         if (selectElem.name === "crc") {
           const label = selectElem.closest("label").nextElementSibling;
           if (label && label.classList.contains("crcDateLabel")) {
+            const input = label.querySelector("input");
             if (value === "Yes") {
               label.style.display = "block";
-              label.querySelector("input").disabled = false;
+              input.disabled = false;
+              initFlatpickrFor(input);
             } else {
               label.style.display = "none";
-              label.querySelector("input").disabled = true;
-              label.querySelector("input").value = "";
+              input.disabled = true;
+              input.value = "";
             }
           }
         } else if (selectElem.name === "certificationStatus") {
           const label = selectElem.closest("label").nextElementSibling;
           if (label && label.classList.contains("certDateLabel")) {
+            const input = label.querySelector("input");
             if (value === "Certified") {
               label.style.display = "block";
-              label.querySelector("input").disabled = false;
+              input.disabled = false;
+              initFlatpickrFor(input);
             } else {
               label.style.display = "none";
-              label.querySelector("input").disabled = true;
-              label.querySelector("input").value = "";
+              input.disabled = true;
+              input.value = "";
             }
           }
         }
       }
 
+      // Add staff
       function addStaffEntry() {
         const staffEntries = document.getElementById("staffEntries");
         const staffList = staffEntries.querySelectorAll(".staff");
         const lastStaff = staffList[staffList.length - 1];
         const newStaff = lastStaff.cloneNode(true);
 
-        // Clear input values in the cloned block
+        // Clear inputs
         newStaff.querySelectorAll("input, select").forEach((el) => {
-          if (el.type === "checkbox") {
-            el.checked = false;
-          } else {
-            el.value = "";
-          }
+          if (el.type === "checkbox") el.checked = false;
+          else el.value = "";
         });
 
-        // Hide and disable date inputs in cloned block
+        // Hide and disable date fields
         const crcDateLabel = newStaff.querySelector(".crcDateLabel");
         const certDateLabel = newStaff.querySelector(".certDateLabel");
 
-        if (crcDateLabel) {
-          crcDateLabel.style.display = "none";
-          const input = crcDateLabel.querySelector("input");
-          if (input) {
+        [crcDateLabel, certDateLabel].forEach((label) => {
+          if (label) {
+            label.style.display = "none";
+            const input = label.querySelector("input");
             input.disabled = true;
             input.value = "";
+            input._flatpickr?.destroy();
+            initFlatpickrFor(input);
           }
-        }
-        if (certDateLabel) {
-          certDateLabel.style.display = "none";
-          const input = certDateLabel.querySelector("input");
-          if (input) {
-            input.disabled = true;
-            input.value = "";
-          }
-        }
+        });
 
-        // Add event listeners for the new select elements to toggle date inputs
-        const crcSelect = newStaff.querySelector('select[name="crc"]');
-        const certSelect = newStaff.querySelector(
-          'select[name="certificationStatus"]'
-        );
-
-        if (crcSelect) {
-          crcSelect.addEventListener("change", function () {
-            toggleDateInput(this);
+        // Reattach select listeners
+        newStaff
+          .querySelectorAll('select[name="crc"], select[name="certificationStatus"]')
+          .forEach((sel) => {
+            sel.addEventListener("change", function () {
+              toggleDateInput(this);
+            });
           });
-        }
-        if (certSelect) {
-          certSelect.addEventListener("change", function () {
-            toggleDateInput(this);
-          });
-        }
 
-        // Append new staff entry
         staffEntries.appendChild(newStaff);
-
-        // Initialize flatpickr for any date inputs inside newStaff
-        flatpickr(newStaff.querySelectorAll('input[type="date"]'));
       }
 
+      // Remove staff
       function removeStaffEntry() {
         const staffEntries = document.getElementById("staffEntries");
         const staffList = staffEntries.querySelectorAll(".staff");
-        if (staffList.length > 1) {
-          staffEntries.removeChild(staffList[staffList.length - 1]);
-        } else {
-          alert("You must keep at least one staff entry.");
-        }
+        if (staffList.length > 1) staffEntries.removeChild(staffList[staffList.length - 1]);
+        else alert("You must keep at least one staff entry.");
       }
 
+      // Form submission
       let formSubmitted = false;
-
       document.addEventListener("DOMContentLoaded", () => {
         const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
@@ -413,109 +401,53 @@
           if (formSubmitted) {
             alert("Submission successful! Thank you.");
             formSubmitted = false;
-            document
-              .getElementById("staffForm")
-              .querySelector('button[type="submit"]').disabled = false;
+            document.querySelector("#staffForm button[type='submit']").disabled = false;
           }
         });
 
-        // Attach change listeners on initial selects for toggleDateInput
         document
-          .querySelectorAll("#staffEntries select[name='crc']")
-          .forEach((sel) => {
-            sel.addEventListener("change", function () {
-              toggleDateInput(this);
-            });
-          });
-        document
-          .querySelectorAll("#staffEntries select[name='certificationStatus']")
+          .querySelectorAll("#staffEntries select[name='crc'], #staffEntries select[name='certificationStatus']")
           .forEach((sel) => {
             sel.addEventListener("change", function () {
               toggleDateInput(this);
             });
           });
 
-        // Initialize flatpickr for any existing date inputs
         flatpickr(document.querySelectorAll('input[type="date"]'));
 
-        document
-          .getElementById("staffForm")
-          .addEventListener("submit", function (event) {
-            event.preventDefault();
-            if (formSubmitted) return;
+        document.getElementById("staffForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (formSubmitted) return;
+          formSubmitted = true;
+          this.querySelector('button[type="submit"]').disabled = true;
 
-            formSubmitted = true;
-            this.querySelector('button[type="submit"]').disabled = true;
+          // Enable hidden inputs before submit
+          document.querySelectorAll("#staffEntries .staff input[type='date']").forEach((i) => (i.disabled = false));
 
-            // Enable all date inputs before collecting data
-            document
-              .querySelectorAll("#staffEntries .staff")
-              .forEach((entry) => {
-                const crcInput = entry.querySelector(
-                  'input[name="crcExpirationDate"]'
-                );
-                const certInput = entry.querySelector(
-                  'input[name="certificationExpirationDate"]'
-                );
-                if (crcInput) crcInput.disabled = false;
-                if (certInput) certInput.disabled = false;
-              });
+          const staffList = [];
+          document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
+            const get = (sel) => entry.querySelector(`[name="${sel}"]`);
+            const getVal = (sel) => get(sel)?.value?.trim() || "";
+            const getChecked = (sel) => get(sel)?.checked || false;
 
-            const staffList = [];
-            document
-              .querySelectorAll("#staffEntries .staff")
-              .forEach((entry) => {
-                const get = (sel) => entry.querySelector(`[name="${sel}"]`);
-                const getVal = (sel) => get(sel)?.value?.trim() || "";
-                const getChecked = (sel) => get(sel)?.checked || false;
-
-                staffList.push({
-                  name: getVal("name"),
-                  email: getVal("email"),
-                  crc: getVal("crc"),
-                  crcExpirationDate: getVal("crcExpirationDate"),
-                  acl: getVal("acl"),
-                  certificationStatus: getVal("certificationStatus"),
-                  certificationExpirationDate: getVal(
-                    "certificationExpirationDate"
-                  ),
-                  driversAbstract: getVal("driversAbstract"),
-                  insurance: getVal("insurance"),
-                  volunteersApproved: getVal("volunteersApproved"),
-                  volunteerForm: getChecked("volunteerForm"),
-                });
-              });
-
-            document.getElementById("staffListInput").value =
-              JSON.stringify(staffList);
-            this.submit();
-
-            // Re-disable inputs after submission if hidden
-            setTimeout(() => {
-              document
-                .querySelectorAll("#staffEntries .staff")
-                .forEach((entry) => {
-                  const crcInput = entry.querySelector(
-                    'input[name="crcExpirationDate"]'
-                  );
-                  const certInput = entry.querySelector(
-                    'input[name="certificationExpirationDate"]'
-                  );
-                  if (
-                    crcInput &&
-                    crcInput.closest(".crcDateLabel").style.display === "none"
-                  ) {
-                    crcInput.disabled = true;
-                  }
-                  if (
-                    certInput &&
-                    certInput.closest(".certDateLabel").style.display === "none"
-                  ) {
-                    certInput.disabled = true;
-                  }
-                });
-            }, 500);
+            staffList.push({
+              name: getVal("name"),
+              email: getVal("email"),
+              crc: getVal("crc"),
+              crcExpirationDate: getVal("crcExpirationDate"),
+              acl: getVal("acl"),
+              certificationStatus: getVal("certificationStatus"),
+              certificationExpirationDate: getVal("certificationExpirationDate"),
+              driversAbstract: getVal("driversAbstract"),
+              insurance: getVal("insurance"),
+              volunteersApproved: getVal("volunteersApproved"),
+              volunteerForm: getChecked("volunteerForm"),
+            });
           });
+
+          document.getElementById("staffListInput").value = JSON.stringify(staffList);
+          this.submit();
+        });
       });
     </script>
   </body>
