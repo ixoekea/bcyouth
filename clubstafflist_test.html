@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Staff List</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      .instructions {
+        font-size: 0.95rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      fieldset {
+        border: 1px solid #ccc;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+
+      .inline-checkbox-label {
+        display: flex !important;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 1rem 0; /* Match spacing with other labels */
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      /* Prevent checkboxes from stretching full width */
+      input[type="text"],
+      input[type="email"],
+      input[type="date"],
+      textarea,
+      select {
+        width: 100%;
+      }
+      button {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #303f9f;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="nav-placeholder"></div>
+
+    <!-- ✅ Centered form using main wrapper -->
+    <main>
+      <div class="form-container">
+        <form
+          id="staffForm"
+          action="https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec"
+          method="post"
+          target="hidden_iframe"
+        >
+          <div class="instructions">
+            <p>* Provide at least 2 or 3 emails for the distribution list.</p>
+            <p>
+              * To add volunteers after October 1, submit a new form with only
+              the additions.
+            </p>
+            <p>
+              * All adults 19+ must submit a Criminal Record Clearance Letter.
+            </p>
+            <p>* Adults 19+ may only attend events if clearance is on file.</p>
+          </div>
+          <p>
+            📄 Download the
+            <a
+              href="pdfs/staffVolunteerForm.pdf"
+              target="_blank"
+              rel="noopener"
+            >
+              Staff Volunteer Form (PDF)
+            </a>
+            to print and file in the church records.
+          </p>
+          <label for="club">
+            Club Name:
+            <input type="text" id="club" name="club" required />
+          </label>
+          <form style="display: flex; gap: 1rem; white-space: nowrap">
+            <label
+              style="display: inline-flex; align-items: center; gap: 0.25rem"
+            >
+              <input type="radio" name="choice" value="AdventurerClub" />
+              Adventurer Club
+            </label>
+
+            <label
+              style="display: inline-flex; align-items: center; gap: 0.25rem"
+            >
+              <input type="radio" name="choice" value="PathfinderClub" />
+              Pathfinder Club
+            </label>
+          </form>
+          <br />
+          <div id="staffEntries">
+            <div class="staff">
+              <fieldset>
+                <legend>Staff Member</legend>
+
+                <label>Name: <input type="text" name="name" required /></label>
+                <label
+                  >Email: **Only Required for E-mail Distribution list**
+                  <input type="email" name="email"
+                /></label>
+                <label class="inline-checkbox-label">
+                  <input type="checkbox" name="checkboxage" />
+                  Are you over 19+?
+                </label>
+
+                <label>
+                  Criminal Record Check submitted at: <br />
+                  <a
+                    href="https://justice.gov.bc.ca/criminalrecordcheck"
+                    target="_blank"
+                  >
+                    https://justice.gov.bc.ca/criminalrecordcheck
+                  </a>
+                  <br />Access Code: <strong>XRS5QDZLH6</strong>
+                  <select name="crc" onchange="toggleDateInput(this)">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label class="crcDateLabel" style="display: none">
+                  Criminal Record Check Expiration Date:
+                  <input type="date" name="crcExpirationDate" disabled />
+                </label>
+
+                <label>
+                  ACL Abuse Certificate:
+                  <select name="acl">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  First Aid Certification Status:
+                  <select
+                    name="certificationStatus"
+                    onchange="toggleDateInput(this)"
+                  >
+                    <option value="Not Certified">Not Certified</option>
+                    <option value="Certified">Certified</option>
+                  </select>
+                </label>
+
+                <label class="certDateLabel" style="display: none">
+                  Certification Expiration Date:
+                  <input
+                    type="date"
+                    name="certificationExpirationDate"
+                    disabled
+                  />
+                </label>
+
+                <label>
+                  Driver's Abstract: **Sent in to BC Conference**
+                  <select name="driversAbstract">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  5 Million Vehicle Liability Insurance: **Sent in to local
+                  church**
+                  <select name="insurance">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label>
+                  Volunteers Approved:
+                  <select name="volunteersApproved">
+                    <option value="No">No</option>
+                    <option value="Yes">Yes</option>
+                  </select>
+                </label>
+
+                <label class="inline-checkbox-label">
+                  <input type="checkbox" name="volunteerForm" />
+                  Volunteer Form Submitted to Local Church
+                </label>
+              </fieldset>
+            </div>
+          </div>
+
+          <input type="hidden" name="staffList" id="staffListInput" />
+
+          <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
+          <button type="button" onclick="removeStaffEntry()">
+            - Remove Last
+          </button>
+
+          <br /><br />
+          <label class="inline-checkbox-label">
+            <input type="checkbox" name="CRC-FinalCheck" required />
+            * I understand all volunteers, including parents, must complete
+            their Criminal Records application.
+          </label>
+
+          <div id="whatsappSection" style="margin-top: 2em">
+            <fieldset>
+              <h3>WhatsApp Communication Contacts</h3>
+              <p>
+                Please select 2 staff members as contacts to represent your club
+                in the WhatsApp group chat.
+              </p>
+
+              <div class="whatsapp-entry">
+                <label>
+                  Contact 1:
+                  <input
+                    type="text"
+                    name="whatsappName1"
+                    placeholder="First contact name"
+                  />
+                </label>
+                <label>
+                  Phone 1:
+                  <input
+                    type="tel"
+                    name="whatsappPhone1"
+                    placeholder="Phone number with area code"
+                  />
+                </label>
+              </div>
+
+              <div class="whatsapp-entry">
+                <label>
+                  Contact 2 (optional):
+                  <input
+                    type="text"
+                    name="whatsappName2"
+                    placeholder="Second contact name"
+                  />
+                </label>
+                <label>
+                  Phone 2 (optional):
+                  <input
+                    type="tel"
+                    name="whatsappPhone2"
+                    placeholder="Phone number with area code"
+                  />
+                </label>
+              </div>
+            </fieldset>
+            <br /><br />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </main>
+    <iframe name="hidden_iframe" style="display: none"></iframe>
+
+    <script>
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          // Insert nav.html into placeholder
+          document.getElementById("nav-placeholder").innerHTML = data;
+
+          // Highlight current page link
+          const currentPage = location.pathname.split("/").pop();
+          const links = document.querySelectorAll("#nav-placeholder a");
+          links.forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        })
+        .catch((err) => console.error("Failed to load nav:", err));
+
+      // Show/hide date input based on "Yes"/"No" selection for CRC and certification
+      function toggleDateInput(selectElem) {
+        const value = selectElem.value;
+        if (selectElem.name === "crc") {
+          const label = selectElem.closest("label").nextElementSibling;
+          if (label && label.classList.contains("crcDateLabel")) {
+            if (value === "Yes") {
+              label.style.display = "block";
+              label.querySelector("input").disabled = false;
+            } else {
+              label.style.display = "none";
+              label.querySelector("input").disabled = true;
+              label.querySelector("input").value = "";
+            }
+          }
+        } else if (selectElem.name === "certificationStatus") {
+          const label = selectElem.closest("label").nextElementSibling;
+          if (label && label.classList.contains("certDateLabel")) {
+            if (value === "Certified") {
+              label.style.display = "block";
+              label.querySelector("input").disabled = false;
+            } else {
+              label.style.display = "none";
+              label.querySelector("input").disabled = true;
+              label.querySelector("input").value = "";
+            }
+          }
+        }
+      }
+
+      function addStaffEntry() {
+        const staffEntries = document.getElementById("staffEntries");
+        const staffList = staffEntries.querySelectorAll(".staff");
+        const lastStaff = staffList[staffList.length - 1];
+        const newStaff = lastStaff.cloneNode(true);
+
+        // Clear input values in the cloned block
+        newStaff.querySelectorAll("input, select").forEach((el) => {
+          if (el.type === "checkbox") {
+            el.checked = false;
+          } else {
+            el.value = "";
+          }
+        });
+
+        // Hide and disable date inputs in cloned block
+        const crcDateLabel = newStaff.querySelector(".crcDateLabel");
+        const certDateLabel = newStaff.querySelector(".certDateLabel");
+
+        if (crcDateLabel) {
+          crcDateLabel.style.display = "none";
+          const input = crcDateLabel.querySelector("input");
+          if (input) {
+            input.disabled = true;
+            input.value = "";
+          }
+        }
+        if (certDateLabel) {
+          certDateLabel.style.display = "none";
+          const input = certDateLabel.querySelector("input");
+          if (input) {
+            input.disabled = true;
+            input.value = "";
+          }
+        }
+
+        // Add event listeners for the new select elements to toggle date inputs
+        const crcSelect = newStaff.querySelector('select[name="crc"]');
+        const certSelect = newStaff.querySelector(
+          'select[name="certificationStatus"]'
+        );
+
+        if (crcSelect) {
+          crcSelect.addEventListener("change", function () {
+            toggleDateInput(this);
+          });
+        }
+        if (certSelect) {
+          certSelect.addEventListener("change", function () {
+            toggleDateInput(this);
+          });
+        }
+
+        // Append new staff entry
+        staffEntries.appendChild(newStaff);
+
+        // Initialize flatpickr for any date inputs inside newStaff
+        flatpickr(newStaff.querySelectorAll('input[type="date"]'));
+      }
+
+      function removeStaffEntry() {
+        const staffEntries = document.getElementById("staffEntries");
+        const staffList = staffEntries.querySelectorAll(".staff");
+        if (staffList.length > 1) {
+          staffEntries.removeChild(staffList[staffList.length - 1]);
+        } else {
+          alert("You must keep at least one staff entry.");
+        }
+      }
+
+      let formSubmitted = false;
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+
+        iframe.addEventListener("load", () => {
+          if (formSubmitted) {
+            alert("Submission successful! Thank you.");
+            formSubmitted = false;
+            document
+              .getElementById("staffForm")
+              .querySelector('button[type="submit"]').disabled = false;
+          }
+        });
+
+        // Attach change listeners on initial selects for toggleDateInput
+        document
+          .querySelectorAll("#staffEntries select[name='crc']")
+          .forEach((sel) => {
+            sel.addEventListener("change", function () {
+              toggleDateInput(this);
+            });
+          });
+        document
+          .querySelectorAll("#staffEntries select[name='certificationStatus']")
+          .forEach((sel) => {
+            sel.addEventListener("change", function () {
+              toggleDateInput(this);
+            });
+          });
+
+        // Initialize flatpickr for any existing date inputs
+        flatpickr(document.querySelectorAll('input[type="date"]'));
+
+        document
+          .getElementById("staffForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (formSubmitted) return;
+
+            formSubmitted = true;
+            this.querySelector('button[type="submit"]').disabled = true;
+
+            // Enable all date inputs before collecting data
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const crcInput = entry.querySelector(
+                  'input[name="crcExpirationDate"]'
+                );
+                const certInput = entry.querySelector(
+                  'input[name="certificationExpirationDate"]'
+                );
+                if (crcInput) crcInput.disabled = false;
+                if (certInput) certInput.disabled = false;
+              });
+
+            const staffList = [];
+            document
+              .querySelectorAll("#staffEntries .staff")
+              .forEach((entry) => {
+                const get = (sel) => entry.querySelector(`[name="${sel}"]`);
+                const getVal = (sel) => get(sel)?.value?.trim() || "";
+                const getChecked = (sel) => get(sel)?.checked || false;
+
+                staffList.push({
+                  name: getVal("name"),
+                  email: getVal("email"),
+                  crc: getVal("crc"),
+                  crcExpirationDate: getVal("crcExpirationDate"),
+                  acl: getVal("acl"),
+                  certificationStatus: getVal("certificationStatus"),
+                  certificationExpirationDate: getVal(
+                    "certificationExpirationDate"
+                  ),
+                  driversAbstract: getVal("driversAbstract"),
+                  insurance: getVal("insurance"),
+                  checkboxage: getChecked("checkboxage"),
+                  volunteersApproved: getVal("volunteersApproved"),
+                  volunteerForm: getChecked("volunteerForm"),
+                });
+              });
+
+            document.getElementById("staffListInput").value =
+              JSON.stringify(staffList);
+            this.submit();
+
+            // Re-disable inputs after submission if hidden
+            setTimeout(() => {
+              document
+                .querySelectorAll("#staffEntries .staff")
+                .forEach((entry) => {
+                  const crcInput = entry.querySelector(
+                    'input[name="crcExpirationDate"]'
+                  );
+                  const certInput = entry.querySelector(
+                    'input[name="certificationExpirationDate"]'
+                  );
+                  if (
+                    crcInput &&
+                    crcInput.closest(".crcDateLabel").style.display === "none"
+                  ) {
+                    crcInput.disabled = true;
+                  }
+                  if (
+                    certInput &&
+                    certInput.closest(".certDateLabel").style.display === "none"
+                  ) {
+                    certInput.disabled = true;
+                  }
+                });
+            }, 500);
+          });
+      });
+    </script>
+  </body>
+</html>
