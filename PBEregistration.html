@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Annual Application</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* Main content styling */
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 700px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        color: #3f51b5;
+        margin-top: 2rem;
+      }
+
+      label {
+        margin: 1rem 0 0.5rem;
+        font-weight: 600;
+      }
+
+      .inline-checkbox-label {
+        display: inline-flex !important;
+        align-items: center;
+        margin: 0.5rem 1rem 0.5rem 0;
+        font-weight: 600;
+        gap: 0.4em;
+      }
+
+      .checkbox-group {
+        display: block;
+        text-align: left;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 0.5rem;
+        margin-top: 0.25rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #303f9f;
+      }
+
+      .club-section {
+        display: none;
+        margin: 1rem 0;
+        padding-left: 1rem;
+        border-left: 3px solid #ccc;
+      }
+
+      canvas {
+        border: 1px solid #ccc;
+        display: block;
+        margin-top: 0.5rem;
+        height: auto;
+      }
+
+      p {
+        line-height: 1.6;
+      }
+    </style>
+    <html>
+      <body>
+        <div id="nav-placeholder"></div>
+        <main>
+          <form
+            id="bc-club-form"
+            method="post"
+            action="https://script.google.com/macros/s/........./exec"
+            onsubmit="return prepareSubmit(event)"
+          >
+            <div class="checkbox-group">
+              <p>I am applying for:</p>
+
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="adventurers"
+                  value="true"
+                  id="adventurers-check"
+                  onclick="toggleClubSection('adventurers')"
+              /></label>
+              Adventurers
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="pathfinders"
+                  value="true"
+                  id="pathfinders-check"
+                  onclick="toggleClubSection('pathfinders')"
+              /></label>
+              Pathfinders
+
+              <label class="inline-checkbox-label">
+                <input
+                  type="checkbox"
+                  name="master_guide"
+                  value="true"
+                  id="master_guide-check"
+                  onclick="toggleClubSection('master_guide')"
+              /></label>
+              Master Guide
+            </div>
+
+            <h2>Adventurers Club Information</h2>
+            <label
+              >Club Name: <input type="text" name="adventurers_club_name"
+            /></label>
+            <label
+              >Director Name:
+              <input type="text" name="adventurers_director_name"
+            /></label>
+            <label
+              >Mailing Address:
+              <input type="text" name="adventurers_mailing_address"
+            /></label>
+            <label
+              >Email: <input type="email" name="adventurers_director_email"
+            /></label>
+            <label
+              >Home Phone:
+              <input type="tel" name="adventurers_director_homephone"
+            /></label>
+            <label
+              >Cell Phone:
+              <input type="tel" name="adventurers_director_cellphone"
+            /></label>
+            <label
+              >Work Phone:
+              <input type="tel" name="adventurers_director_workphone"
+            /></label>
+            <br /><br />
+            <button type="submit" id="submitBtn">Submit Application</button>
+          </form>
+        </main>
+        <script>
+          fetch("nav.html")
+            .then((res) => res.text())
+            .then((data) => {
+              document.getElementById("nav-placeholder").innerHTML = data;
+
+              // Dynamically set "active" class on current page link
+              const currentPage = location.pathname.split("/").pop(); // gets e.g., 'clubcalendar.html'
+              const links = document.querySelectorAll("#nav-placeholder a");
+              links.forEach((link) => {
+                // Check if the href ends with current page
+                if (link.getAttribute("href") === currentPage) {
+                  link.classList.add("active");
+                }
+              });
+            })
+            .catch((err) => console.error("Failed to load nav:", err));
+
+          function toggleClubSection(club) {
+            const checkbox = document.getElementById(`${club}-check`);
+            const section = document.getElementById(`${club}-section`);
+            section.style.display = checkbox.checked ? "block" : "none";
+          }
+
+          function prepareSubmit() {
+            return true;
+          }
+
+          document.addEventListener("DOMContentLoaded", () => {
+            const form = document.getElementById("bc-club-form");
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const actionURL = form.getAttribute("action");
+            let formSubmitted = false;
+
+            form.addEventListener("submit", async function (event) {
+              event.preventDefault();
+              if (formSubmitted) return;
+
+              prepareSubmit(); // no-op now
+              formSubmitted = true;
+              submitBtn.disabled = true;
+
+              const formData = new FormData(form);
+              const params = new URLSearchParams();
+
+              for (const [key, value] of formData.entries()) {
+                params.append(key, value);
+              }
+              try {
+                const response = await fetch(actionURL, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type":
+                      "application/x-www-form-urlencoded;charset=UTF-8",
+                  },
+                  body: params.toString(),
+                });
+
+                const result = await response.json();
+
+                if (result.result === "success") {
+                  alert("Submission successful! Thank you.");
+                  form.reset();
+                } else {
+                  alert("Something went wrong. Please try again.");
+                }
+              } catch (error) {
+                console.error(error);
+                alert("Error submitting the form.");
+              } finally {
+                formSubmitted = false;
+                submitBtn.disabled = false;
+              }
+            });
+          });
+        </script>
+      </body>
+    </html>
+  </head>
+</html>
