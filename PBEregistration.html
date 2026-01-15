@@ -2,53 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>PBE Team Registration</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BC Club Annual Application</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background: #f5f7fa;
+        font-family: "Inter", sans-serif;
         margin: 0;
-        padding: 20px;
+        background: #f5f6fa;
       }
 
-      h2 {
-        margin-top: 0;
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
       }
 
-      .container {
-        max-width: 900px;
-        margin: auto;
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Tabs */
+      /* =====================
+         TOP LEVEL TABS
+         ===================== */
       .tabs {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 20px;
+        width: 100%;
+        max-width: 900px;
+      }
+
+      .tab-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 25px;
       }
 
       .tab-btn {
-        padding: 10px;
+        padding: 10px 18px;
         border: none;
         background: #e0e0e0;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
-        font-weight: bold;
+        font-weight: 600;
       }
 
       .tab-btn.active {
-        background: #2196f3;
-        color: #ffffff;
+        background: #3f51b5;
+        color: white;
       }
 
-      /* Sub Tab Content */
       .tab-content {
         display: none;
       }
@@ -57,41 +59,132 @@
         display: block;
       }
 
-      .form-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 15px;
+      /* =====================
+         OVERVIEW BOXES
+         ===================== */
+      .boxes-container {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
       }
 
-      .form-group input,
-      .form-group select {
-        padding: 10px;
-        font-size: 14px;
+      .box {
+        width: 220px;
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #3f51b5, #2196f3);
+        border-radius: 12px;
       }
 
-      .full {
-        grid-column: span 2;
+      .box img {
+        width: 150px;
+        height: 150px;
+        object-fit: contain;
       }
 
-      /* Members */
+      /* =====================
+         REGISTRATION SUB TABS
+         ===================== */
+      .registration-tabs {
+        margin-top: 20px;
+      }
+
+      .sub-tab-buttons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .sub-tab-btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        background: #f0f0f0;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+
+      .sub-tab-btn.active {
+        background: #2196f3;
+        color: white;
+      }
+
+      .sub-tab-content {
+        display: none;
+      }
+
+      .sub-tab-content.active {
+        display: block;
+      }
+
+      /* =====================
+         FORM
+         ===================== */
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 700px;
+        margin: 0 auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+
+      h2 {
+        color: #3f51b5;
+        margin-top: 2rem;
+      }
+
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.6rem;
+        margin-top: 0.3rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+      }
+
+      button[type="submit"] {
+        margin-top: 1.8rem;
+        padding: 0.8rem 1.6rem;
+        background: #3f51b5;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* =====================
+         TEAM MEMBERS
+         ===================== */
       .member-row {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr auto;
         gap: 10px;
-        margin-bottom: 10px;
-        align-items: center;
+        margin-top: 10px;
       }
 
       .add-btn {
-        margin-top: 10px;
+        margin-top: 15px;
+        padding: 8px 14px;
         background: #2196f3;
         color: white;
         border: none;
-        padding: 8px 14px;
         border-radius: 6px;
         cursor: pointer;
-        font-weight: bold;
+        font-weight: 600;
       }
 
       .remove-btn {
@@ -99,211 +192,207 @@
         color: white;
         border: none;
         border-radius: 50%;
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
         cursor: pointer;
         font-size: 18px;
-      }
-
-      .submit-btn {
-        margin-top: 20px;
-        background: #4caf50;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        font-size: 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        width: 100%;
       }
     </style>
   </head>
 
   <body>
-    <div class="container">
-      <h1>PBE Team Registration</h1>
+    <!-- NAV -->
+    <div id="nav-placeholder"></div>
 
-      <!-- TAB BUTTONS -->
+    <main>
       <div class="tabs">
-        <button class="tab-btn active" onclick="openTab(0)">Club Info</button>
-        <button class="tab-btn" onclick="openTab(1)">Team Info</button>
-        <button class="tab-btn" onclick="openTab(2)">Team Members</button>
-        <button class="tab-btn" onclick="openTab(3)">Confirmation</button>
-      </div>
-
-      <form id="registrationForm">
-        <!-- TAB 1 -->
-        <div class="tab-content active">
-          <h2>Club & Church Information</h2>
-
-          <div class="form-group">
-            <select name="clubName" required>
-              <option value="">Select Pathfinder Club</option>
-              <option value="Northwinds">Northwinds</option>
-              <option value="Trailblazers">Trailblazers</option>
-            </select>
-
-            <select name="clubRegion" required>
-              <option value="">Select Region</option>
-              <option value="North">North</option>
-              <option value="Central">Central</option>
-              <option value="South">South</option>
-            </select>
-
-            <input
-              type="text"
-              name="directorName"
-              placeholder="Director Name"
-              class="full"
-              required
-            />
-
-            <input
-              type="text"
-              name="churchName"
-              placeholder="Church Name"
-              class="full"
-              required
-            />
-          </div>
+        <!-- TOP TABS -->
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="tab1">Overview</button>
+          <button class="tab-btn" data-tab="tab2">Registration</button>
         </div>
 
-        <!-- TAB 2 -->
-        <div class="tab-content">
-          <h2>General Team Information</h2>
-
-          <div class="form-group">
-            <input
-              type="text"
-              name="teamName"
-              placeholder="PBE Team Name"
-              class="full"
-              required
-            />
-
-            <input
-              type="text"
-              name="coachFirstName"
-              placeholder="Coach First Name"
-              required
-            />
-
-            <input
-              type="text"
-              name="coachLastName"
-              placeholder="Coach Last Name"
-              required
-            />
-
-            <input
-              type="email"
-              name="coachEmail"
-              placeholder="Coach Email"
-              required
-            />
-
-            <input
-              type="tel"
-              name="coachPhone"
-              placeholder="Coach Phone Number"
-              required
-            />
-          </div>
-        </div>
-
-        <!-- TAB 3 -->
-        <div class="tab-content">
-          <h2>Team Members</h2>
-
-          <div id="members-list">
-            <div class="member-row">
-              <input
-                type="text"
-                name="memberFirstName[]"
-                placeholder="First Name"
-                required
+        <!-- OVERVIEW -->
+        <div class="tab-content active" id="tab1">
+          <div class="boxes-container">
+            <div class="box">
+              <img
+                src="https://nadpbe.org/wp-content/uploads/2021/01/PBE_logo.png"
               />
-              <input
-                type="text"
-                name="memberLastName[]"
-                placeholder="Last Name"
-                required
-              />
-              <select name="memberRole[]" required>
-                <option value="">Role</option>
-                <option value="Captain">Captain</option>
-                <option value="Scribe">Scribe</option>
-                <option value="Member">Member</option>
-                <option value="Alternate">Alternate</option>
-              </select>
-              <button
-                type="button"
-                class="remove-btn"
-                onclick="removeMember(this)"
-              >
-                −
-              </button>
+            </div>
+            <div class="box">
+              <img src="images/nad.png" />
             </div>
           </div>
-
-          <button type="button" class="add-btn" onclick="addMember()">
-            + Add Team Member
-          </button>
         </div>
 
-        <!-- TAB 4 -->
-        <div class="tab-content">
-          <h2>Club Confirmation</h2>
+        <!-- REGISTRATION -->
+        <div class="tab-content" id="tab2">
+          <div class="registration-tabs">
+            <!-- SUB TABS -->
+            <div class="sub-tab-buttons">
+              <button class="sub-tab-btn active" data-subtab="reg1">
+                Team & Coach Info
+              </button>
+              <button class="sub-tab-btn" data-subtab="reg2">Members</button>
+              <button class="sub-tab-btn" data-subtab="reg4">Confirm</button>
+            </div>
 
-          <p>
-            Please confirm that <strong>ALL PBE team members above</strong> are
-            inducted Pathfinder members in the club.
-          </p>
+            <!-- SUB TAB 1 -->
+            <div class="sub-tab-content active" id="reg1">
+              <form class="form-container">
+                <h2>Club & Church Information</h2>
 
-          <label>
-            <input type="radio" name="clubConfirmation" value="Yes" required />
-            Yes
-          </label>
-          <br /><br />
-          <label>
-            <input type="radio" name="clubConfirmation" value="No" />
-            No
-          </label>
+                <label>Pathfinder Club Name</label>
+                <select required>
+                  <option value="">Select club</option>
+                  <option>Hope Pathfinder Club</option>
+                  <option>Light Bearers</option>
+                </select>
 
-          <button type="submit" class="submit-btn">Submit Registration</button>
+                <label>Club Region</label>
+                <select required>
+                  <option value="">Select region</option>
+                  <option>North</option>
+                  <option>Central</option>
+                  <option>South</option>
+                </select>
+
+                <label>Director Name</label>
+                <input type="text" required />
+
+                <label>Church Name</label>
+                <input type="text" required />
+
+                <h2>General Team Information</h2>
+
+                <label>PBE Team Name</label>
+                <input type="text" required />
+
+                <label>Coach First Name</label>
+                <input type="text" required />
+
+                <label>Coach Last Name</label>
+                <input type="text" required />
+
+                <label>Coach Email</label>
+                <input type="email" required />
+
+                <label>Coach Phone</label>
+                <input type="tel" required />
+              </form>
+            </div>
+
+            <!-- SUB TAB 2: MEMBERS -->
+            <div class="sub-tab-content" id="reg2">
+              <form class="form-container">
+                <h2>Team Members</h2>
+
+                <div id="members-list">
+                  <div class="member-row">
+                    <input type="text" placeholder="First Name" required />
+                    <input type="text" placeholder="Last Name" required />
+                    <select required>
+                      <option value="">Role</option>
+                      <option>Captain</option>
+                      <option>Scribe</option>
+                      <option>Member</option>
+                      <option>Alternate</option>
+                    </select>
+                    <button
+                      type="button"
+                      class="remove-btn"
+                      onclick="removeMember(this)"
+                    >
+                      −
+                    </button>
+                  </div>
+                </div>
+
+                <button type="button" class="add-btn" onclick="addMember()">
+                  + Add Member
+                </button>
+              </form>
+            </div>
+
+            <!-- SUB TAB 4: CONFIRM -->
+            <div class="sub-tab-content" id="reg4">
+              <form class="form-container">
+                <h2>Club Confirmation</h2>
+
+                <p>
+                  Please confirm that
+                  <strong>ALL PBE team members above</strong>
+                  are inducted Pathfinder members in the club.
+                </p>
+
+                <label>
+                  <input type="radio" name="confirmation" required /> Yes
+                </label>
+
+                <label> <input type="radio" name="confirmation" /> No </label>
+
+                <button type="submit">Submit Registration</button>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </main>
 
     <script>
-      function openTab(index) {
-        const tabs = document.querySelectorAll(".tab-content");
-        const buttons = document.querySelectorAll(".tab-btn");
-
-        tabs.forEach((tab, i) => {
-          tab.classList.toggle("active", i === index);
-          buttons[i].classList.toggle("active", i === index);
+      // Load nav
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("nav-placeholder").innerHTML = data;
         });
-      }
 
+      // Top tabs
+      document.querySelectorAll(".tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document
+            .querySelectorAll(".tab-content")
+            .forEach((c) => c.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById(btn.dataset.tab).classList.add("active");
+        });
+      });
+
+      // Sub tabs
+      document.querySelectorAll(".sub-tab-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".sub-tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document
+            .querySelectorAll(".sub-tab-content")
+            .forEach((c) => c.classList.remove("active"));
+          btn.classList.add("active");
+          document.getElementById(btn.dataset.subtab).classList.add("active");
+        });
+      });
+
+      // Members logic
       function addMember() {
         const list = document.getElementById("members-list");
-
         const row = document.createElement("div");
         row.className = "member-row";
         row.innerHTML = `
-        <input type="text" name="memberFirstName[]" placeholder="First Name" required />
-        <input type="text" name="memberLastName[]" placeholder="Last Name" required />
-        <select name="memberRole[]" required>
-          <option value="">Role</option>
-          <option value="Captain">Captain</option>
-          <option value="Scribe">Scribe</option>
-          <option value="Member">Member</option>
-          <option value="Alternate">Alternate</option>
-        </select>
-        <button type="button" class="remove-btn" onclick="removeMember(this)">−</button>
-      `;
+          <input type="text" placeholder="First Name" required />
+          <input type="text" placeholder="Last Name" required />
+          <select required>
+            <option value="">Role</option>
+            <option>Captain</option>
+            <option>Scribe</option>
+            <option>Member</option>
+            <option>Alternate</option>
+          </select>
+          <button type="button" class="remove-btn" onclick="removeMember(this)">−</button>
+        `;
         list.appendChild(row);
       }
 
