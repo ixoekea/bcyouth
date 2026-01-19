@@ -249,7 +249,14 @@
                 <h2>Alternate Coaches</h2>
                 <div id="altCoachesContainer"></div>
                 <button type="button" class="member-btn" id="addAltCoach">
-                  + Add Alternate Coach
+                  + Add Alternate Coach</button
+                ><br />
+                <button
+                  type="button"
+                  class="member-btn next-btn"
+                  data-next="reg2"
+                >
+                  Next
                 </button>
               </form>
             </div>
@@ -261,6 +268,14 @@
                 <div id="membersContainer"></div>
                 <button type="button" class="member-btn" id="addMember">
                   + Add Member
+                </button>
+                <br />
+                <button
+                  type="button"
+                  class="member-btn next-btn"
+                  data-next="reg3"
+                >
+                  Next
                 </button>
               </form>
             </div>
@@ -402,15 +417,18 @@
             clubConfirmation: document.getElementById("clubConfirmation").value,
           };
 
+          // ✅ CREATE FORMDATA OUTSIDE FETCH
+          const formData = new FormData();
+          formData.append("payload", JSON.stringify(data));
+
           try {
             const res = await fetch(WEB_APP_URL, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
+              body: formData,
             });
+
             const result = await res.json();
+
             if (result.result === "success") {
               alert("Registration submitted successfully!");
               location.reload();
