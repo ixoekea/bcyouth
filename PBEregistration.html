@@ -22,57 +22,10 @@
         width: 100%;
         max-width: 900px;
       }
-      .tab-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-        margin-bottom: 25px;
-      }
-      .tab-btn {
-        padding: 10px 18px;
-        border: none;
-        background: #e0e0e0;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-      }
-      .tab-btn.active {
-        background: #3f51b5;
-        color: white;
-      }
       .tab-content {
         display: none;
       }
       .tab-content.active {
-        display: block;
-      }
-      .boxes-container {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      .box {
-        width: 220px;
-        height: 220px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #3f51b5, #2196f3);
-        border-radius: 12px;
-      }
-      .box img {
-        width: 150px;
-        height: 150px;
-        object-fit: contain;
-      }
-      .registration-tabs {
-        margin-top: 20px;
-      }
-      .sub-tab-content {
-        display: none;
-      }
-      .sub-tab-content.active {
         display: block;
       }
       .form-container {
@@ -134,6 +87,9 @@
     </style>
   </head>
   <body>
+    <!-- NAV MENU -->
+    <div id="nav-placeholder"></div>
+
     <main>
       <div class="tabs">
         <p style="text-align: center; font-weight: bold; color: red">
@@ -141,6 +97,7 @@
         </p>
         <p class="info-note">A club can register for more than 1 team.</p>
 
+        <!-- STEP 1: Team Info -->
         <div class="tab-content active" id="reg1">
           <form
             id="teamForm"
@@ -152,7 +109,6 @@
             <h2>Club & Church Information</h2>
             <label>Pathfinder Club Name</label>
             <input name="clubName" type="text" required />
-
             <label>Club Region</label>
             <select name="clubRegion" required>
               <option value="">Select region</option>
@@ -168,7 +124,6 @@
               <option value="South Okanagan">South Okanagan</option>
               <option value="Vancouver Islands">Vancouver Islands</option>
             </select>
-
             <label>Director Name</label>
             <input name="directorName" type="text" required />
             <label>Church Name</label>
@@ -191,6 +146,7 @@
             <button type="button" id="addAltCoach">
               + Add Alternate Coach
             </button>
+
             <br />
             <button type="button" class="next-btn" data-next="reg2">
               Next
@@ -198,6 +154,7 @@
           </form>
         </div>
 
+        <!-- STEP 2: Members -->
         <div class="tab-content" id="reg2">
           <form id="membersForm" class="form-container">
             <h2>Team Members</h2>
@@ -210,6 +167,7 @@
           </form>
         </div>
 
+        <!-- STEP 3: Submit -->
         <div class="tab-content" id="reg3">
           <form
             class="form-container"
@@ -238,6 +196,19 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
+      // NAV MENU
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((data) => {
+          document.getElementById("nav-placeholder").innerHTML = data;
+          const currentPage = location.pathname.split("/").pop();
+          document.querySelectorAll("#nav-placeholder a").forEach((link) => {
+            if (link.getAttribute("href") === currentPage) {
+              link.classList.add("active");
+            }
+          });
+        });
+
       // NEXT BUTTONS
       document.querySelectorAll(".next-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
