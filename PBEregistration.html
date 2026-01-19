@@ -121,7 +121,8 @@
         border: 1px solid #ccc;
       }
       button[type="submit"],
-      .member-btn {
+      .member-btn,
+      .next-btn {
         margin-top: 1rem;
         padding: 0.6rem 1.2rem;
         background: #3f51b5;
@@ -132,7 +133,8 @@
         font-weight: bold;
       }
       button[type="submit"]:hover,
-      .member-btn:hover {
+      .member-btn:hover,
+      .next-btn:hover {
         background: #303f9f;
       }
       .member-row {
@@ -169,6 +171,7 @@
           <button class="tab-btn" data-tab="tab2">Registration</button>
         </div>
 
+        <!-- OVERVIEW TAB -->
         <div class="tab-content active" id="tab1">
           <div class="boxes-container">
             <div class="box">
@@ -176,7 +179,8 @@
                 <img
                   src="https://nadpbe.org/wp-content/uploads/2021/01/PBE_logo.png"
                   alt="PBE"
-              /></a>
+                />
+              </a>
             </div>
             <div class="box">
               <a
@@ -184,12 +188,13 @@
                 target="_blank"
                 rel="noopener"
               >
-                <img src="images/nad.png" alt="NAD"
-              /></a>
+                <img src="images/nad.png" alt="NAD" />
+              </a>
             </div>
           </div>
         </div>
 
+        <!-- REGISTRATION TAB -->
         <div class="tab-content" id="tab2">
           <div class="registration-tabs">
             <div class="sub-tab-buttons">
@@ -202,19 +207,17 @@
 
             <!-- TEAM & COACH -->
             <div class="sub-tab-content active" id="reg1">
-              <form id="teamForm" class="form-container">
+              <form class="form-container">
                 <h2>Club & Church Information</h2>
                 <label>Pathfinder Club Name</label>
                 <input
                   id="clubName"
-                  name="clubName"
                   type="text"
                   placeholder="Enter Pathfinder Club Name"
                   required
                 />
-
                 <label>Club Region</label>
-                <select name="clubRegion" required>
+                <select id="clubRegion" required>
                   <option value="">Select region</option>
                   <option value="Cariboo">Cariboo</option>
                   <option value="Fraser Valley">Fraser Valley</option>
@@ -228,34 +231,31 @@
                   <option value="South Okanagan">South Okanagan</option>
                   <option value="Vancouver Islands">Vancouver Islands</option>
                 </select>
-
                 <label>Director Name</label>
-                <input name="directorName" type="text" required />
+                <input id="directorName" type="text" required />
                 <label>Church Name</label>
-                <input name="churchName" type="text" required />
+                <input id="churchName" type="text" required />
 
                 <h2>General Team Information</h2>
                 <label>PBE Team Name</label>
-                <input name="teamName" type="text" required />
+                <input id="teamName" type="text" required />
                 <label>Team Coach First Name</label>
-                <input name="coachFirstName" type="text" required />
+                <input id="coachFirstName" type="text" required />
                 <label>Team Coach Last Name</label>
-                <input name="coachLastName" type="text" required />
+                <input id="coachLastName" type="text" required />
                 <label>Team Coach Email</label>
-                <input name="coachEmail" type="email" required />
+                <input id="coachEmail" type="email" required />
                 <label>Team Coach Phone Number</label>
-                <input name="coachPhone" type="tel" required />
+                <input id="coachPhone" type="tel" required />
 
                 <h2>Alternate Coaches</h2>
                 <div id="altCoachesContainer"></div>
                 <button type="button" class="member-btn" id="addAltCoach">
-                  + Add Alternate Coach</button
-                ><br />
-                <button
-                  type="button"
-                  class="member-btn next-btn"
-                  data-next="reg2"
-                >
+                  + Add Alternate Coach
+                </button>
+
+                <!-- NEXT BUTTON -->
+                <button type="button" class="next-btn" data-next="reg2">
                   Next
                 </button>
               </form>
@@ -263,18 +263,15 @@
 
             <!-- MEMBERS -->
             <div class="sub-tab-content" id="reg2">
-              <form id="membersForm" class="form-container">
+              <form class="form-container">
                 <h2>Team Members</h2>
                 <div id="membersContainer"></div>
                 <button type="button" class="member-btn" id="addMember">
                   + Add Member
                 </button>
-                <br />
-                <button
-                  type="button"
-                  class="member-btn next-btn"
-                  data-next="reg3"
-                >
+
+                <!-- NEXT BUTTON -->
+                <button type="button" class="next-btn" data-next="reg3">
                   Next
                 </button>
               </form>
@@ -282,7 +279,7 @@
 
             <!-- SUBMIT -->
             <div class="sub-tab-content" id="reg3">
-              <form id="submitForm" class="form-container">
+              <form class="form-container">
                 <h2>Confirmation & Submit</h2>
                 <label
                   >Please confirm that ALL PBE team members above are inducted
@@ -305,14 +302,7 @@
 
     <script>
       const WEB_APP_URL =
-        "https://script.google.com/macros/s/AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA/exec"; // replace with deployed Google Apps Script URL
-
-      // NAV
-      fetch("nav.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("nav-placeholder").innerHTML = data;
-        });
+        "https://script.google.com/macros/s/AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA/exec";
 
       // TOP TABS
       document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -342,23 +332,42 @@
         });
       });
 
+      // NEXT BUTTONS
+      document.querySelectorAll(".next-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const current = btn.closest(".sub-tab-content");
+          const nextId = btn.dataset.next;
+          current.classList.remove("active");
+          document
+            .querySelectorAll(".sub-tab-btn")
+            .forEach((b) => b.classList.remove("active"));
+          document.getElementById(nextId).classList.add("active");
+          document
+            .querySelector(`.sub-tab-btn[data-subtab="${nextId}"]`)
+            .classList.add("active");
+          document
+            .getElementById(nextId)
+            .scrollIntoView({ behavior: "smooth" });
+        });
+      });
+
       // MEMBERS dynamic
       const membersContainer = document.getElementById("membersContainer");
       document.getElementById("addMember").addEventListener("click", () => {
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-          <input type="text" placeholder="First Name" class="memberFirstName" required/>
-          <input type="text" placeholder="Last Name" class="memberLastName" required/>
-          <select class="memberRole" required>
-            <option value="">Role</option>
-            <option value="Captain">Captain</option>
-            <option value="Scribe">Scribe</option>
-            <option value="Member">Member</option>
-            <option value="Alternate">Alternate</option>
-          </select>
-          <button type="button" class="member-btn remove-member">-</button>
-        `;
+        <input type="text" placeholder="First Name" class="memberFirstName" required/>
+        <input type="text" placeholder="Last Name" class="memberLastName" required/>
+        <select class="memberRole" required>
+          <option value="">Role</option>
+          <option value="Captain">Captain</option>
+          <option value="Scribe">Scribe</option>
+          <option value="Member">Member</option>
+          <option value="Alternate">Alternate</option>
+        </select>
+        <button type="button" class="member-btn remove-member">-</button>
+      `;
         membersContainer.appendChild(div);
         div
           .querySelector(".remove-member")
@@ -371,12 +380,12 @@
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-          <input type="text" placeholder="First Name" class="altCoachFirst" required/>
-          <input type="text" placeholder="Last Name" class="altCoachLast" required/>
-          <input type="email" placeholder="Email" class="altCoachEmail" required/>
-          <input type="tel" placeholder="Phone" class="altCoachPhone" required/>
-          <button type="button" class="member-btn remove-member">-</button>
-        `;
+        <input type="text" placeholder="First Name" class="altCoachFirst" required/>
+        <input type="text" placeholder="Last Name" class="altCoachLast" required/>
+        <input type="email" placeholder="Email" class="altCoachEmail" required/>
+        <input type="tel" placeholder="Phone" class="altCoachPhone" required/>
+        <button type="button" class="member-btn remove-member">-</button>
+      `;
         altContainer.appendChild(div);
         div
           .querySelector(".remove-member")
@@ -389,16 +398,14 @@
         .addEventListener("click", async () => {
           const data = {
             clubName: document.getElementById("clubName").value,
-            clubRegion: document.querySelector('[name="clubRegion"]').value,
-            directorName: document.querySelector('[name="directorName"]').value,
-            churchName: document.querySelector('[name="churchName"]').value,
-            teamName: document.querySelector('[name="teamName"]').value,
-            coachFirstName: document.querySelector('[name="coachFirstName"]')
-              .value,
-            coachLastName: document.querySelector('[name="coachLastName"]')
-              .value,
-            coachEmail: document.querySelector('[name="coachEmail"]').value,
-            coachPhone: document.querySelector('[name="coachPhone"]').value,
+            clubRegion: document.getElementById("clubRegion").value,
+            directorName: document.getElementById("directorName").value,
+            churchName: document.getElementById("churchName").value,
+            teamName: document.getElementById("teamName").value,
+            coachFirstName: document.getElementById("coachFirstName").value,
+            coachLastName: document.getElementById("coachLastName").value,
+            coachEmail: document.getElementById("coachEmail").value,
+            coachPhone: document.getElementById("coachPhone").value,
             altCoaches: Array.from(
               document.querySelectorAll(".altCoachFirst"),
             ).map((f, i) => ({
@@ -417,7 +424,6 @@
             clubConfirmation: document.getElementById("clubConfirmation").value,
           };
 
-          // ✅ CREATE FORMDATA OUTSIDE FETCH
           const formData = new FormData();
           formData.append("payload", JSON.stringify(data));
 
@@ -426,9 +432,7 @@
               method: "POST",
               body: formData,
             });
-
             const result = await res.json();
-
             if (result.result === "success") {
               alert("Registration submitted successfully!");
               location.reload();
