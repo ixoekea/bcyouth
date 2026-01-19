@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -205,9 +205,7 @@
               <form id="teamForm" class="form-container">
                 <h2>Club & Church Information</h2>
                 <label>Pathfinder Club Name</label>
-                <select id="clubName" name="clubName" required>
-                  <option value="">Loading clubs...</option>
-                </select>
+                <select id="clubName" name="text" required></select>
 
                 <label>Club Region</label>
                 <select name="clubRegion" required>
@@ -286,7 +284,7 @@
 
     <script>
       const WEB_APP_URL =
-        "AKfycbwr-G2huyO6g7dROV5gtvPMFstczFUV9M_Wpd6Pr0AwfaOjLyRYqUsNhfYihg0k7vPq"; // replace with deployed Google Apps Script URL
+        "AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA"; // replace with deployed Google Apps Script URL
 
       // NAV
       fetch("nav.html")
@@ -395,7 +393,7 @@
             coachEmail: document.querySelector('[name="coachEmail"]').value,
             coachPhone: document.querySelector('[name="coachPhone"]').value,
             altCoaches: Array.from(
-              document.querySelectorAll(".altCoachFirst")
+              document.querySelectorAll(".altCoachFirst"),
             ).map((f, i) => ({
               first: f.value,
               last: document.querySelectorAll(".altCoachLast")[i].value,
@@ -403,7 +401,7 @@
               phone: document.querySelectorAll(".altCoachPhone")[i].value,
             })),
             members: Array.from(
-              document.querySelectorAll(".memberFirstName")
+              document.querySelectorAll(".memberFirstName"),
             ).map((f, i) => ({
               first: f.value,
               last: document.querySelectorAll(".memberLastName")[i].value,
