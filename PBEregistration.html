@@ -25,6 +25,7 @@
         max-width: 800px;
         width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        position: relative;
       }
       h2 {
         color: #3f51b5;
@@ -81,6 +82,19 @@
       hr {
         margin: 2rem 0;
       }
+      /* Success notification */
+      #successMessage {
+        display: none;
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #4caf50;
+        color: white;
+        padding: 0.8rem 1.2rem;
+        border-radius: 6px;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -92,6 +106,8 @@
         method="post"
         target="hidden_iframe"
       >
+        <div id="successMessage">✅ Registration submitted successfully!</div>
+
         <h2>Club & Church Information</h2>
         <p class="info-note">Registration Deadline: January 29th, 2026</p>
         <label>Pathfinder Club Name</label>
@@ -150,9 +166,7 @@
           <option value="No">No</option>
         </select>
 
-        <!-- Hidden input to hold all JSON data -->
         <input type="hidden" name="teamData" id="teamData" />
-
         <button type="submit">Submit Registration</button>
       </form>
     </main>
@@ -166,17 +180,17 @@
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-      <input type="text" name="memberFirstName" placeholder="First Name" required/>
-      <input type="text" name="memberLastName" placeholder="Last Name" required/>
-      <select name="memberRole" required>
-        <option value="">Role</option>
-        <option value="Captain">Captain</option>
-        <option value="Scribe">Scribe</option>
-        <option value="Member">Member</option>
-        <option value="Alternate">Alternate</option>
-      </select>
-      <button type="button" class="remove-btn">-</button>
-    `;
+          <input type="text" name="memberFirstName" placeholder="First Name" required/>
+          <input type="text" name="memberLastName" placeholder="Last Name" required/>
+          <select name="memberRole" required>
+            <option value="">Role</option>
+            <option value="Captain">Captain</option>
+            <option value="Scribe">Scribe</option>
+            <option value="Member">Member</option>
+            <option value="Alternate">Alternate</option>
+          </select>
+          <button type="button" class="remove-btn">-</button>
+        `;
         membersContainer.appendChild(div);
         div
           .querySelector(".remove-btn")
@@ -189,66 +203,85 @@
         const div = document.createElement("div");
         div.className = "coach-row";
         div.innerHTML = `
-      <input type="text" name="altCoachFirst" placeholder="First Name" required/>
-      <input type="text" name="altCoachLast" placeholder="Last Name" required/>
-      <input type="email" name="altCoachEmail" placeholder="Email" required/>
-      <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
-      <button type="button" class="remove-btn">-</button>
-    `;
+          <input type="text" name="altCoachFirst" placeholder="First Name" required/>
+          <input type="text" name="altCoachLast" placeholder="Last Name" required/>
+          <input type="email" name="altCoachEmail" placeholder="Email" required/>
+          <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
+          <button type="button" class="remove-btn">-</button>
+        `;
         altContainer.appendChild(div);
         div
           .querySelector(".remove-btn")
           .addEventListener("click", () => div.remove());
       });
 
-      // Gather all data into JSON before submit
-      document
-        .getElementById("pbeForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+      // Submit form with success notification
+      const form = document.getElementById("pbeForm");
+      const successMsg = document.getElementById("successMessage");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-          const formData = Object.fromEntries(new FormData(this).entries());
+        // Gather form data
+        const formData = Object.fromEntries(new FormData(form).entries());
 
-          // Members
-          const members = [];
-          document
-            .querySelectorAll("#membersContainer .member-row")
-            .forEach((row) => {
-              const get = (name) => row.querySelector(`[name="${name}"]`);
-              members.push({
-                firstName: get("memberFirstName").value,
-                lastName: get("memberLastName").value,
-                role: get("memberRole").value,
-              });
+        // Members
+        const members = [];
+        document
+          .querySelectorAll("#membersContainer .member-row")
+          .forEach((row) => {
+            const get = (name) => row.querySelector(`[name="${name}"]`);
+            members.push({
+              firstName: get("memberFirstName").value,
+              lastName: get("memberLastName").value,
+              role: get("memberRole").value,
             });
+          });
 
-          // Alternate coaches
-          const altCoaches = [];
-          document
-            .querySelectorAll("#altCoachesContainer .coach-row")
-            .forEach((row) => {
-              const get = (name) => row.querySelector(`[name="${name}"]`);
-              altCoaches.push({
-                firstName: get("altCoachFirst").value,
-                lastName: get("altCoachLast").value,
-                email: get("altCoachEmail").value,
-                phone: get("altCoachPhone").value,
-              });
+        // Alt coaches
+        const altCoaches = [];
+        document
+          .querySelectorAll("#altCoachesContainer .coach-row")
+          .forEach((row) => {
+            const get = (name) => row.querySelector(`[name="${name}"]`);
+            altCoaches.push({
+              firstName: get("altCoachFirst").value,
+              lastName: get("altCoachLast").value,
+              email: get("altCoachEmail").value,
+              phone: get("altCoachPhone").value,
             });
+          });
 
-          // Combine everything
-          const submission = {
-            ...formData,
-            members,
-            altCoaches,
-          };
+        const submission = {
+          ...formData,
+          members,
+          altCoaches,
+        };
 
-          document.getElementById("teamData").value =
-            JSON.stringify(submission);
+        document.getElementById("teamData").value = JSON.stringify(submission);
 
-          // Submit the form to Apps Script
-          this.submit();
-        });
+        // Disable button while submitting
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+
+        // Listen for iframe load (successful submission)
+        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+        iframe.onload = () => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Registration";
+          successMsg.style.display = "block";
+          setTimeout(() => {
+            successMsg.style.display = "none";
+          }, 4000);
+
+          // Optional: reset form & clear dynamic fields
+          form.reset();
+          membersContainer.innerHTML = "";
+          altContainer.innerHTML = "";
+        };
+
+        form.submit();
+      });
     </script>
   </body>
 </html>
