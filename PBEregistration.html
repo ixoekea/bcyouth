@@ -170,8 +170,8 @@
         <!-- STEP 3: Submit -->
         <div class="tab-content" id="reg3">
           <form
+            id="submitForm"
             class="form-container"
-            action="https://script.google.com/macros/s/AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA/exec"
             method="post"
             target="hidden_iframe"
           >
@@ -185,6 +185,10 @@
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
+
+            <!-- Hidden input to hold all JSON data -->
+            <input type="hidden" name="teamData" id="teamData" />
+
             <br />
             <button type="submit">Submit Registration</button>
           </form>
@@ -192,7 +196,6 @@
       </div>
     </main>
 
-    <!-- Hidden iframe to submit forms without redirect -->
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
@@ -226,9 +229,9 @@
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-          <input type="text" name="memberFirstName[]" placeholder="First Name" required/>
-          <input type="text" name="memberLastName[]" placeholder="Last Name" required/>
-          <select name="memberRole[]" required>
+          <input type="text" name="memberFirstName" placeholder="First Name" required/>
+          <input type="text" name="memberLastName" placeholder="Last Name" required/>
+          <select name="memberRole" required>
             <option value="">Role</option>
             <option value="Captain">Captain</option>
             <option value="Scribe">Scribe</option>
@@ -249,10 +252,10 @@
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-          <input type="text" name="altCoachFirst[]" placeholder="First Name" required/>
-          <input type="text" name="altCoachLast[]" placeholder="Last Name" required/>
-          <input type="email" name="altCoachEmail[]" placeholder="Email" required/>
-          <input type="tel" name="altCoachPhone[]" placeholder="Phone" required/>
+          <input type="text" name="altCoachFirst" placeholder="First Name" required/>
+          <input type="text" name="altCoachLast" placeholder="Last Name" required/>
+          <input type="email" name="altCoachEmail" placeholder="Email" required/>
+          <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
           <button type="button" class="remove-member">-</button>
         `;
         altContainer.appendChild(div);
@@ -260,6 +263,61 @@
           .querySelector(".remove-member")
           .addEventListener("click", () => div.remove());
       });
+
+      // SUBMIT FORM
+      document
+        .getElementById("submitForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Gather main form data
+          const teamForm = document.getElementById("teamForm");
+          const formData = Object.fromEntries(new FormData(teamForm).entries());
+
+          // Gather members
+          const members = [];
+          document
+            .querySelectorAll("#membersContainer .member-row")
+            .forEach((row) => {
+              const get = (name) => row.querySelector(`[name="${name}"]`);
+              members.push({
+                firstName: get("memberFirstName").value,
+                lastName: get("memberLastName").value,
+                role: get("memberRole").value,
+              });
+            });
+
+          // Gather alt coaches
+          const altCoaches = [];
+          document
+            .querySelectorAll("#altCoachesContainer .member-row")
+            .forEach((row) => {
+              const get = (name) => row.querySelector(`[name="${name}"]`);
+              altCoaches.push({
+                firstName: get("altCoachFirst").value,
+                lastName: get("altCoachLast").value,
+                email: get("altCoachEmail").value,
+                phone: get("altCoachPhone").value,
+              });
+            });
+
+          // Combine all data
+          const submission = {
+            ...formData,
+            members,
+            altCoaches,
+            clubConfirmation: document.querySelector(
+              'select[name="clubConfirmation"]',
+            ).value,
+          };
+
+          // Put JSON in hidden input
+          document.getElementById("teamData").value =
+            JSON.stringify(submission);
+
+          // Submit the form
+          this.submit();
+        });
     </script>
   </body>
 </html>
