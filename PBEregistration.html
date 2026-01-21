@@ -13,11 +13,19 @@
         margin: 0;
         background: #f5f6fa;
       }
+
+      /* Nav placeholder styling same as Staff List page */
+      #nav-placeholder a.active {
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
       main {
-        padding: 2rem;
+        padding: 6rem 2rem 2rem; /* extra top padding for nav */
         display: flex;
         justify-content: center;
       }
+
       .form-container {
         background: white;
         padding: 2rem;
@@ -27,15 +35,18 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         position: relative;
       }
+
       h2 {
         color: #3f51b5;
         margin-top: 2rem;
       }
+
       label {
         display: block;
         margin-top: 1rem;
         font-weight: 600;
       }
+
       input,
       select {
         width: 100%;
@@ -44,6 +55,7 @@
         border-radius: 6px;
         border: 1px solid #ccc;
       }
+
       button {
         margin-top: 1rem;
         padding: 0.6rem 1.2rem;
@@ -54,9 +66,11 @@
         cursor: pointer;
         font-weight: bold;
       }
+
       button:hover {
         background: #303f9f;
       }
+
       .member-row,
       .coach-row {
         display: flex;
@@ -64,40 +78,34 @@
         align-items: center;
         margin-top: 5px;
       }
+
       .member-row input,
       .member-row select,
       .coach-row input,
       .coach-row select {
         flex: 1;
       }
+
       .remove-btn {
         background: red;
         color: white;
       }
+
       .info-note {
         margin: 10px 0;
         font-style: italic;
         color: #555;
       }
+
       hr {
         margin: 2rem 0;
-      }
-      /* Success notification */
-      #successMessage {
-        display: none;
-        position: absolute;
-        top: -50px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #4caf50;
-        color: white;
-        padding: 0.8rem 1.2rem;
-        border-radius: 6px;
-        font-weight: bold;
       }
     </style>
   </head>
   <body>
+    <!-- Nav placeholder (fetches nav.html like Staff List page) -->
+    <div id="nav-placeholder"></div>
+
     <main>
       <form
         id="pbeForm"
@@ -106,8 +114,6 @@
         method="post"
         target="hidden_iframe"
       >
-        <div id="successMessage">✅ Registration submitted successfully!</div>
-
         <h2>Club & Church Information</h2>
         <p class="info-note">Registration Deadline: January 29th, 2026</p>
         <label>Pathfinder Club Name</label>
@@ -174,6 +180,17 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
+      // Load nav exactly like Staff List page
+      fetch("nav.html")
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById("nav-placeholder").innerHTML = html;
+          const current = location.pathname.split("/").pop();
+          document.querySelectorAll("#nav-placeholder a").forEach((a) => {
+            if (a.getAttribute("href") === current) a.classList.add("active");
+          });
+        });
+
       // Add members dynamically
       const membersContainer = document.getElementById("membersContainer");
       document.getElementById("addMember").addEventListener("click", () => {
@@ -215,13 +232,13 @@
           .addEventListener("click", () => div.remove());
       });
 
-      // Submit form with success notification
+      // Form submission
       const form = document.getElementById("pbeForm");
-      const successMsg = document.getElementById("successMessage");
+      const iframe = document.querySelector('iframe[name="hidden_iframe"]');
+
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        // Gather form data
         const formData = Object.fromEntries(new FormData(form).entries());
 
         // Members
@@ -251,33 +268,23 @@
             });
           });
 
-        const submission = {
+        document.getElementById("teamData").value = JSON.stringify({
           ...formData,
           members,
           altCoaches,
-        };
+        });
 
-        document.getElementById("teamData").value = JSON.stringify(submission);
-
-        // Disable button while submitting
         const submitBtn = form.querySelector('button[type="submit"]');
         submitBtn.disabled = true;
         submitBtn.textContent = "Submitting...";
 
-        // Listen for iframe load (successful submission)
-        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
         iframe.onload = () => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit Registration";
-          successMsg.style.display = "block";
-          setTimeout(() => {
-            successMsg.style.display = "none";
-          }, 4000);
-
-          // Optional: reset form & clear dynamic fields
+          alert("✅ Registration submitted successfully!");
           form.reset();
           membersContainer.innerHTML = "";
           altContainer.innerHTML = "";
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit Registration";
         };
 
         form.submit();
