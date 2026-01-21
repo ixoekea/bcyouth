@@ -18,22 +18,12 @@
         display: flex;
         justify-content: center;
       }
-      .tabs {
-        width: 100%;
-        max-width: 900px;
-      }
-      .tab-content {
-        display: none;
-      }
-      .tab-content.active {
-        display: block;
-      }
       .form-container {
         background: white;
         padding: 2rem;
         border-radius: 12px;
-        max-width: 700px;
-        margin: 0 auto;
+        max-width: 800px;
+        width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
       h2 {
@@ -66,215 +56,160 @@
       button:hover {
         background: #303f9f;
       }
-      .member-row {
+      .member-row,
+      .coach-row {
         display: flex;
         gap: 10px;
         align-items: center;
         margin-top: 5px;
       }
       .member-row input,
-      .member-row select {
+      .member-row select,
+      .coach-row input,
+      .coach-row select {
         flex: 1;
       }
-      .remove-member {
+      .remove-btn {
         background: red;
+        color: white;
       }
       .info-note {
         margin: 10px 0;
         font-style: italic;
         color: #555;
       }
+      hr {
+        margin: 2rem 0;
+      }
     </style>
   </head>
   <body>
-    <!-- NAV MENU -->
-    <div id="nav-placeholder"></div>
-
     <main>
-      <div class="tabs">
-        <p style="text-align: center; font-weight: bold; color: red">
-          Registration Deadline January 29th, 2026
-        </p>
-        <p class="info-note">A club can register for more than 1 team.</p>
+      <form
+        id="pbeForm"
+        class="form-container"
+        action="https://script.google.com/macros/s/AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA/exec"
+        method="post"
+        target="hidden_iframe"
+      >
+        <h2>Club & Church Information</h2>
+        <p class="info-note">Registration Deadline: January 29th, 2026</p>
+        <label>Pathfinder Club Name</label>
+        <input name="clubName" type="text" required />
+        <label>Club Region</label>
+        <select name="clubRegion" required>
+          <option value="">Select region</option>
+          <option value="Cariboo">Cariboo</option>
+          <option value="Fraser Valley">Fraser Valley</option>
+          <option value="Interior">Interior</option>
+          <option value="Kootneys">Kootneys</option>
+          <option value="Metro Vancouver 1">Metro Vancouver 1</option>
+          <option value="Metro Vancouver 2">Metro Vancouver 2</option>
+          <option value="Metro Vancouver 3">Metro Vancouver 3</option>
+          <option value="Northern Interior">Northern Interior</option>
+          <option value="North Okanagan">North Okanagan</option>
+          <option value="South Okanagan">South Okanagan</option>
+          <option value="Vancouver Islands">Vancouver Islands</option>
+        </select>
+        <label>Director Name</label>
+        <input name="directorName" type="text" required />
+        <label>Church Name</label>
+        <input name="churchName" type="text" required />
 
-        <!-- STEP 1: Team Info -->
-        <div class="tab-content active" id="reg1">
-          <form
-            id="teamForm"
-            class="form-container"
-            action="https://script.google.com/macros/s/AKfycbwnwnr59JWDkIXi6-qvkOXZh7bTYpIniwAmIrtNcS3cuEwxgEEmKQHZzyCTIL4lh42flA/exec"
-            method="post"
-            target="hidden_iframe"
-          >
-            <h2>Club & Church Information</h2>
-            <label>Pathfinder Club Name</label>
-            <input name="clubName" type="text" required />
-            <label>Club Region</label>
-            <select name="clubRegion" required>
-              <option value="">Select region</option>
-              <option value="Cariboo">Cariboo</option>
-              <option value="Fraser Valley">Fraser Valley</option>
-              <option value="Interior">Interior</option>
-              <option value="Kootneys">Kootneys</option>
-              <option value="Metro Vancouver 1">Metro Vancouver 1</option>
-              <option value="Metro Vancouver 2">Metro Vancouver 2</option>
-              <option value="Metro Vancouver 3">Metro Vancouver 3</option>
-              <option value="Northern Interior">Northern Interior</option>
-              <option value="North Okanagan">North Okanagan</option>
-              <option value="South Okanagan">South Okanagan</option>
-              <option value="Vancouver Islands">Vancouver Islands</option>
-            </select>
-            <label>Director Name</label>
-            <input name="directorName" type="text" required />
-            <label>Church Name</label>
-            <input name="churchName" type="text" required />
+        <hr />
+        <h2>General Team Information</h2>
+        <label>PBE Team Name</label>
+        <input name="teamName" type="text" required />
+        <label>Team Coach First Name</label>
+        <input name="coachFirstName" type="text" required />
+        <label>Team Coach Last Name</label>
+        <input name="coachLastName" type="text" required />
+        <label>Team Coach Email</label>
+        <input name="coachEmail" type="email" required />
+        <label>Team Coach Phone Number</label>
+        <input name="coachPhone" type="tel" required />
 
-            <h2>General Team Information</h2>
-            <label>PBE Team Name</label>
-            <input name="teamName" type="text" required />
-            <label>Team Coach First Name</label>
-            <input name="coachFirstName" type="text" required />
-            <label>Team Coach Last Name</label>
-            <input name="coachLastName" type="text" required />
-            <label>Team Coach Email</label>
-            <input name="coachEmail" type="email" required />
-            <label>Team Coach Phone Number</label>
-            <input name="coachPhone" type="tel" required />
+        <hr />
+        <h2>Alternate Coaches</h2>
+        <div id="altCoachesContainer"></div>
+        <button type="button" id="addAltCoach">+ Add Alternate Coach</button>
 
-            <h2>Alternate Coaches</h2>
-            <div id="altCoachesContainer"></div>
-            <button type="button" id="addAltCoach">
-              + Add Alternate Coach
-            </button>
+        <hr />
+        <h2>Team Members</h2>
+        <div id="membersContainer"></div>
+        <button type="button" id="addMember">+ Add Member</button>
 
-            <br />
-            <button type="button" class="next-btn" data-next="reg2">
-              Next
-            </button>
-          </form>
-        </div>
+        <hr />
+        <h2>Confirmation</h2>
+        <label>
+          Please confirm all team members are inducted as Pathfinder members:
+        </label>
+        <select name="clubConfirmation" required>
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
 
-        <!-- STEP 2: Members -->
-        <div class="tab-content" id="reg2">
-          <form id="membersForm" class="form-container">
-            <h2>Team Members</h2>
-            <div id="membersContainer"></div>
-            <button type="button" id="addMember">+ Add Member</button>
-            <br />
-            <button type="button" class="next-btn" data-next="reg3">
-              Next
-            </button>
-          </form>
-        </div>
+        <!-- Hidden input to hold all JSON data -->
+        <input type="hidden" name="teamData" id="teamData" />
 
-        <!-- STEP 3: Submit -->
-        <div class="tab-content" id="reg3">
-          <form
-            id="submitForm"
-            class="form-container"
-            method="post"
-            target="hidden_iframe"
-          >
-            <h2>Confirmation & Submit</h2>
-            <label>
-              Please confirm that ALL PBE team members above are inducted as
-              Pathfinder members in the club:
-            </label>
-            <select name="clubConfirmation" required>
-              <option value="">Select</option>
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-
-            <!-- Hidden input to hold all JSON data -->
-            <input type="hidden" name="teamData" id="teamData" />
-
-            <br />
-            <button type="submit">Submit Registration</button>
-          </form>
-        </div>
-      </div>
+        <button type="submit">Submit Registration</button>
+      </form>
     </main>
 
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      // NAV MENU
-      fetch("nav.html")
-        .then((res) => res.text())
-        .then((data) => {
-          document.getElementById("nav-placeholder").innerHTML = data;
-          const currentPage = location.pathname.split("/").pop();
-          document.querySelectorAll("#nav-placeholder a").forEach((link) => {
-            if (link.getAttribute("href") === currentPage) {
-              link.classList.add("active");
-            }
-          });
-        });
-
-      // NEXT BUTTONS
-      document.querySelectorAll(".next-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const current = btn.closest(".tab-content");
-          const nextId = btn.dataset.next;
-          current.classList.remove("active");
-          document.getElementById(nextId).classList.add("active");
-          current.scrollIntoView({ behavior: "smooth" });
-        });
-      });
-
-      // MEMBERS dynamic
+      // Add members dynamically
       const membersContainer = document.getElementById("membersContainer");
       document.getElementById("addMember").addEventListener("click", () => {
         const div = document.createElement("div");
         div.className = "member-row";
         div.innerHTML = `
-          <input type="text" name="memberFirstName" placeholder="First Name" required/>
-          <input type="text" name="memberLastName" placeholder="Last Name" required/>
-          <select name="memberRole" required>
-            <option value="">Role</option>
-            <option value="Captain">Captain</option>
-            <option value="Scribe">Scribe</option>
-            <option value="Member">Member</option>
-            <option value="Alternate">Alternate</option>
-          </select>
-          <button type="button" class="remove-member">-</button>
-        `;
+      <input type="text" name="memberFirstName" placeholder="First Name" required/>
+      <input type="text" name="memberLastName" placeholder="Last Name" required/>
+      <select name="memberRole" required>
+        <option value="">Role</option>
+        <option value="Captain">Captain</option>
+        <option value="Scribe">Scribe</option>
+        <option value="Member">Member</option>
+        <option value="Alternate">Alternate</option>
+      </select>
+      <button type="button" class="remove-btn">-</button>
+    `;
         membersContainer.appendChild(div);
         div
-          .querySelector(".remove-member")
+          .querySelector(".remove-btn")
           .addEventListener("click", () => div.remove());
       });
 
-      // ALTERNATE COACHES dynamic
+      // Add alternate coaches dynamically
       const altContainer = document.getElementById("altCoachesContainer");
       document.getElementById("addAltCoach").addEventListener("click", () => {
         const div = document.createElement("div");
-        div.className = "member-row";
+        div.className = "coach-row";
         div.innerHTML = `
-          <input type="text" name="altCoachFirst" placeholder="First Name" required/>
-          <input type="text" name="altCoachLast" placeholder="Last Name" required/>
-          <input type="email" name="altCoachEmail" placeholder="Email" required/>
-          <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
-          <button type="button" class="remove-member">-</button>
-        `;
+      <input type="text" name="altCoachFirst" placeholder="First Name" required/>
+      <input type="text" name="altCoachLast" placeholder="Last Name" required/>
+      <input type="email" name="altCoachEmail" placeholder="Email" required/>
+      <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
+      <button type="button" class="remove-btn">-</button>
+    `;
         altContainer.appendChild(div);
         div
-          .querySelector(".remove-member")
+          .querySelector(".remove-btn")
           .addEventListener("click", () => div.remove());
       });
 
-      // SUBMIT FORM
+      // Gather all data into JSON before submit
       document
-        .getElementById("submitForm")
+        .getElementById("pbeForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          // Gather main form data
-          const teamForm = document.getElementById("teamForm");
-          const formData = Object.fromEntries(new FormData(teamForm).entries());
+          const formData = Object.fromEntries(new FormData(this).entries());
 
-          // Gather members
+          // Members
           const members = [];
           document
             .querySelectorAll("#membersContainer .member-row")
@@ -287,10 +222,10 @@
               });
             });
 
-          // Gather alt coaches
+          // Alternate coaches
           const altCoaches = [];
           document
-            .querySelectorAll("#altCoachesContainer .member-row")
+            .querySelectorAll("#altCoachesContainer .coach-row")
             .forEach((row) => {
               const get = (name) => row.querySelector(`[name="${name}"]`);
               altCoaches.push({
@@ -301,21 +236,17 @@
               });
             });
 
-          // Combine all data
+          // Combine everything
           const submission = {
             ...formData,
             members,
             altCoaches,
-            clubConfirmation: document.querySelector(
-              'select[name="clubConfirmation"]',
-            ).value,
           };
 
-          // Put JSON in hidden input
           document.getElementById("teamData").value =
             JSON.stringify(submission);
 
-          // Submit the form
+          // Submit the form to Apps Script
           this.submit();
         });
     </script>
