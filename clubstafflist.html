@@ -284,7 +284,7 @@
           select.innerHTML = '<option value="">-- Select your club --</option>';
           clubs[radio.value].forEach((club) => {
             const opt = document.createElement("option");
-            opt.value = `${club.name} ${radio.value}`;
+            opt.value = club.name; // ✅ just the name
             opt.textContent = club.name;
             select.appendChild(opt);
           });
