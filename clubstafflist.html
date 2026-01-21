@@ -44,12 +44,6 @@
         display: block;
         margin: 1rem 0 0.5rem;
       }
-      .inline-checkbox-label {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 1rem 0;
-      }
       input,
       select,
       textarea {
@@ -86,19 +80,14 @@
         >
           <fieldset>
             <legend>Club Type</legend>
-            <label
-              ><input
-                type="radio"
-                name="clubType"
-                value="Adventurer"
-                required
-              />
-              Adventurer Club</label
-            >
-            <label
-              ><input type="radio" name="clubType" value="Pathfinder" />
-              Pathfinder Club</label
-            >
+            <label>
+              <input type="radio" name="clubType" value="Adventurer" required />
+              Adventurer Club
+            </label>
+            <label>
+              <input type="radio" name="clubType" value="Pathfinder" />
+              Pathfinder Club
+            </label>
           </fieldset>
 
           <label>
@@ -114,8 +103,8 @@
                 <legend>Staff Member</legend>
                 <label>Name: <input type="text" name="name" required /></label>
                 <label>Email: <input type="email" name="email" /></label>
-                <label
-                  >Criminal Record Check:
+                <label>
+                  Criminal Record Check:
                   <select name="crc" onchange="toggleDateInput(this)">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
@@ -125,15 +114,15 @@
                   CRC Expiration:
                   <input type="date" name="crcExpirationDate" disabled />
                 </label>
-                <label
-                  >ACL Abuse Cert:
+                <label>
+                  ACL Abuse Cert:
                   <select name="acl">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
-                  </select></label
-                >
-                <label
-                  >First Aid Cert Status:
+                  </select>
+                </label>
+                <label>
+                  First Aid Cert Status:
                   <select
                     name="certificationStatus"
                     onchange="toggleDateInput(this)"
@@ -150,53 +139,34 @@
                     disabled
                   />
                 </label>
-                <label
-                  >Driver's Abstract:
+                <label>
+                  Driver's Abstract:
                   <select name="driversAbstract">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
-                  </select></label
-                >
-                <label
-                  >Insurance:
+                  </select>
+                </label>
+                <label>
+                  Insurance:
                   <select name="insurance">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
-                  </select></label
-                >
-                <label
-                  >Volunteers Approved:
+                  </select>
+                </label>
+                <label>
+                  Volunteers Approved:
                   <select name="volunteersApproved">
                     <option value="No">No</option>
                     <option value="Yes">Yes</option>
-                  </select></label
-                >
-                <label
-                  >Volunteer Form Submitted:
-                  <input type="checkbox" name="volunteerForm"
-                /></label>
-
-                <!-- WhatsApp contacts -->
-                <label
-                  >WhatsApp Contact 1 Name:
-                  <input type="text" name="whatsappName1"
-                /></label>
-                <label
-                  >WhatsApp Contact 1 Phone:
-                  <input type="text" name="whatsappPhone1"
-                /></label>
-                <label
-                  >WhatsApp Contact 2 Name:
-                  <input type="text" name="whatsappName2"
-                /></label>
-                <label
-                  >WhatsApp Contact 2 Phone:
-                  <input type="text" name="whatsappPhone2"
-                /></label>
-
-                <label
-                  >Over 19+: <input type="checkbox" name="checkboxage"
-                /></label>
+                  </select>
+                </label>
+                <label>
+                  Volunteer Form Submitted:
+                  <input type="checkbox" name="volunteerForm" />
+                </label>
+                <label>
+                  Over 19+: <input type="checkbox" name="checkboxage" />
+                </label>
               </fieldset>
             </div>
           </div>
@@ -283,7 +253,7 @@
           select.innerHTML = '<option value="">-- Select your club --</option>';
           clubs[radio.value].forEach((club) => {
             const opt = document.createElement("option");
-            opt.value = club.name; // ✅ just the name
+            opt.value = club.name; // only name
             opt.textContent = club.name;
             select.appendChild(opt);
           });
@@ -347,10 +317,6 @@
               insurance: get("insurance").value,
               volunteersApproved: get("volunteersApproved").value,
               volunteerForm: get("volunteerForm").checked,
-              whatsappName1: get("whatsappName1").value.trim(),
-              whatsappPhone1: get("whatsappPhone1").value.trim(),
-              whatsappName2: get("whatsappName2").value.trim(),
-              whatsappPhone2: get("whatsappPhone2").value.trim(),
               checkboxage: get("checkboxage").checked,
             });
           });
