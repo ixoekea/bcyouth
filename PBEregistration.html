@@ -3,10 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>BC PBE Registration</title>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
+
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -14,14 +16,13 @@
         background: #f5f6fa;
       }
 
-      /* Nav placeholder styling same as Staff List page */
       #nav-placeholder a.active {
         font-weight: bold;
         text-decoration: underline;
       }
 
       main {
-        padding: 6rem 2rem 2rem; /* extra top padding for nav */
+        padding: 6rem 2rem 2rem;
         display: flex;
         justify-content: center;
       }
@@ -33,12 +34,16 @@
         max-width: 800px;
         width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        position: relative;
       }
 
       h2 {
         color: #3f51b5;
         margin-top: 2rem;
+      }
+
+      h3 {
+        margin-top: 1.5rem;
+        color: #444;
       }
 
       label {
@@ -56,9 +61,28 @@
         border: 1px solid #ccc;
       }
 
-      button {
+      .member-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 0.5rem;
+      }
+
+      .member-row input {
+        flex: 1;
+      }
+
+      .policy-note {
         margin-top: 1rem;
-        padding: 0.6rem 1.2rem;
+        padding: 0.75rem;
+        background: #eef1ff;
+        border-left: 4px solid #3f51b5;
+        font-size: 0.95rem;
+        color: #333;
+      }
+
+      button {
+        margin-top: 2rem;
+        padding: 0.7rem 1.5rem;
         background: #3f51b5;
         color: white;
         border: none;
@@ -71,39 +95,13 @@
         background: #303f9f;
       }
 
-      .member-row,
-      .coach-row {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 5px;
-      }
-
-      .member-row input,
-      .member-row select,
-      .coach-row input,
-      .coach-row select {
-        flex: 1;
-      }
-
-      .remove-btn {
-        background: red;
-        color: white;
-      }
-
-      .info-note {
-        margin: 10px 0;
-        font-style: italic;
-        color: #555;
-      }
-
       hr {
-        margin: 2rem 0;
+        margin: 2.5rem 0;
       }
     </style>
   </head>
+
   <body>
-    <!-- Nav placeholder (fetches nav.html like Staff List page) -->
     <div id="nav-placeholder"></div>
 
     <main>
@@ -115,64 +113,119 @@
         target="hidden_iframe"
       >
         <h2>Club & Church Information</h2>
-        <p class="info-note">Registration Deadline: January 29th, 2026</p>
+
         <label>Pathfinder Club Name</label>
-        <input name="clubName" type="text" required />
+        <input name="clubName" required />
+
         <label>Club Region</label>
         <select name="clubRegion" required>
           <option value="">Select region</option>
-          <option value="Cariboo">Cariboo</option>
-          <option value="Fraser Valley">Fraser Valley</option>
-          <option value="Interior">Interior</option>
-          <option value="Kootneys">Kootneys</option>
-          <option value="Metro Vancouver 1">Metro Vancouver 1</option>
-          <option value="Metro Vancouver 2">Metro Vancouver 2</option>
-          <option value="Metro Vancouver 3">Metro Vancouver 3</option>
-          <option value="Northern Interior">Northern Interior</option>
-          <option value="North Okanagan">North Okanagan</option>
-          <option value="South Okanagan">South Okanagan</option>
-          <option value="Vancouver Islands">Vancouver Islands</option>
+          <option>Cariboo</option>
+          <option>Fraser Valley</option>
+          <option>Interior</option>
+          <option>Kootneys</option>
+          <option>Metro Vancouver 1</option>
+          <option>Metro Vancouver 2</option>
+          <option>Metro Vancouver 3</option>
+          <option>Northern Interior</option>
+          <option>North Okanagan</option>
+          <option>South Okanagan</option>
+          <option>Vancouver Islands</option>
         </select>
+
         <label>Director Name</label>
-        <input name="directorName" type="text" required />
+        <input name="directorName" required />
+
         <label>Church Name</label>
-        <input name="churchName" type="text" required />
+        <input name="churchName" required />
 
         <hr />
-        <h2>General Team Information</h2>
+
+        <h2>Team Information</h2>
+
         <label>PBE Team Name</label>
-        <input name="teamName" type="text" required />
-        <label>Team Coach First Name</label>
-        <input name="coachFirstName" type="text" required />
-        <label>Team Coach Last Name</label>
-        <input name="coachLastName" type="text" required />
-        <label>Team Coach Email</label>
-        <input name="coachEmail" type="email" required />
-        <label>Team Coach Phone Number</label>
-        <input name="coachPhone" type="tel" required />
+        <input name="teamName" required />
+
+        <label>Coach First Name</label>
+        <input name="coachFirstName" required />
+
+        <label>Coach Last Name</label>
+        <input name="coachLastName" required />
+
+        <label>Coach Email</label>
+        <input type="email" name="coachEmail" required />
+
+        <label>Coach Phone</label>
+        <input type="tel" name="coachPhone" required />
 
         <hr />
-        <h2>Alternate Coaches</h2>
-        <div id="altCoachesContainer"></div>
-        <button type="button" id="addAltCoach">+ Add Alternate Coach</button>
 
-        <hr />
         <h2>Team Members</h2>
-        <div id="membersContainer"></div>
-        <button type="button" id="addMember">+ Add Member</button>
+
+        <div class="policy-note">
+          <strong>Team Policy:</strong><br />
+          • A minimum of <strong>2 team members</strong> is required to
+          compete.<br />
+          • Team membership is <strong>final upon submission</strong>.<br />
+          • <strong>No additional team members may be added</strong> at a later
+          date.
+        </div>
+
+        <h3>Captain</h3>
+        <div class="member-row">
+          <input name="captainFirstName" placeholder="First Name" required />
+          <input name="captainLastName" placeholder="Last Name" required />
+          <input
+            type="email"
+            name="captainEmail"
+            placeholder="Email"
+            required
+          />
+        </div>
+
+        <h3>Scribe</h3>
+        <div class="member-row">
+          <input name="scribeFirstName" placeholder="First Name" required />
+          <input name="scribeLastName" placeholder="Last Name" required />
+          <input type="email" name="scribeEmail" placeholder="Email" required />
+        </div>
+
+        <h3>Members</h3>
+        <div class="member-row">
+          <input name="member1FirstName" placeholder="First Name" />
+          <input name="member1LastName" placeholder="Last Name" />
+        </div>
+        <div class="member-row">
+          <input name="member2FirstName" placeholder="First Name" />
+          <input name="member2LastName" placeholder="Last Name" />
+        </div>
+        <div class="member-row">
+          <input name="member3FirstName" placeholder="First Name" />
+          <input name="member3LastName" placeholder="Last Name" />
+        </div>
+        <div class="member-row">
+          <input name="member4FirstName" placeholder="First Name" />
+          <input name="member4LastName" placeholder="Last Name" />
+        </div>
+
+        <h3>Alternate Member (optional)</h3>
+        <div class="member-row">
+          <input name="alternateFirstName" placeholder="First Name" />
+          <input name="alternateLastName" placeholder="Last Name" />
+        </div>
 
         <hr />
+
         <h2>Confirmation</h2>
-        <label>
-          Please confirm all team members are inducted as Pathfinder members:
-        </label>
+        <label>All team members are inducted Pathfinders?</label>
         <select name="clubConfirmation" required>
           <option value="">Select</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+          <option>Yes</option>
+          <option>No</option>
         </select>
 
         <input type="hidden" name="teamData" id="teamData" />
+
         <button type="submit">Submit Registration</button>
       </form>
     </main>
@@ -180,7 +233,6 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      // Load nav exactly like Staff List page
       fetch("nav.html")
         .then((res) => res.text())
         .then((html) => {
@@ -191,100 +243,47 @@
           });
         });
 
-      // Add members dynamically
-      const membersContainer = document.getElementById("membersContainer");
-      document.getElementById("addMember").addEventListener("click", () => {
-        const div = document.createElement("div");
-        div.className = "member-row";
-        div.innerHTML = `
-          <input type="text" name="memberFirstName" placeholder="First Name" required/>
-          <input type="text" name="memberLastName" placeholder="Last Name" required/>
-          <select name="memberRole" required>
-            <option value="">Role</option>
-            <option value="Captain">Captain</option>
-            <option value="Scribe">Scribe</option>
-            <option value="Member">Member</option>
-            <option value="Alternate">Alternate</option>
-          </select>
-          <button type="button" class="remove-btn">-</button>
-        `;
-        membersContainer.appendChild(div);
-        div
-          .querySelector(".remove-btn")
-          .addEventListener("click", () => div.remove());
-      });
-
-      // Add alternate coaches dynamically
-      const altContainer = document.getElementById("altCoachesContainer");
-      document.getElementById("addAltCoach").addEventListener("click", () => {
-        const div = document.createElement("div");
-        div.className = "coach-row";
-        div.innerHTML = `
-          <input type="text" name="altCoachFirst" placeholder="First Name" required/>
-          <input type="text" name="altCoachLast" placeholder="Last Name" required/>
-          <input type="email" name="altCoachEmail" placeholder="Email" required/>
-          <input type="tel" name="altCoachPhone" placeholder="Phone" required/>
-          <button type="button" class="remove-btn">-</button>
-        `;
-        altContainer.appendChild(div);
-        div
-          .querySelector(".remove-btn")
-          .addEventListener("click", () => div.remove());
-      });
-
-      // Form submission
       const form = document.getElementById("pbeForm");
       const iframe = document.querySelector('iframe[name="hidden_iframe"]');
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const formData = Object.fromEntries(new FormData(form).entries());
+        const fd = new FormData(form);
 
-        // Members
-        const members = [];
-        document
-          .querySelectorAll("#membersContainer .member-row")
-          .forEach((row) => {
-            const get = (name) => row.querySelector(`[name="${name}"]`);
-            members.push({
-              firstName: get("memberFirstName").value,
-              lastName: get("memberLastName").value,
-              role: get("memberRole").value,
-            });
-          });
+        // Count total members (captain + scribe + filled member slots)
+        let memberCount = 0;
 
-        // Alt coaches
-        const altCoaches = [];
-        document
-          .querySelectorAll("#altCoachesContainer .coach-row")
-          .forEach((row) => {
-            const get = (name) => row.querySelector(`[name="${name}"]`);
-            altCoaches.push({
-              firstName: get("altCoachFirst").value,
-              lastName: get("altCoachLast").value,
-              email: get("altCoachEmail").value,
-              phone: get("altCoachPhone").value,
-            });
-          });
+        if (fd.get("captainFirstName") && fd.get("captainLastName"))
+          memberCount++;
+        if (fd.get("scribeFirstName") && fd.get("scribeLastName"))
+          memberCount++;
 
-        document.getElementById("teamData").value = JSON.stringify({
-          ...formData,
-          members,
-          altCoaches,
+        ["member1", "member2", "member3", "member4"].forEach((m) => {
+          if (fd.get(m + "FirstName") && fd.get(m + "LastName")) {
+            memberCount++;
+          }
         });
 
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Submitting...";
+        if (memberCount < 2) {
+          alert(
+            "A minimum of 2 team members is required before submitting this registration.",
+          );
+          return;
+        }
+
+        const formData = Object.fromEntries(fd.entries());
+        document.getElementById("teamData").value = JSON.stringify(formData);
+
+        const btn = form.querySelector("button[type='submit']");
+        btn.disabled = true;
+        btn.textContent = "Submitting...";
 
         iframe.onload = () => {
           alert("✅ Registration submitted successfully!");
           form.reset();
-          membersContainer.innerHTML = "";
-          altContainer.innerHTML = "";
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit Registration";
+          btn.disabled = false;
+          btn.textContent = "Submit Registration";
         };
 
         form.submit();
