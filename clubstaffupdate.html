@@ -22,7 +22,7 @@
         background: white;
         padding: 2rem;
         border-radius: 12px;
-        max-width: 900px;
+        max-width: 1000px;
         width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
@@ -107,11 +107,9 @@
     </main>
 
     <script>
-      // Your web app URL
       const WEB_APP_URL =
         "https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec";
 
-      // Clubs dropdowns
       const clubs = {
         Adventurer: [
           "`Lil Titans",
@@ -165,6 +163,10 @@
         ],
       };
 
+      let staffList = [];
+      let staffHeaders = [];
+
+      // Populate club dropdown
       document
         .getElementById("clubType")
         .addEventListener("change", function () {
@@ -182,127 +184,144 @@
           } else select.disabled = true;
         });
 
-      let staffList = [];
-      let staffHeaders = [];
+      // Load staff
+      document.getElementById("loadStaff").addEventListener("click", loadStaff);
 
-      // ---------- LOAD STAFF ----------
-      document
-        .getElementById("loadStaff")
-        .addEventListener("click", async function () {
-          const club = document.getElementById("clubSelect").value;
-          const clubType = document.getElementById("clubType").value;
-          const email = document.getElementById("email").value.trim();
-          const accessCode = document.getElementById("accessCode").value.trim();
-          if (!club || !clubType || !email || !accessCode) {
-            alert("Fill all fields");
+      async function loadStaff() {
+        const club = document.getElementById("clubSelect").value;
+        const clubType = document.getElementById("clubType").value;
+        const email = document.getElementById("email").value.trim();
+        const accessCode = document.getElementById("accessCode").value.trim();
+        if (!club || !clubType || !email || !accessCode) {
+          alert("Please fill all fields for verification.");
+          return;
+        }
+        try {
+          const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "load",
+              club,
+              clubType,
+              email,
+              accessCode,
+            }),
+          });
+          const data = await res.json();
+          if (!data.length) {
+            alert("No staff found or verification failed.");
             return;
           }
+          staffList = data;
+          staffHeaders = Object.keys(staffList[0]).filter(
+            (h) => h !== "rowNumber",
+          );
+          renderStaffTable();
+          document.getElementById("staffContainer").style.display = "block";
+        } catch (err) {
+          console.error(err);
+          alert("Error loading staff");
+        }
+      }
 
-          try {
-            const url = `${WEB_APP_URL}?action=load&club=${encodeURIComponent(club)}&clubType=${encodeURIComponent(clubType)}&email=${encodeURIComponent(email)}&accessCode=${encodeURIComponent(accessCode)}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            if (data.length === 0) {
-              alert("No staff found or invalid access code");
-              return;
-            }
-
-            staffList = data;
-            staffHeaders = Object.keys(data[0]).filter(
-              (k) => k !== "rowNumber",
-            ); // columns A-L
-            renderStaffTable();
-            document.getElementById("staffContainer").style.display = "block";
-          } catch (err) {
-            console.error(err);
-            alert("Error loading staff");
-          }
-        });
-
-      // ---------- RENDER STAFF TABLE WITH DATEPICKERS ----------
+      // Render table
       function renderStaffTable() {
-        const thead = document.querySelector("#staffTable thead");
         const tbody = document.querySelector("#staffTable tbody");
-        thead.innerHTML = "";
         tbody.innerHTML = "";
+        const thead = document.querySelector("#staffTable thead");
+        thead.innerHTML = "";
 
-        // Headers
+        // Table headers
         const trHead = document.createElement("tr");
         staffHeaders.forEach((h) => {
           const th = document.createElement("th");
           th.textContent = h;
           trHead.appendChild(th);
         });
-        const thAction = document.createElement("th");
-        thAction.textContent = "Actions";
-        trHead.appendChild(thAction);
+        const thDel = document.createElement("th");
+        thDel.textContent = "Delete";
+        trHead.appendChild(thDel);
         thead.appendChild(trHead);
 
-        // Rows
-        staffList.forEach((s, i) => {
+        staffList.forEach((staff, i) => {
           const tr = document.createElement("tr");
-          staffHeaders.forEach((h) => {
-            let value = s[h] || "";
-
-            // Checkbox for Yes/No
-            if (value === "Yes" || value === "No") {
-              tr.innerHTML += `<td><input type="checkbox" data-index="${i}" data-field="${h}" ${value === "Yes" ? "checked" : ""}></td>`;
+          staffHeaders.forEach((f) => {
+            const td = document.createElement("td");
+            if (f === "Volunteer Form Submitted" || f === "Over 19+") {
+              const input = document.createElement("input");
+              input.type = "checkbox";
+              input.checked = staff[f] === "Yes";
+              input.dataset.index = i;
+              input.dataset.field = f;
+              td.appendChild(input);
+            } else if (staff[f] === "Yes" || staff[f] === "No") {
+              const sel = document.createElement("select");
+              ["Yes", "No"].forEach((v) => {
+                const opt = document.createElement("option");
+                opt.value = v;
+                opt.textContent = v;
+                if (staff[f] === v) opt.selected = true;
+                sel.appendChild(opt);
+              });
+              sel.dataset.index = i;
+              sel.dataset.field = f;
+              td.appendChild(sel);
+            } else {
+              const input = document.createElement("input");
+              input.type = f.toLowerCase().includes("email") ? "email" : "text";
+              input.value = staff[f] || "";
+              input.dataset.index = i;
+              input.dataset.field = f;
+              td.appendChild(input);
             }
-            // Datepicker for date fields
-            else if (h === "CRC Expiration" || h === "First Aid Expiration") {
-              tr.innerHTML += `<td><input type="date" data-index="${i}" data-field="${h}" value="${value}"></td>`;
-            }
-            // Text input for everything else
-            else {
-              tr.innerHTML += `<td><input type="text" data-index="${i}" data-field="${h}" value="${value}"></td>`;
-            }
+            tr.appendChild(td);
           });
-
-          tr.innerHTML += `<td><button type="button" onclick="deleteStaff(${i})">Delete</button></td>`;
+          const tdDel = document.createElement("td");
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "Delete";
+          delBtn.onclick = () => deleteStaff(i);
+          tdDel.appendChild(delBtn);
+          tr.appendChild(tdDel);
           tbody.appendChild(tr);
         });
       }
 
-      // ---------- DELETE STAFF ----------
-      function deleteStaff(index) {
+      function deleteStaff(i) {
         if (confirm("Delete this staff?")) {
-          staffList.splice(index, 1);
+          staffList.splice(i, 1);
           renderStaffTable();
         }
       }
 
-      // ---------- ADD NEW STAFF ----------
-      document
-        .getElementById("addStaff")
-        .addEventListener("click", function () {
-          const name = document.getElementById("newName").value.trim();
-          const email = document.getElementById("newEmail").value.trim();
-          if (!name || !email) {
-            alert("Enter name and email");
-            return;
-          }
+      // Add new staff
+      document.getElementById("addStaff").addEventListener("click", () => {
+        const name = document.getElementById("newName").value.trim();
+        const email = document.getElementById("newEmail").value.trim();
+        if (!name || !email) {
+          alert("Enter name and email");
+          return;
+        }
+        const newStaff = { rowNumber: null };
+        staffHeaders.forEach((h) => (newStaff[h] = ""));
+        newStaff["Name"] = name;
+        newStaff["Email"] = email;
+        staffList.push(newStaff);
+        renderStaffTable();
+        document.getElementById("newName").value = "";
+        document.getElementById("newEmail").value = "";
+      });
 
-          const newStaff = { rowNumber: null };
-          staffHeaders.forEach((h) => (newStaff[h] = ""));
-          newStaff["Name"] = name;
-          newStaff["Email"] = email;
-
-          staffList.push(newStaff);
-          renderStaffTable();
-          document.getElementById("newName").value = "";
-          document.getElementById("newEmail").value = "";
-        });
-
-      // ---------- SUBMIT STAFF ----------
+      // Submit all changes
       document
         .getElementById("submitStaff")
-        .addEventListener("click", async function () {
+        .addEventListener("click", async () => {
           const club = document.getElementById("clubSelect").value;
           const clubType = document.getElementById("clubType").value;
 
-          // Update staffList from table inputs
+          // update staffList from table inputs
           document.querySelectorAll("#staffTable tbody tr").forEach((tr) => {
-            tr.querySelectorAll("input").forEach((input) => {
+            tr.querySelectorAll("input, select").forEach((input) => {
               const i = input.dataset.index;
               const f = input.dataset.field;
               if (input.type === "checkbox")
