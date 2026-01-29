@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BC Club Staff Registration</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        background: #f5f6fa;
+      }
+      main {
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+      .form-container {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 900px;
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+      }
+      input,
+      select,
+      button {
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+      }
+      button {
+        margin-top: 1rem;
+        background: #3f51b5;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #303f9f;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      th,
+      td {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      th {
+        background: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="form-container">
+        <h2>Staff Registration</h2>
+
+        <label
+          >Club Type:
+          <select id="clubType">
+            <option value="">-- Select Club Type --</option>
+            <option value="Adventurer">Adventurer</option>
+            <option value="Pathfinder">Pathfinder</option>
+          </select>
+        </label>
+
+        <label
+          >Club Name:
+          <select id="clubSelect" disabled>
+            <option value="">-- Select Club --</option>
+          </select>
+        </label>
+
+        <label>Email: <input type="email" id="email" required /></label>
+        <label
+          >Access Code: <input type="text" id="accessCode" required
+        /></label>
+        <button type="button" id="loadStaff">Load Staff</button>
+
+        <div id="staffContainer" style="display: none">
+          <table id="staffTable">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+
+          <h3>Add New Staff</h3>
+          <label>Name: <input type="text" id="newName" /></label>
+          <label>Email: <input type="email" id="newEmail" /></label>
+          <button type="button" id="addStaff">Add Staff</button>
+          <button type="button" id="submitStaff">Submit All Changes</button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Your web app URL
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbzzc8jZFtIoTiP5Mztcssf09c1rxI95MPMBNRp6qWrNmgwH0MwQNAPy1Gk2pzXEFklpgg/exec";
+
+      // Clubs dropdowns
+      const clubs = {
+        Adventurer: [
+          "`Lil Titans",
+          "Agape Lynx",
+          "Cariboo Gold",
+          "Creekside Jr. Falcons",
+          "Dawson Creek Peacemakers",
+          "Heavenbound",
+          "Inspire-Burnaby",
+          "Island Eaglets",
+          "Kelowna Silver Paws",
+          "Lake City",
+          "Lakeside",
+          "Mighty Islanders",
+          "Mount Cheam",
+          "Northern Lightbearers",
+          "Orion",
+          "Radical Rabbits",
+          "Sooke Sea Stars",
+          "Surrey Beavers",
+          "Surrey Dolphins",
+          "The Kamloops Eagle",
+          "Vancouver Rangerz",
+          "Westminster Thunderbirds",
+          "White Rock Otters",
+        ],
+        Pathfinder: [
+          "Agape Lynx",
+          "Cariboo Gold",
+          "Creekside Falcons",
+          "Dawson Creek Peacemakers",
+          "EBENEZER",
+          "Fraser Valley Titans",
+          "Fraserview",
+          "Golden Eagles",
+          "Inspire Jaguars",
+          "Island Eagles",
+          "Island Explorers",
+          "Lake City",
+          "Mount Cheam",
+          "OAC Bears",
+          "Peacelanders",
+          "PG Nighthawks",
+          "Richmond Ravens",
+          "Sardis Spirits",
+          "Shuswap Eagles",
+          "Silver Tip",
+          "Surrey Beavers",
+          "SURREY TIGERS",
+          "Westminster Thunderbirds",
+        ],
+      };
+
+      document
+        .getElementById("clubType")
+        .addEventListener("change", function () {
+          const type = this.value;
+          const select = document.getElementById("clubSelect");
+          select.innerHTML = '<option value="">-- Select Club --</option>';
+          if (type) {
+            clubs[type].forEach((c) => {
+              const opt = document.createElement("option");
+              opt.value = c;
+              opt.textContent = c;
+              select.appendChild(opt);
+            });
+            select.disabled = false;
+          } else select.disabled = true;
+        });
+
+      let staffList = [];
+      let staffHeaders = [];
+
+      // ---------- LOAD STAFF ----------
+      document
+        .getElementById("loadStaff")
+        .addEventListener("click", async function () {
+          const club = document.getElementById("clubSelect").value;
+          const clubType = document.getElementById("clubType").value;
+          const email = document.getElementById("email").value.trim();
+          const accessCode = document.getElementById("accessCode").value.trim();
+          if (!club || !clubType || !email || !accessCode) {
+            alert("Fill all fields");
+            return;
+          }
+
+          try {
+            const url = `${WEB_APP_URL}?action=load&club=${encodeURIComponent(club)}&clubType=${encodeURIComponent(clubType)}&email=${encodeURIComponent(email)}&accessCode=${encodeURIComponent(accessCode)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data.length === 0) {
+              alert("No staff found or invalid access code");
+              return;
+            }
+
+            staffList = data;
+            staffHeaders = Object.keys(data[0]).filter(
+              (k) => k !== "rowNumber",
+            ); // columns A-L
+            renderStaffTable();
+            document.getElementById("staffContainer").style.display = "block";
+          } catch (err) {
+            console.error(err);
+            alert("Error loading staff");
+          }
+        });
+
+      // ---------- RENDER STAFF TABLE WITH DATEPICKERS ----------
+      function renderStaffTable() {
+        const thead = document.querySelector("#staffTable thead");
+        const tbody = document.querySelector("#staffTable tbody");
+        thead.innerHTML = "";
+        tbody.innerHTML = "";
+
+        // Headers
+        const trHead = document.createElement("tr");
+        staffHeaders.forEach((h) => {
+          const th = document.createElement("th");
+          th.textContent = h;
+          trHead.appendChild(th);
+        });
+        const thAction = document.createElement("th");
+        thAction.textContent = "Actions";
+        trHead.appendChild(thAction);
+        thead.appendChild(trHead);
+
+        // Rows
+        staffList.forEach((s, i) => {
+          const tr = document.createElement("tr");
+          staffHeaders.forEach((h) => {
+            let value = s[h] || "";
+
+            // Checkbox for Yes/No
+            if (value === "Yes" || value === "No") {
+              tr.innerHTML += `<td><input type="checkbox" data-index="${i}" data-field="${h}" ${value === "Yes" ? "checked" : ""}></td>`;
+            }
+            // Datepicker for date fields
+            else if (h === "CRC Expiration" || h === "First Aid Expiration") {
+              tr.innerHTML += `<td><input type="date" data-index="${i}" data-field="${h}" value="${value}"></td>`;
+            }
+            // Text input for everything else
+            else {
+              tr.innerHTML += `<td><input type="text" data-index="${i}" data-field="${h}" value="${value}"></td>`;
+            }
+          });
+
+          tr.innerHTML += `<td><button type="button" onclick="deleteStaff(${i})">Delete</button></td>`;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // ---------- DELETE STAFF ----------
+      function deleteStaff(index) {
+        if (confirm("Delete this staff?")) {
+          staffList.splice(index, 1);
+          renderStaffTable();
+        }
+      }
+
+      // ---------- ADD NEW STAFF ----------
+      document
+        .getElementById("addStaff")
+        .addEventListener("click", function () {
+          const name = document.getElementById("newName").value.trim();
+          const email = document.getElementById("newEmail").value.trim();
+          if (!name || !email) {
+            alert("Enter name and email");
+            return;
+          }
+
+          const newStaff = { rowNumber: null };
+          staffHeaders.forEach((h) => (newStaff[h] = ""));
+          newStaff["Name"] = name;
+          newStaff["Email"] = email;
+
+          staffList.push(newStaff);
+          renderStaffTable();
+          document.getElementById("newName").value = "";
+          document.getElementById("newEmail").value = "";
+        });
+
+      // ---------- SUBMIT STAFF ----------
+      document
+        .getElementById("submitStaff")
+        .addEventListener("click", async function () {
+          const club = document.getElementById("clubSelect").value;
+          const clubType = document.getElementById("clubType").value;
+
+          // Update staffList from table inputs
+          document.querySelectorAll("#staffTable tbody tr").forEach((tr) => {
+            tr.querySelectorAll("input").forEach((input) => {
+              const i = input.dataset.index;
+              const f = input.dataset.field;
+              if (input.type === "checkbox")
+                staffList[i][f] = input.checked ? "Yes" : "No";
+              else staffList[i][f] = input.value;
+            });
+          });
+
+          try {
+            await fetch(WEB_APP_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "submit",
+                club,
+                clubType,
+                staffList,
+              }),
+            });
+            alert("Staff saved successfully!");
+          } catch (err) {
+            console.error(err);
+            alert("Error submitting staff");
+          }
+        });
+    </script>
+  </body>
+</html>
