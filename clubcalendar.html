@@ -91,6 +91,7 @@
 
     <main>
       <div class="form-container">
+        <!-- Main Calendar Form -->
         <form
           id="calendarForm"
           action="https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec"
@@ -100,19 +101,14 @@
           <!-- Club Type -->
           <fieldset>
             <legend>Club Type</legend>
-            <label
-              ><input
-                type="radio"
-                name="clubType"
-                value="Adventurer"
-                required
-              />
-              Adventurer Club</label
-            >
-            <label
-              ><input type="radio" name="clubType" value="Pathfinder" />
-              Pathfinder Club</label
-            >
+            <label>
+              <input type="radio" name="clubType" value="Adventurer" required />
+              Adventurer Club
+            </label>
+            <label>
+              <input type="radio" name="clubType" value="Pathfinder" />
+              Pathfinder Club
+            </label>
           </fieldset>
 
           <!-- Club Selection -->
@@ -131,77 +127,6 @@
             placeholder="Pick a date"
             readonly
           />
-
-          <!-- Event Modal -->
-          <div id="eventModal">
-            <div class="modal-content">
-              <h3>Add Event for <span id="selectedDateText"></span></h3>
-              <form id="eventForm">
-                <label>
-                  Event Type:
-                  <select id="eventTypeSelect" required>
-                    <option value="" disabled selected>
-                      Select an event type
-                    </option>
-                    <option value="Induction">Induction</option>
-                    <option value="Youth Summit">Youth Summit</option>
-                    <option value="Community Service">Community Service</option>
-                    <option value="Pathfinder/Adventurer Sabbath">
-                      Pathfinder/Adventurer Sabbath
-                    </option>
-                    <option value="Camporee">Camporee</option>
-                    <option value="Investiture">Investiture</option>
-                    <option value="Meetings">Meetings</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </label>
-                <label id="customEventTypeLabel" style="display: none">
-                  Custom Event Type:
-                  <input type="text" id="customEventTypeInput" />
-                </label>
-                <label
-                  >Time:
-                  <input
-                    type="text"
-                    name="eventTime"
-                    placeholder="e.g. 3:00 PM"
-                    required
-                /></label>
-                <label>
-                  <input
-                    type="checkbox"
-                    name="multiDay"
-                    id="multiDayCheckbox"
-                  />
-                  Multiday Event
-                </label>
-                <div
-                  id="multiDayDates"
-                  style="display: none; margin-top: 0.5rem"
-                >
-                  <label>Select additional dates:</label>
-                  <input
-                    type="text"
-                    id="additionalDatesPicker"
-                    placeholder="Select additional dates"
-                  />
-                </div>
-                <label
-                  >Description:<br /><textarea
-                    name="description"
-                    rows="3"
-                  ></textarea>
-                </label>
-                <label
-                  >Location: <input type="text" name="location" required
-                /></label>
-                <div style="margin-top: 1rem">
-                  <button type="submit">Add Event</button>
-                  <button type="button" id="eventCancelBtn">Cancel</button>
-                </div>
-              </form>
-            </div>
-          </div>
 
           <h3>Events Added:</h3>
           <ul id="eventsList"></ul>
@@ -230,10 +155,73 @@
       </div>
     </main>
 
+    <!-- Event Modal (outside main form!) -->
+    <div id="eventModal">
+      <div class="modal-content">
+        <form id="eventForm">
+          <h3>Add Event for <span id="selectedDateText"></span></h3>
+          <label>
+            Event Type:
+            <select id="eventTypeSelect" required>
+              <option value="" disabled selected>Select an event type</option>
+              <option value="Induction">Induction</option>
+              <option value="Youth Summit">Youth Summit</option>
+              <option value="Community Service">Community Service</option>
+              <option value="Pathfinder/Adventurer Sabbath">
+                Pathfinder/Adventurer Sabbath
+              </option>
+              <option value="Camporee">Camporee</option>
+              <option value="Investiture">Investiture</option>
+              <option value="Meetings">Meetings</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label id="customEventTypeLabel" style="display: none">
+            Custom Event Type:
+            <input type="text" id="customEventTypeInput" />
+          </label>
+          <label>
+            Time:
+            <input
+              type="text"
+              name="eventTime"
+              placeholder="e.g. 3:00 PM"
+              required
+            />
+          </label>
+          <label>
+            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
+            Multiday Event
+          </label>
+          <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
+            <label>Select additional dates:</label>
+            <input
+              type="text"
+              id="additionalDatesPicker"
+              placeholder="Select additional dates"
+            />
+          </div>
+          <label>
+            Description:<br />
+            <textarea name="description" rows="3"></textarea>
+          </label>
+          <label>
+            Location: <input type="text" name="location" required />
+          </label>
+          <div style="margin-top: 1rem">
+            <button type="submit">Add Event</button>
+            <button type="button" id="eventCancelBtn">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
+      // ------------------------------
       // Clubs
+      // ------------------------------
       const clubs = {
         Adventurer: [
           "`Lil Titans",
@@ -287,7 +275,9 @@
         ],
       };
 
+      // ------------------------------
       // Populate Club select
+      // ------------------------------
       document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
         radio.addEventListener("change", () => {
           const select = document.getElementById("clubSelect");
@@ -302,7 +292,9 @@
         });
       });
 
-      // Approval date toggle
+      // ------------------------------
+      // Calendar Approval Toggle
+      // ------------------------------
       const calendarApprovedSelect = document.getElementById(
         "calendarApprovedSelect",
       );
@@ -317,7 +309,9 @@
           : "none";
       });
 
-      // Event modal
+      // ------------------------------
+      // Event Modal Logic
+      // ------------------------------
       let eventsData = [];
       const calendarInput = document.getElementById("calendarInput");
       const eventModal = document.getElementById("eventModal");
@@ -336,46 +330,58 @@
       const customEventTypeInput = document.getElementById(
         "customEventTypeInput",
       );
+
+      // Flatpickr for additional dates
       let additionalDatesFP = flatpickr(additionalDatesPicker, {
         mode: "multiple",
         dateFormat: "Y-m-d",
         allowInput: true,
       });
-      let currentSelectedDate = null;
 
+      // Flatpickr for main calendar input
       flatpickr(calendarInput, {
         dateFormat: "Y-m-d",
         disableMobile: true,
         onChange: function (dates) {
           if (!dates.length) return;
-          currentSelectedDate = dates[0].toISOString().slice(0, 10);
-          openEventModal(currentSelectedDate);
-          calendarInput._flatpickr.clear();
+          openEventModal(dates[0].toISOString().slice(0, 10));
         },
       });
 
       function openEventModal(dateStr) {
         selectedDateText.textContent = dateStr;
         eventForm.reset();
-        multiDayDatesDiv.style.display = "none";
-        additionalDatesFP.clear();
+        multiDayDatesDiv.style.display = multiDayCheckbox.checked
+          ? "block"
+          : "none";
+
+        if (multiDayCheckbox.checked) {
+          additionalDatesFP.setDate([dateStr]);
+        } else {
+          additionalDatesFP.clear();
+        }
+
         customEventTypeLabel.style.display = "none";
-        eventModal.style.display = "flex";
+        eventModal.style.display = "flex"; // SHOW modal
         eventForm.dataset.mainDate = dateStr;
       }
 
+      // Multi-day checkbox toggle
       multiDayCheckbox.addEventListener("change", () => {
         multiDayDatesDiv.style.display = multiDayCheckbox.checked
           ? "block"
           : "none";
         if (!multiDayCheckbox.checked) additionalDatesFP.clear();
       });
+
+      // Cancel modal
       document.getElementById("eventCancelBtn").onclick = () =>
         (eventModal.style.display = "none");
       eventModal.addEventListener("click", (e) => {
         if (e.target === eventModal) eventModal.style.display = "none";
       });
 
+      // Custom event type input
       document
         .getElementById("eventTypeSelect")
         .addEventListener("change", () => {
@@ -385,6 +391,7 @@
               : "none";
         });
 
+      // Submit event
       eventForm.onsubmit = (e) => {
         e.preventDefault();
         const mainDate = eventForm.dataset.mainDate;
@@ -399,7 +406,11 @@
         const additionalDates = additionalDatesFP.selectedDates.map((d) =>
           d.toISOString().slice(0, 10),
         );
-        const allDates = [mainDate, ...additionalDates];
+        const allDates = [
+          mainDate,
+          ...additionalDates.filter((d) => d !== mainDate),
+        ];
+
         if (!eventType || !eventTime || !location) {
           alert("Please fill all required fields");
           return;
@@ -420,12 +431,14 @@
           li.textContent =
             `[${entry.club}] ${date} - ${eventType} at ${eventTime}, Location: ${location}` +
             (description ? `, Description: ${description}` : "");
+
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = "🗑️ Delete";
           deleteBtn.style.marginLeft = "10px";
           deleteBtn.onclick = () => {
             eventsData = eventsData.filter((ev) => ev !== entry);
             eventsList.removeChild(li);
+            eventsInput.value = JSON.stringify(eventsData);
           };
           li.appendChild(deleteBtn);
           eventsList.appendChild(li);
@@ -435,7 +448,9 @@
         eventModal.style.display = "none";
       };
 
+      // ------------------------------
       // Load nav
+      // ------------------------------
       fetch("nav.html")
         .then((r) => r.text())
         .then((html) => {
