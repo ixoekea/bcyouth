@@ -62,8 +62,12 @@
         border-radius: 6px;
         cursor: pointer;
       }
-      button:hover {
+      button:hover:enabled {
         background-color: #303f9f;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
       }
     </style>
   </head>
@@ -103,9 +107,9 @@
                 <legend>Staff Member</legend>
                 <label>Name: <input type="text" name="name" required /></label>
                 <label
-                  >Email: <i>Email is only required for Director</i
-                  ><input type="email" name="email"
-                /></label>
+                  >Email: <i>Email is only required for Director</i>
+                  <input type="email" name="email" />
+                </label>
                 <label>
                   Criminal Record Check:
                   <select name="crc" onchange="toggleDateInput(this)">
@@ -188,7 +192,7 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      // Load nav
+      // --- NAV LOAD ---
       fetch("nav.html")
         .then((res) => res.text())
         .then((html) => {
@@ -199,6 +203,7 @@
           });
         });
 
+      // --- CLUB DATA ---
       const clubs = {
         Adventurer: [
           { id: "A01", name: "`LIL TITANS" },
@@ -259,14 +264,14 @@
         ],
       };
 
-      // Populate club select
+      // --- POPULATE CLUB SELECT ---
       document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
         radio.addEventListener("change", () => {
           const select = document.getElementById("clubSelect");
           select.innerHTML = '<option value="">-- Select your club --</option>';
           clubs[radio.value].forEach((club) => {
             const opt = document.createElement("option");
-            opt.value = club.name; // only name
+            opt.value = club.name;
             opt.textContent = club.name;
             select.appendChild(opt);
           });
@@ -274,6 +279,7 @@
         });
       });
 
+      // --- TOGGLE DATE INPUTS ---
       function toggleDateInput(sel) {
         const label = sel.closest("label").nextElementSibling;
         if (!label) return;
@@ -290,6 +296,7 @@
         }
       }
 
+      // --- ADD/REMOVE STAFF ---
       function addStaffEntry() {
         const staffEntries = document.getElementById("staffEntries");
         const last = staffEntries.querySelector(".staff:last-child");
@@ -310,34 +317,41 @@
         else alert("At least one staff entry is required.");
       }
 
-      document
-        .getElementById("staffForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const staffList = [];
-          document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
-            const get = (name) => entry.querySelector(`[name="${name}"]`);
-            staffList.push({
-              name: get("name").value.trim(),
-              email: get("email").value.trim(),
-              crc: get("crc").value,
-              crcExpirationDate: get("crcExpirationDate").value,
-              acl: get("acl").value,
-              certificationStatus: get("certificationStatus").value,
-              certificationExpirationDate: get("certificationExpirationDate")
-                .value,
-              driversAbstract: get("driversAbstract").value,
-              insurance: get("insurance").value,
-              volunteersApproved: get("volunteersApproved").value,
-              volunteerForm: get("volunteerForm").checked,
-              checkboxage: get("checkboxage").checked,
-            });
-          });
-          document.getElementById("staffListInput").value =
-            JSON.stringify(staffList);
-          this.submit();
-        });
+      // --- FORM SUBMIT WITH ANTI-DOUBLE-SUBMIT ---
+      const form = document.getElementById("staffForm");
+      const submitBtn = form.querySelector('button[type="submit"]');
 
+      form.addEventListener("submit", function (e) {
+        e.preventDefault(); // prevent default submit
+        submitBtn.disabled = true; // disable button
+        submitBtn.textContent = "Submitting..."; // feedback
+
+        const staffList = [];
+        document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
+          const get = (name) => entry.querySelector(`[name="${name}"]`);
+          staffList.push({
+            name: get("name").value.trim(),
+            email: get("email").value.trim(),
+            crc: get("crc").value,
+            crcExpirationDate: get("crcExpirationDate").value,
+            acl: get("acl").value,
+            certificationStatus: get("certificationStatus").value,
+            certificationExpirationDate: get("certificationExpirationDate")
+              .value,
+            driversAbstract: get("driversAbstract").value,
+            insurance: get("insurance").value,
+            volunteersApproved: get("volunteersApproved").value,
+            volunteerForm: get("volunteerForm").checked,
+            checkboxage: get("checkboxage").checked,
+          });
+        });
+        document.getElementById("staffListInput").value =
+          JSON.stringify(staffList);
+
+        form.submit(); // submit to Apps Script
+      });
+
+      // --- INIT DATE PICKERS ---
       flatpickr('input[type="date"]');
     </script>
   </body>
