@@ -18,10 +18,6 @@
         margin: 0;
         background: #f5f6fa;
       }
-      #nav-placeholder a.active {
-        font-weight: bold;
-        text-decoration: underline;
-      }
       main {
         padding: 2rem;
         display: flex;
@@ -57,8 +53,12 @@
         border-radius: 6px;
         cursor: pointer;
       }
-      button:hover {
+      button:hover:not(:disabled) {
         background-color: #303f9f;
+      }
+      button:disabled {
+        background-color: #999;
+        cursor: not-allowed;
       }
       #eventModal {
         display: none;
@@ -70,7 +70,7 @@
         background: rgba(0, 0, 0, 0.5);
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 99999;
       }
       .modal-content {
         background: white;
@@ -81,17 +81,11 @@
       ul#eventsList {
         margin-top: 1rem;
       }
-      #clubSelect:disabled {
-        background: #eee;
-      }
     </style>
   </head>
   <body>
-    <div id="nav-placeholder"></div>
-
     <main>
       <div class="form-container">
-        <!-- Main Calendar Form -->
         <form
           id="calendarForm"
           action="https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec"
@@ -101,14 +95,19 @@
           <!-- Club Type -->
           <fieldset>
             <legend>Club Type</legend>
-            <label>
-              <input type="radio" name="clubType" value="Adventurer" required />
-              Adventurer Club
-            </label>
-            <label>
-              <input type="radio" name="clubType" value="Pathfinder" />
-              Pathfinder Club
-            </label>
+            <label
+              ><input
+                type="radio"
+                name="clubType"
+                value="Adventurer"
+                required
+              />
+              Adventurer Club</label
+            >
+            <label
+              ><input type="radio" name="clubType" value="Pathfinder" />
+              Pathfinder Club</label
+            >
           </fieldset>
 
           <!-- Club Selection -->
@@ -131,7 +130,7 @@
           <h3>Events Added:</h3>
           <ul id="eventsList"></ul>
 
-          <!-- Hidden Inputs for Apps Script -->
+          <!-- Hidden Inputs -->
           <input type="hidden" name="events" id="eventsInput" />
           <label>
             Calendar Approved:
@@ -150,12 +149,18 @@
             />
           </label>
 
-          <button type="submit">Submit All Events</button>
+          <!-- Submit -->
+          <button type="submit" id="submitBtn">Submit All Events</button>
+          <span
+            id="successMessage"
+            style="display: none; color: green; margin-left: 10px"
+            >Successfully submitted!</span
+          >
         </form>
       </div>
     </main>
 
-    <!-- Event Modal (outside main form!) -->
+    <!-- Event Modal (outside form) -->
     <div id="eventModal">
       <div class="modal-content">
         <form id="eventForm">
@@ -177,22 +182,20 @@
             </select>
           </label>
           <label id="customEventTypeLabel" style="display: none">
-            Custom Event Type:
-            <input type="text" id="customEventTypeInput" />
+            Custom Event Type: <input type="text" id="customEventTypeInput" />
           </label>
-          <label>
-            Time:
+          <label
+            >Time:
             <input
               type="text"
               name="eventTime"
               placeholder="e.g. 3:00 PM"
               required
-            />
-          </label>
-          <label>
-            <input type="checkbox" name="multiDay" id="multiDayCheckbox" />
-            Multiday Event
-          </label>
+          /></label>
+          <label
+            ><input type="checkbox" id="multiDayCheckbox" /> Multiday
+            Event</label
+          >
           <div id="multiDayDates" style="display: none; margin-top: 0.5rem">
             <label>Select additional dates:</label>
             <input
@@ -201,13 +204,12 @@
               placeholder="Select additional dates"
             />
           </div>
-          <label>
-            Description:<br />
-            <textarea name="description" rows="3"></textarea>
+          <label
+            >Description:<br /><textarea name="description" rows="3"></textarea>
           </label>
-          <label>
-            Location: <input type="text" name="location" required />
-          </label>
+          <label
+            >Location: <input type="text" name="location" required
+          /></label>
           <div style="margin-top: 1rem">
             <button type="submit">Add Event</button>
             <button type="button" id="eventCancelBtn">Cancel</button>
@@ -220,81 +222,85 @@
 
     <script>
       // ------------------------------
-      // Clubs
+      // Club dropdown logic
       // ------------------------------
       const clubs = {
         Adventurer: [
-          "`Lil Titans",
-          "Agape Lynx",
-          "Cariboo Gold",
-          "Creekside Jr. Falcons",
-          "Dawson Creek Peacemakers",
-          "Heavenbound",
-          "Inspire-Burnaby",
-          "Island Eaglets",
-          "Kelowna Silver Paws",
-          "Lake City",
-          "Lakeside",
-          "Mighty Islanders",
-          "Mount Cheam",
-          "Northern Lightbearers",
-          "Orion",
-          "Radical Rabbits",
-          "Sooke Sea Stars",
-          "Surrey Beavers",
-          "Surrey Dolphins",
-          "The Kamloops Eagle",
-          "Vancouver Rangerz",
-          "Westminster Thunderbirds",
-          "White Rock Otters",
+          { id: "A01", name: "`LIL TITANS" },
+          { id: "A02", name: "Agape Lynx" },
+          { id: "A03", name: "Cariboo Gold" },
+          { id: "A03", name: "Chickadee" },
+          { id: "A03", name: "Cranbrook SDA Church" },
+          { id: "A04", name: "Creekside Jr. Falcons" },
+          { id: "A05", name: "Dawson Creek Peacemakers" },
+          { id: "A06", name: "Heavenbound" },
+          { id: "A07", name: "Inspire-Burnaby" },
+          { id: "A08", name: "Island Eaglets" },
+          { id: "P09", name: "Island Explorers" },
+          { id: "A10", name: "Kelowna Silver Paws" },
+          { id: "A11", name: "Lake City" },
+          { id: "A12", name: "Lakeside" },
+          { id: "A13", name: "Mighty Islanders" },
+          { id: "A14", name: "Mount Cheam" },
+          { id: "A15", name: "Northern Lightbearers" },
+          { id: "A16", name: "Orion" },
+          { id: "P17", name: "Penticton SDA Spirit Bears" },
+          { id: "A18", name: "Radical Rabbits" },
+          { id: "P19", name: "Robson Peaks" },
+          { id: "A20", name: "Sooke Sea Stars" },
+          { id: "A21", name: "Surrey Beavers" },
+          { id: "A22", name: "Surrey Dolphins" },
+          { id: "A23", name: "The Kamloops Eagle" },
+          { id: "A24", name: "Vancouver Rangerz" },
+          { id: "A25", name: "Westminster Thunderbirds" },
+          { id: "A26", name: "White Rock Otters" },
         ],
         Pathfinder: [
-          "Agape Lynx",
-          "Cariboo Gold",
-          "Creekside Falcons",
-          "Dawson Creek Peacemakers",
-          "EBENEZER",
-          "Fraser Valley Titans",
-          "Fraserview",
-          "Golden Eagles",
-          "Inspire Jaguars",
-          "Island Eagles",
-          "Island Explorers",
-          "Lake City",
-          "Mount Cheam",
-          "OAC Bears",
-          "Peacelanders",
-          "PG Nighthawks",
-          "Richmond Ravens",
-          "Sardis Spirits",
-          "Shuswap Eagles",
-          "Silver Tip",
-          "Surrey Beavers",
-          "SURREY TIGERS",
-          "Westminster Thunderbirds",
+          { id: "P01", name: "Agape Lynx" },
+          { id: "P02", name: "Cariboo Gold" },
+          { id: "P03", name: "Cranbrook SDA Church" },
+          { id: "P04", name: "Creekside Falcons" },
+          { id: "P05", name: "Dawson Creek Peacemakers" },
+          { id: "P06", name: "EBENEZER" },
+          { id: "P07", name: "Fraser Valley Titans" },
+          { id: "P08", name: "Fraserview" },
+          { id: "P09", name: "Golden Eagles" },
+          { id: "P10", name: "Inspire Jaguars" },
+          { id: "P11", name: "Island Eagles" },
+          { id: "P12", name: "Island Explorers" },
+          { id: "P13", name: "Lake City" },
+          { id: "P14", name: "Mount Cheam" },
+          { id: "P15", name: "OAC Bears" },
+          { id: "P16", name: "Peacelanders" },
+          { id: "P17", name: "PG Nighthawks" },
+          { id: "P18", name: "Richmond Ravens" },
+          { id: "P19", name: "Robson Peaks" },
+          { id: "P20", name: "Sardis Spirits" },
+          { id: "P21", name: "Shuswap Eagles" },
+          { id: "P22", name: "Silver Tip" },
+          { id: "P23", name: "Skyhawks" },
+          { id: "P24", name: "Surrey Beavers" },
+          { id: "P25", name: "SURREY TIGERS" },
+          { id: "P26", name: "Westminster Thunderbirds" },
         ],
       };
 
-      // ------------------------------
-      // Populate Club select
-      // ------------------------------
+      // Populate club dropdown
       document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
         radio.addEventListener("change", () => {
           const select = document.getElementById("clubSelect");
           select.innerHTML = '<option value="">-- Select your club --</option>';
-          clubs[radio.value].forEach((name) => {
+          clubs[radio.value].forEach((club) => {
             const opt = document.createElement("option");
-            opt.value = name;
-            opt.textContent = name;
+            opt.value = club.id; // ID will be sent on form submission
+            opt.textContent = club.name; // Name shown in dropdown
             select.appendChild(opt);
           });
           select.disabled = false;
         });
       });
 
-      // ------------------------------
-      // Calendar Approval Toggle
-      // ------------------------------
+      // Calendar approval toggle
       const calendarApprovedSelect = document.getElementById(
         "calendarApprovedSelect",
       );
@@ -310,7 +316,7 @@
       });
 
       // ------------------------------
-      // Event Modal Logic
+      // Event modal logic
       // ------------------------------
       let eventsData = [];
       const calendarInput = document.getElementById("calendarInput");
@@ -331,20 +337,16 @@
         "customEventTypeInput",
       );
 
-      // Flatpickr for additional dates
       let additionalDatesFP = flatpickr(additionalDatesPicker, {
         mode: "multiple",
         dateFormat: "Y-m-d",
         allowInput: true,
       });
-
-      // Flatpickr for main calendar input
       flatpickr(calendarInput, {
         dateFormat: "Y-m-d",
         disableMobile: true,
-        onChange: function (dates) {
-          if (!dates.length) return;
-          openEventModal(dates[0].toISOString().slice(0, 10));
+        onChange: (dates) => {
+          if (dates.length) openEventModal(dates[0].toISOString().slice(0, 10));
         },
       });
 
@@ -354,34 +356,24 @@
         multiDayDatesDiv.style.display = multiDayCheckbox.checked
           ? "block"
           : "none";
-
-        if (multiDayCheckbox.checked) {
-          additionalDatesFP.setDate([dateStr]);
-        } else {
-          additionalDatesFP.clear();
-        }
-
+        if (multiDayCheckbox.checked) additionalDatesFP.setDate([dateStr]);
+        else additionalDatesFP.clear();
         customEventTypeLabel.style.display = "none";
-        eventModal.style.display = "flex"; // SHOW modal
+        eventModal.style.display = "flex";
         eventForm.dataset.mainDate = dateStr;
       }
 
-      // Multi-day checkbox toggle
       multiDayCheckbox.addEventListener("change", () => {
         multiDayDatesDiv.style.display = multiDayCheckbox.checked
           ? "block"
           : "none";
         if (!multiDayCheckbox.checked) additionalDatesFP.clear();
       });
-
-      // Cancel modal
       document.getElementById("eventCancelBtn").onclick = () =>
         (eventModal.style.display = "none");
       eventModal.addEventListener("click", (e) => {
         if (e.target === eventModal) eventModal.style.display = "none";
       });
-
-      // Custom event type input
       document
         .getElementById("eventTypeSelect")
         .addEventListener("change", () => {
@@ -391,7 +383,6 @@
               : "none";
         });
 
-      // Submit event
       eventForm.onsubmit = (e) => {
         e.preventDefault();
         const mainDate = eventForm.dataset.mainDate;
@@ -410,12 +401,10 @@
           mainDate,
           ...additionalDates.filter((d) => d !== mainDate),
         ];
-
         if (!eventType || !eventTime || !location) {
           alert("Please fill all required fields");
           return;
         }
-
         const entry = {
           club: document.getElementById("clubSelect").value,
           eventType,
@@ -425,13 +414,11 @@
           dates: allDates,
         };
         eventsData.push(entry);
-
         allDates.forEach((date) => {
           const li = document.createElement("li");
           li.textContent =
             `[${entry.club}] ${date} - ${eventType} at ${eventTime}, Location: ${location}` +
             (description ? `, Description: ${description}` : "");
-
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = "🗑️ Delete";
           deleteBtn.style.marginLeft = "10px";
@@ -443,23 +430,39 @@
           li.appendChild(deleteBtn);
           eventsList.appendChild(li);
         });
-
         eventsInput.value = JSON.stringify(eventsData);
         eventModal.style.display = "none";
       };
 
       // ------------------------------
-      // Load nav
+      // Form submission with submit button disabled + success message
       // ------------------------------
-      fetch("nav.html")
-        .then((r) => r.text())
-        .then((html) => {
-          document.getElementById("nav-placeholder").innerHTML = html;
-          const current = location.pathname.split("/").pop();
-          document.querySelectorAll("#nav-placeholder a").forEach((a) => {
-            if (a.getAttribute("href") === current) a.classList.add("active");
-          });
-        });
+      const calendarForm = document.getElementById("calendarForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const successMessage = document.getElementById("successMessage");
+      const hiddenIframe = document.querySelector(
+        'iframe[name="hidden_iframe"]',
+      );
+      let isSubmitting = false;
+
+      calendarForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (isSubmitting) return;
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+        successMessage.style.display = "none";
+
+        const onIframeLoad = () => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit All Events";
+          successMessage.style.display = "inline-block";
+          isSubmitting = false;
+          hiddenIframe.removeEventListener("load", onIframeLoad);
+        };
+        hiddenIframe.addEventListener("load", onIframeLoad);
+        calendarForm.submit();
+      });
     </script>
   </body>
 </html>
