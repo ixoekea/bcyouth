@@ -86,12 +86,7 @@
   <body>
     <main>
       <div class="form-container">
-        <form
-          id="calendarForm"
-          action="https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec"
-          method="post"
-          target="hidden_iframe"
-        >
+        <form id="calendarForm">
           <!-- Club Type -->
           <fieldset>
             <legend>Club Type</legend>
@@ -111,8 +106,8 @@
           </fieldset>
 
           <!-- Club Selection -->
-          <label>
-            Select Club:
+          <label
+            >Select Club:
             <select name="club" id="clubSelect" required disabled>
               <option value="">-- Select your club --</option>
             </select>
@@ -149,24 +144,27 @@
             />
           </label>
 
-          <!-- Submit -->
           <button type="submit" id="submitBtn">Submit All Events</button>
           <span
             id="successMessage"
             style="display: none; color: green; margin-left: 10px"
             >Successfully submitted!</span
           >
+          <span
+            id="errorMessage"
+            style="display: none; color: red; margin-left: 10px"
+          ></span>
         </form>
       </div>
     </main>
 
-    <!-- Event Modal (outside form) -->
+    <!-- Event Modal -->
     <div id="eventModal">
       <div class="modal-content">
         <form id="eventForm">
           <h3>Add Event for <span id="selectedDateText"></span></h3>
-          <label>
-            Event Type:
+          <label
+            >Event Type:
             <select id="eventTypeSelect" required>
               <option value="" disabled selected>Select an event type</option>
               <option value="Induction">Induction</option>
@@ -181,14 +179,15 @@
               <option value="Other">Other</option>
             </select>
           </label>
-          <label id="customEventTypeLabel" style="display: none">
-            Custom Event Type: <input type="text" id="customEventTypeInput" />
+          <label id="customEventTypeLabel" style="display: none"
+            >Custom Event Type:
+            <input type="text" id="customEventTypeInput" />
           </label>
           <label
             >Time:
             <input
               type="text"
-              name="eventTime"
+              id="eventTimeInput"
               placeholder="e.g. 3:00 PM"
               required
           /></label>
@@ -205,10 +204,13 @@
             />
           </div>
           <label
-            >Description:<br /><textarea name="description" rows="3"></textarea>
+            >Description:<br /><textarea
+              id="descriptionInput"
+              rows="3"
+            ></textarea>
           </label>
           <label
-            >Location: <input type="text" name="location" required
+            >Location: <input type="text" id="locationInput" required
           /></label>
           <div style="margin-top: 1rem">
             <button type="submit">Add Event</button>
@@ -218,12 +220,7 @@
       </div>
     </div>
 
-    <iframe name="hidden_iframe" style="display: none"></iframe>
-
     <script>
-      // ------------------------------
-      // Club dropdown logic
-      // ------------------------------
       const clubs = {
         Adventurer: [
           { id: "A01", name: "`LIL TITANS" },
@@ -285,20 +282,21 @@
         ],
       };
 
-      // Populate club dropdown
-      document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
+      const clubRadios = document.querySelectorAll('input[name="clubType"]');
+      const clubSelect = document.getElementById("clubSelect");
+      clubRadios.forEach((radio) =>
         radio.addEventListener("change", () => {
-          const select = document.getElementById("clubSelect");
-          select.innerHTML = '<option value="">-- Select your club --</option>';
+          clubSelect.innerHTML =
+            '<option value="">-- Select your club --</option>';
           clubs[radio.value].forEach((club) => {
             const opt = document.createElement("option");
-            opt.value = club.id; // ID will be sent on form submission
-            opt.textContent = club.name; // Name shown in dropdown
-            select.appendChild(opt);
+            opt.value = club.id;
+            opt.textContent = club.name;
+            clubSelect.appendChild(opt);
           });
-          select.disabled = false;
-        });
-      });
+          clubSelect.disabled = false;
+        }),
+      );
 
       // Calendar approval toggle
       const calendarApprovedSelect = document.getElementById(
@@ -336,6 +334,10 @@
       const customEventTypeInput = document.getElementById(
         "customEventTypeInput",
       );
+      const eventTypeSelect = document.getElementById("eventTypeSelect");
+      const eventTimeInput = document.getElementById("eventTimeInput");
+      const locationInput = document.getElementById("locationInput");
+      const descriptionInput = document.getElementById("descriptionInput");
 
       let additionalDatesFP = flatpickr(additionalDatesPicker, {
         mode: "multiple",
@@ -374,26 +376,22 @@
       eventModal.addEventListener("click", (e) => {
         if (e.target === eventModal) eventModal.style.display = "none";
       });
-      document
-        .getElementById("eventTypeSelect")
-        .addEventListener("change", () => {
-          customEventTypeLabel.style.display =
-            document.getElementById("eventTypeSelect").value === "Other"
-              ? "block"
-              : "none";
-        });
+      eventTypeSelect.addEventListener("change", () => {
+        customEventTypeLabel.style.display =
+          eventTypeSelect.value === "Other" ? "block" : "none";
+      });
 
       eventForm.onsubmit = (e) => {
         e.preventDefault();
         const mainDate = eventForm.dataset.mainDate;
-        const selectedType = document.getElementById("eventTypeSelect").value;
+        const selectedType = eventTypeSelect.value;
         const eventType =
           selectedType === "Other"
             ? customEventTypeInput.value.trim()
             : selectedType;
-        const eventTime = eventForm.eventTime.value.trim();
-        const description = eventForm.description.value.trim();
-        const location = eventForm.location.value.trim();
+        const eventTime = eventTimeInput.value.trim();
+        const description = descriptionInput.value.trim();
+        const location = locationInput.value.trim();
         const additionalDates = additionalDatesFP.selectedDates.map((d) =>
           d.toISOString().slice(0, 10),
         );
@@ -406,7 +404,7 @@
           return;
         }
         const entry = {
-          club: document.getElementById("clubSelect").value,
+          club: clubSelect.value,
           eventType,
           eventTime,
           description,
@@ -417,7 +415,7 @@
         allDates.forEach((date) => {
           const li = document.createElement("li");
           li.textContent =
-            `[${entry.club}] ${date} - ${eventType} at ${eventTime}, Location: ${location}` +
+            `[${clubSelect.value}] ${date} - ${eventType} at ${eventTime}, Location: ${location}` +
             (description ? `, Description: ${description}` : "");
           const deleteBtn = document.createElement("button");
           deleteBtn.textContent = "🗑️ Delete";
@@ -435,33 +433,55 @@
       };
 
       // ------------------------------
-      // Form submission with submit button disabled + success message
+      // Form submission via fetch
       // ------------------------------
       const calendarForm = document.getElementById("calendarForm");
       const submitBtn = document.getElementById("submitBtn");
       const successMessage = document.getElementById("successMessage");
-      const hiddenIframe = document.querySelector(
-        'iframe[name="hidden_iframe"]',
-      );
+      const errorMessage = document.getElementById("errorMessage");
       let isSubmitting = false;
 
-      calendarForm.addEventListener("submit", (e) => {
+      calendarForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (isSubmitting) return;
         isSubmitting = true;
         submitBtn.disabled = true;
         submitBtn.textContent = "Submitting...";
         successMessage.style.display = "none";
+        errorMessage.style.display = "none";
 
-        const onIframeLoad = () => {
+        const formData = new URLSearchParams();
+        formData.append("events", eventsInput.value);
+        formData.append("calendarApproved", calendarApprovedSelect.value);
+        formData.append("boardApprovalDate", boardApprovalDateInput.value);
+
+        try {
+          const res = await fetch(
+            "https://script.google.com/macros/s/AKfycbz5AGhioEFs6L2bUPXeKG1VoJR7hfiygwUzCrFL0HZ-qDbZvAof7fSJnTd1nT0Y7R9G/exec",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: formData.toString(),
+            },
+          );
+          const data = await res.json();
+          if (data.status === "success") {
+            successMessage.style.display = "inline-block";
+            eventsData = [];
+            eventsList.innerHTML = "";
+            eventsInput.value = "";
+          } else {
+            errorMessage.textContent = "Error: " + data.message;
+            errorMessage.style.display = "inline-block";
+          }
+        } catch (err) {
+          errorMessage.textContent = "Submission failed: " + err;
+          errorMessage.style.display = "inline-block";
+        } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = "Submit All Events";
-          successMessage.style.display = "inline-block";
           isSubmitting = false;
-          hiddenIframe.removeEventListener("load", onIframeLoad);
-        };
-        hiddenIframe.addEventListener("load", onIframeLoad);
-        calendarForm.submit();
+        }
       });
     </script>
   </body>
