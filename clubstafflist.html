@@ -62,12 +62,13 @@
         border-radius: 6px;
         cursor: pointer;
       }
-      button:hover:enabled {
+      button:hover {
         background-color: #303f9f;
       }
-      button:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
+      .success-message {
+        color: green;
+        margin-top: 1rem;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -179,12 +180,18 @@
           </div>
 
           <input type="hidden" name="staffList" id="staffListInput" />
-
           <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
           <button type="button" onclick="removeStaffEntry()">
             - Remove Last
           </button>
           <button type="submit">Submit</button>
+          <div
+            id="successMessage"
+            class="success-message"
+            style="display: none"
+          >
+            Submission successful!
+          </div>
         </form>
       </div>
     </main>
@@ -192,7 +199,7 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      // --- NAV LOAD ---
+      // Load nav
       fetch("nav.html")
         .then((res) => res.text())
         .then((html) => {
@@ -203,7 +210,6 @@
           });
         });
 
-      // --- CLUB DATA ---
       const clubs = {
         Adventurer: [
           { id: "A01", name: "`LIL TITANS" },
@@ -238,33 +244,34 @@
         Pathfinder: [
           { id: "P01", name: "Agape Lynx" },
           { id: "P02", name: "Cariboo Gold" },
-          { id: "P03", name: "Creekside Falcons" },
-          { id: "P04", name: "Dawson Creek Peacemakers" },
-          { id: "P05", name: "EBENEZER" },
-          { id: "P06", name: "Fraser Valley Titans" },
-          { id: "P07", name: "Fraserview" },
-          { id: "P08", name: "Golden Eagles" },
-          { id: "P09", name: "Inspire Jaguars" },
-          { id: "P10", name: "Island Eagles" },
-          { id: "P11", name: "Island Explorers" },
-          { id: "P12", name: "Lake City" },
-          { id: "P13", name: "Mount Cheam" },
-          { id: "P14", name: "OAC Bears" },
-          { id: "P15", name: "Peacelanders" },
-          { id: "P16", name: "PG Nighthawks" },
-          { id: "P17", name: "Richmond Ravens" },
-          { id: "P18", name: "Robson Peaks" },
-          { id: "P19", name: "Sardis Spirits" },
-          { id: "P20", name: "Shuswap Eagles" },
-          { id: "P21", name: "Silver Tip" },
-          { id: "P22", name: "Skyhawks" },
-          { id: "P23", name: "Surrey Beavers" },
-          { id: "P24", name: "SURREY TIGERS" },
-          { id: "P25", name: "Westminster Thunderbirds" },
+          { id: "P03", name: "Cranbrook SDA Church" },
+          { id: "P04", name: "Creekside Falcons" },
+          { id: "P05", name: "Dawson Creek Peacemakers" },
+          { id: "P06", name: "EBENEZER" },
+          { id: "P07", name: "Fraser Valley Titans" },
+          { id: "P08", name: "Fraserview" },
+          { id: "P09", name: "Golden Eagles" },
+          { id: "P10", name: "Inspire Jaguars" },
+          { id: "P11", name: "Island Eagles" },
+          { id: "P12", name: "Island Explorers" },
+          { id: "P13", name: "Lake City" },
+          { id: "P14", name: "Mount Cheam" },
+          { id: "P15", name: "OAC Bears" },
+          { id: "P16", name: "Peacelanders" },
+          { id: "P17", name: "PG Nighthawks" },
+          { id: "P18", name: "Richmond Ravens" },
+          { id: "P19", name: "Robson Peaks" },
+          { id: "P20", name: "Sardis Spirits" },
+          { id: "P21", name: "Shuswap Eagles" },
+          { id: "P22", name: "Silver Tip" },
+          { id: "P23", name: "Skyhawks" },
+          { id: "P24", name: "Surrey Beavers" },
+          { id: "P25", name: "SURREY TIGERS" },
+          { id: "P26", name: "Westminster Thunderbirds" },
         ],
       };
 
-      // --- POPULATE CLUB SELECT ---
+      // Populate club select
       document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
         radio.addEventListener("change", () => {
           const select = document.getElementById("clubSelect");
@@ -279,7 +286,6 @@
         });
       });
 
-      // --- TOGGLE DATE INPUTS ---
       function toggleDateInput(sel) {
         const label = sel.closest("label").nextElementSibling;
         if (!label) return;
@@ -296,7 +302,6 @@
         }
       }
 
-      // --- ADD/REMOVE STAFF ---
       function addStaffEntry() {
         const staffEntries = document.getElementById("staffEntries");
         const last = staffEntries.querySelector(".staff:last-child");
@@ -317,14 +322,23 @@
         else alert("At least one staff entry is required.");
       }
 
-      // --- FORM SUBMIT WITH ANTI-DOUBLE-SUBMIT ---
+      // Handle form submission and prevent double clicks
       const form = document.getElementById("staffForm");
       const submitBtn = form.querySelector('button[type="submit"]');
+      const hiddenIframe = document.querySelector(
+        'iframe[name="hidden_iframe"]',
+      );
+      const successMessage = document.getElementById("successMessage");
+      let isSubmitting = false;
 
       form.addEventListener("submit", function (e) {
-        e.preventDefault(); // prevent default submit
-        submitBtn.disabled = true; // disable button
-        submitBtn.textContent = "Submitting..."; // feedback
+        e.preventDefault();
+        if (isSubmitting) return; // prevent double submit
+        isSubmitting = true;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+        successMessage.style.display = "none";
 
         const staffList = [];
         document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
@@ -348,10 +362,18 @@
         document.getElementById("staffListInput").value =
           JSON.stringify(staffList);
 
-        form.submit(); // submit to Apps Script
+        const onIframeLoad = () => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit";
+          successMessage.style.display = "block";
+          isSubmitting = false;
+          hiddenIframe.removeEventListener("load", onIframeLoad);
+        };
+
+        hiddenIframe.addEventListener("load", onIframeLoad);
+        form.submit();
       });
 
-      // --- INIT DATE PICKERS ---
       flatpickr('input[type="date"]');
     </script>
   </body>
