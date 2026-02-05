@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>BC Club Staff List</title>
+
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
@@ -12,6 +13,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <style>
       body {
         font-family: "Inter", sans-serif;
@@ -45,10 +47,8 @@
         margin: 1rem 0 0.5rem;
       }
       input,
-      select,
-      textarea {
+      select {
         padding: 0.5rem;
-        margin-top: 0.25rem;
         border-radius: 6px;
         border: 1px solid #ccc;
         width: 100%;
@@ -70,8 +70,14 @@
         margin-top: 1rem;
         font-weight: bold;
       }
+      .error-message {
+        color: red;
+        margin-top: 0.5rem;
+        font-weight: bold;
+      }
     </style>
   </head>
+
   <body>
     <div id="nav-placeholder"></div>
 
@@ -79,7 +85,7 @@
       <div class="form-container">
         <form
           id="staffForm"
-          action="https://script.google.com/macros/s/AKfycbxoDV_jp5mdCzxU6nHnDyjrqM4A6o8aRzc3ZuonD0vt1GgqA4qoJwuM5VERAim4vzC_bQ/exec"
+          action="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
           method="post"
           target="hidden_iframe"
         >
@@ -102,43 +108,49 @@
             </select>
           </label>
 
+          <label>
+            Access Code:
+            <input type="password" name="accessCode" id="accessCode" required />
+          </label>
+          <div id="accessCodeError" class="error-message" style="display: none">
+            Access code is incorrect. Please enter a valid access code.
+          </div>
+
           <div id="staffEntries">
             <div class="staff">
               <fieldset>
                 <legend>Staff Member</legend>
+
                 <label>Name: <input type="text" name="name" required /></label>
                 <label
-                  >Email: <i>Email is only required for Director</i>
+                  >Email:
                   <input type="email" name="email" />
                 </label>
+
                 <label>
                   Criminal Record Check:
                   <select name="crc" onchange="toggleDateInput(this)">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
+                    <option>No</option>
+                    <option>Yes</option>
                   </select>
                 </label>
+
                 <label class="crcDateLabel" style="display: none">
                   CRC Expiration:
                   <input type="date" name="crcExpirationDate" disabled />
                 </label>
-                <label>
-                  ACL Abuse Cert:
-                  <select name="acl">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
+
                 <label>
                   First Aid Cert Status:
                   <select
                     name="certificationStatus"
                     onchange="toggleDateInput(this)"
                   >
-                    <option value="Not Certified">Not Certified</option>
-                    <option value="Certified">Certified</option>
+                    <option>Not Certified</option>
+                    <option>Certified</option>
                   </select>
                 </label>
+
                 <label class="certDateLabel" style="display: none">
                   Certification Expiration:
                   <input
@@ -147,44 +159,28 @@
                     disabled
                   />
                 </label>
-                <label>
-                  Driver's Abstract:
-                  <select name="driversAbstract">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-                <label>
-                  Insurance:
-                  <select name="insurance">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
-                <label>
-                  Volunteers Approved:
-                  <select name="volunteersApproved">
-                    <option value="No">No</option>
-                    <option value="Yes">Yes</option>
-                  </select>
-                </label>
+
                 <label>
                   Volunteer Form Submitted:
                   <input type="checkbox" name="volunteerForm" />
                 </label>
+
                 <label>
-                  Over 19+: <input type="checkbox" name="checkboxage" />
+                  Over 19+:
+                  <input type="checkbox" name="checkboxage" />
                 </label>
               </fieldset>
             </div>
           </div>
 
           <input type="hidden" name="staffList" id="staffListInput" />
+
           <button type="button" onclick="addStaffEntry()">+ Add Staff</button>
           <button type="button" onclick="removeStaffEntry()">
             - Remove Last
           </button>
           <button type="submit">Submit</button>
+
           <div
             id="successMessage"
             class="success-message"
@@ -199,79 +195,81 @@
     <iframe name="hidden_iframe" style="display: none"></iframe>
 
     <script>
-      // Load nav
+      // ---------------- NAV LOADER ----------------
       fetch("nav.html")
         .then((res) => res.text())
         .then((html) => {
           document.getElementById("nav-placeholder").innerHTML = html;
           const current = location.pathname.split("/").pop();
           document.querySelectorAll("#nav-placeholder a").forEach((a) => {
-            if (a.getAttribute("href") === current) a.classList.add("active");
+            if (a.getAttribute("href") === current) {
+              a.classList.add("active");
+            }
           });
         });
 
+      // ---------------- CLUB LISTS ----------------
       const clubs = {
         Adventurer: [
-          { id: "A01", name: "`LIL TITANS" },
-          { id: "A02", name: "Agape Lynx" },
-          { id: "A03", name: "Cariboo Gold" },
-          { id: "A03", name: "Chickadee" },
-          { id: "A03", name: "Cranbrook SDA Church" },
-          { id: "A04", name: "Creekside Jr. Falcons" },
-          { id: "A05", name: "Dawson Creek Peacemakers" },
-          { id: "A06", name: "Heavenbound" },
-          { id: "A07", name: "Inspire-Burnaby" },
-          { id: "A08", name: "Island Eaglets" },
-          { id: "P09", name: "Island Explorers" },
-          { id: "A10", name: "Kelowna Silver Paws" },
-          { id: "A11", name: "Lake City" },
-          { id: "A12", name: "Lakeside" },
-          { id: "A13", name: "Mighty Islanders" },
-          { id: "A14", name: "Mount Cheam" },
-          { id: "A15", name: "Northern Lightbearers" },
-          { id: "A16", name: "Orion" },
-          { id: "P17", name: "Penticton SDA Spirit Bears" },
-          { id: "A18", name: "Radical Rabbits" },
-          { id: "P19", name: "Robson Peaks" },
-          { id: "A20", name: "Sooke Sea Stars" },
-          { id: "A21", name: "Surrey Beavers" },
-          { id: "A22", name: "Surrey Dolphins" },
-          { id: "A23", name: "The Kamloops Eagle" },
-          { id: "A24", name: "Vancouver Rangerz" },
-          { id: "A25", name: "Westminster Thunderbirds" },
-          { id: "A26", name: "White Rock Otters" },
+          { name: "`LIL TITANS" },
+          { name: "Agape Lynx" },
+          { name: "Cariboo Gold" },
+          { name: "Chickadee" },
+          { name: "Cranbrook SDA Church" },
+          { name: "Creekside Jr. Falcons" },
+          { name: "Dawson Creek Peacemakers" },
+          { name: "Heavenbound" },
+          { name: "Inspire-Burnaby" },
+          { name: "Island Eaglets" },
+          { name: "Island Explorers" },
+          { name: "Kelowna Silver Paws" },
+          { name: "Lake City" },
+          { name: "Lakeside" },
+          { name: "Mighty Islanders" },
+          { name: "Mount Cheam" },
+          { name: "Northern Lightbearers" },
+          { name: "Orion" },
+          { name: "Penticton SDA Spirit Bears" },
+          { name: "Radical Rabbits" },
+          { name: "Robson Peaks" },
+          { name: "Sooke Sea Stars" },
+          { name: "Surrey Beavers" },
+          { name: "Surrey Dolphins" },
+          { name: "The Kamloops Eagle" },
+          { name: "Vancouver Rangerz" },
+          { name: "Westminster Thunderbirds" },
+          { name: "White Rock Otters" },
         ],
         Pathfinder: [
-          { id: "P01", name: "Agape Lynx" },
-          { id: "P02", name: "Cariboo Gold" },
-          { id: "P03", name: "Cranbrook SDA Church" },
-          { id: "P04", name: "Creekside Falcons" },
-          { id: "P05", name: "Dawson Creek Peacemakers" },
-          { id: "P06", name: "EBENEZER" },
-          { id: "P07", name: "Fraser Valley Titans" },
-          { id: "P08", name: "Fraserview" },
-          { id: "P09", name: "Golden Eagles" },
-          { id: "P10", name: "Inspire Jaguars" },
-          { id: "P11", name: "Island Eagles" },
-          { id: "P12", name: "Island Explorers" },
-          { id: "P13", name: "Lake City" },
-          { id: "P14", name: "Mount Cheam" },
-          { id: "P15", name: "OAC Bears" },
-          { id: "P16", name: "Peacelanders" },
-          { id: "P17", name: "PG Nighthawks" },
-          { id: "P18", name: "Richmond Ravens" },
-          { id: "P19", name: "Robson Peaks" },
-          { id: "P20", name: "Sardis Spirits" },
-          { id: "P21", name: "Shuswap Eagles" },
-          { id: "P22", name: "Silver Tip" },
-          { id: "P23", name: "Skyhawks" },
-          { id: "P24", name: "Surrey Beavers" },
-          { id: "P25", name: "SURREY TIGERS" },
-          { id: "P26", name: "Westminster Thunderbirds" },
+          { name: "Agape Lynx" },
+          { name: "Cariboo Gold" },
+          { name: "Cranbrook SDA Church" },
+          { name: "Creekside Falcons" },
+          { name: "Dawson Creek Peacemakers" },
+          { name: "EBENEZER" },
+          { name: "Fraser Valley Titans" },
+          { name: "Fraserview" },
+          { name: "Golden Eagles" },
+          { name: "Inspire Jaguars" },
+          { name: "Island Eagles" },
+          { name: "Island Explorers" },
+          { name: "Lake City" },
+          { name: "Mount Cheam" },
+          { name: "OAC Bears" },
+          { name: "Peacelanders" },
+          { name: "PG Nighthawks" },
+          { name: "Richmond Ravens" },
+          { name: "Robson Peaks" },
+          { name: "Sardis Spirits" },
+          { name: "Shuswap Eagles" },
+          { name: "Silver Tip" },
+          { name: "Skyhawks" },
+          { name: "Surrey Beavers" },
+          { name: "SURREY TIGERS" },
+          { name: "Westminster Thunderbirds" },
         ],
       };
 
-      // Populate club select
       document.querySelectorAll('input[name="clubType"]').forEach((radio) => {
         radio.addEventListener("change", () => {
           const select = document.getElementById("clubSelect");
@@ -286,92 +284,47 @@
         });
       });
 
-      function toggleDateInput(sel) {
-        const label = sel.closest("label").nextElementSibling;
-        if (!label) return;
-        if (sel.name === "crc" && label.classList.contains("crcDateLabel")) {
-          label.style.display = sel.value === "Yes" ? "block" : "none";
-          label.querySelector("input").disabled = sel.value !== "Yes";
-        }
-        if (
-          sel.name === "certificationStatus" &&
-          label.classList.contains("certDateLabel")
-        ) {
-          label.style.display = sel.value === "Certified" ? "block" : "none";
-          label.querySelector("input").disabled = sel.value !== "Certified";
-        }
-      }
+      // ---------------- ACCESS CODE (FRONT END) ----------------
+      const FRONTEND_ACCESS_CODE = "2026BCYOUTHCHOSEN";
+      const accessCodeInput = document.getElementById("accessCode");
+      const accessCodeError = document.getElementById("accessCodeError");
 
-      function addStaffEntry() {
-        const staffEntries = document.getElementById("staffEntries");
-        const last = staffEntries.querySelector(".staff:last-child");
-        const clone = last.cloneNode(true);
-        clone.querySelectorAll("input, select").forEach((el) => {
-          if (el.type === "checkbox") el.checked = false;
-          else el.value = "";
-          if (el.disabled) el.disabled = false;
-        });
-        staffEntries.appendChild(clone);
-      }
+      accessCodeInput.addEventListener("input", () => {
+        accessCodeError.style.display = "none";
+      });
 
-      function removeStaffEntry() {
-        const staffEntries = document.getElementById("staffEntries");
-        const staffList = staffEntries.querySelectorAll(".staff");
-        if (staffList.length > 1)
-          staffEntries.removeChild(staffList[staffList.length - 1]);
-        else alert("At least one staff entry is required.");
-      }
-
-      // Handle form submission and prevent double clicks
+      // ---------------- FORM SUBMIT ----------------
       const form = document.getElementById("staffForm");
-      const submitBtn = form.querySelector('button[type="submit"]');
-      const hiddenIframe = document.querySelector(
-        'iframe[name="hidden_iframe"]',
-      );
       const successMessage = document.getElementById("successMessage");
-      let isSubmitting = false;
 
-      form.addEventListener("submit", function (e) {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
-        if (isSubmitting) return; // prevent double submit
-        isSubmitting = true;
 
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Submitting...";
-        successMessage.style.display = "none";
+        if (accessCodeInput.value.trim() !== FRONTEND_ACCESS_CODE) {
+          accessCodeError.style.display = "block";
+          accessCodeInput.focus();
+          return;
+        }
 
         const staffList = [];
-        document.querySelectorAll("#staffEntries .staff").forEach((entry) => {
-          const get = (name) => entry.querySelector(`[name="${name}"]`);
+        document.querySelectorAll(".staff").forEach((entry) => {
+          const g = (n) => entry.querySelector(`[name="${n}"]`);
           staffList.push({
-            name: get("name").value.trim(),
-            email: get("email").value.trim(),
-            crc: get("crc").value,
-            crcExpirationDate: get("crcExpirationDate").value,
-            acl: get("acl").value,
-            certificationStatus: get("certificationStatus").value,
-            certificationExpirationDate: get("certificationExpirationDate")
-              .value,
-            driversAbstract: get("driversAbstract").value,
-            insurance: get("insurance").value,
-            volunteersApproved: get("volunteersApproved").value,
-            volunteerForm: get("volunteerForm").checked,
-            checkboxage: get("checkboxage").checked,
+            name: g("name").value,
+            email: g("email").value,
+            crc: g("crc").value,
+            crcExpirationDate: g("crcExpirationDate").value,
+            certificationStatus: g("certificationStatus").value,
+            certificationExpirationDate: g("certificationExpirationDate").value,
+            volunteerForm: g("volunteerForm").checked,
+            checkboxage: g("checkboxage").checked,
           });
         });
+
         document.getElementById("staffListInput").value =
           JSON.stringify(staffList);
-
-        const onIframeLoad = () => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = "Submit";
-          successMessage.style.display = "block";
-          isSubmitting = false;
-          hiddenIframe.removeEventListener("load", onIframeLoad);
-        };
-
-        hiddenIframe.addEventListener("load", onIframeLoad);
         form.submit();
+        successMessage.style.display = "block";
       });
 
       flatpickr('input[type="date"]');
