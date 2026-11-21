@@ -2,31 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BC PBE Registration</title>
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
-
     <style>
       body {
         font-family: "Inter", sans-serif;
         margin: 0;
         background: #f5f6fa;
       }
-
       #nav-placeholder a.active {
         font-weight: bold;
         text-decoration: underline;
       }
-
       main {
         padding: 6rem 2rem 2rem;
         display: flex;
         justify-content: center;
       }
-
       .form-container {
         background: white;
         padding: 2rem;
@@ -35,42 +31,37 @@
         width: 100%;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
-
       h2 {
         color: #3f51b5;
         margin-top: 2rem;
       }
-
       h3 {
         margin-top: 1.5rem;
         color: #444;
       }
-
       label {
         display: block;
         margin-top: 1rem;
         font-weight: 600;
       }
-
       input,
       select {
+        box-sizing: border-box;
         width: 100%;
         padding: 0.6rem;
         margin-top: 0.3rem;
         border-radius: 6px;
         border: 1px solid #ccc;
       }
-
       .member-row {
         display: flex;
         gap: 10px;
         margin-top: 0.5rem;
       }
-
       .member-row input {
         flex: 1;
+        min-width: 0;
       }
-
       .policy-note {
         margin-top: 1rem;
         padding: 0.75rem;
@@ -79,7 +70,42 @@
         font-size: 0.95rem;
         color: #333;
       }
-
+      .member-details {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: #f8f9ff;
+        border-radius: 8px;
+      }
+      .radio-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 15px;
+        margin-top: 0.5rem;
+      }
+      .radio-group label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 0;
+        font-weight: normal;
+      }
+      .radio-group input[type="radio"],
+      .checkbox-label input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+        padding: 0;
+      }
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .member-details input[type="number"] {
+        max-width: 200px;
+      }
+      .member-entry {
+        margin-bottom: 1.5rem;
+      }
       button {
         margin-top: 2rem;
         padding: 0.7rem 1.5rem;
@@ -90,20 +116,27 @@
         cursor: pointer;
         font-weight: bold;
       }
-
       button:hover {
         background: #303f9f;
       }
-
       hr {
         margin: 2.5rem 0;
       }
+      @media (max-width: 650px) {
+        main {
+          padding: 5rem 0.75rem 1rem;
+        }
+        .form-container {
+          padding: 1.25rem;
+        }
+        .member-row {
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
-
   <body>
     <div id="nav-placeholder"></div>
-
     <main>
       <form
         id="pbeForm"
@@ -112,13 +145,11 @@
         method="post"
         target="hidden_iframe"
       >
-        <h2>Club & Church Information</h2>
-
-        <label>Pathfinder Club Name</label>
-        <input name="clubName" required />
-
-        <label>Club Region</label>
-        <select name="clubRegion" required>
+        <h2>Club &amp; Church Information</h2>
+        <label for="clubName">Pathfinder Club Name</label>
+        <input id="clubName" name="clubName" required />
+        <label for="clubRegion">Club Region</label>
+        <select id="clubRegion" name="clubRegion" required>
           <option value="">Select region</option>
           <option>Cariboo</option>
           <option>Fraser Valley</option>
@@ -132,36 +163,26 @@
           <option>South Okanagan</option>
           <option>Vancouver Islands</option>
         </select>
-
-        <label>Director Name</label>
-        <input name="directorName" required />
-
-        <label>Church Name</label>
-        <input name="churchName" required />
+        <label for="directorName">Director Name</label
+        ><input id="directorName" name="directorName" required />
+        <label for="churchName">Church Name</label
+        ><input id="churchName" name="churchName" required />
 
         <hr />
-
         <h2>Team Information</h2>
-
-        <label>PBE Team Name</label>
-        <input name="teamName" required />
-
-        <label>Coach First Name</label>
-        <input name="coachFirstName" required />
-
-        <label>Coach Last Name</label>
-        <input name="coachLastName" required />
-
-        <label>Coach Email</label>
-        <input type="email" name="coachEmail" required />
-
-        <label>Coach Phone</label>
-        <input type="tel" name="coachPhone" required />
+        <label for="teamName">PBE Team Name</label
+        ><input id="teamName" name="teamName" required />
+        <label for="coachFirstName">Coach First Name</label
+        ><input id="coachFirstName" name="coachFirstName" required />
+        <label for="coachLastName">Coach Last Name</label
+        ><input id="coachLastName" name="coachLastName" required />
+        <label for="coachEmail">Coach Email</label
+        ><input id="coachEmail" type="email" name="coachEmail" required />
+        <label for="coachPhone">Coach Phone</label
+        ><input id="coachPhone" type="tel" name="coachPhone" required />
 
         <hr />
-
         <h2>Team Members</h2>
-
         <div class="policy-note">
           <strong>Team Policy:</strong><br />
           • A minimum of <strong>2 team members</strong> is required to
@@ -182,30 +203,359 @@
             required
           />
         </div>
-
+        <div class="member-details">
+          <label>What type of school does the team member attend?</label>
+          <div class="radio-group">
+            <label
+              ><input
+                type="radio"
+                name="captainSchoolType"
+                value="Public"
+                required
+              />
+              Public</label
+            >
+            <label
+              ><input type="radio" name="captainSchoolType" value="Private" />
+              Private</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="captainSchoolType"
+                value="Non-SDA Christian"
+              />
+              Non-SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="captainSchoolType"
+                value="SDA Christian"
+              />
+              SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="captainSchoolType"
+                value="Home-schooled"
+              />
+              Home-schooled</label
+            >
+          </div>
+          <label class="checkbox-label"
+            ><input type="checkbox" name="captainBaptized" value="Yes" />
+            Baptized?</label
+          >
+          <label for="captainPbeYears"
+            >How many years has the team member participated in PBE?</label
+          >
+          <input
+            type="number"
+            id="captainPbeYears"
+            name="captainPbeYears"
+            min="0"
+            max="60"
+            placeholder="Number of years"
+          />
+        </div>
         <h3>Scribe</h3>
         <div class="member-row">
           <input name="scribeFirstName" placeholder="First Name" required />
           <input name="scribeLastName" placeholder="Last Name" required />
           <input type="email" name="scribeEmail" placeholder="Email" required />
         </div>
+        <div class="member-details">
+          <label>What type of school does the team member attend?</label>
+          <div class="radio-group">
+            <label
+              ><input
+                type="radio"
+                name="scribeSchoolType"
+                value="Public"
+                required
+              />
+              Public</label
+            >
+            <label
+              ><input type="radio" name="scribeSchoolType" value="Private" />
+              Private</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="scribeSchoolType"
+                value="Non-SDA Christian"
+              />
+              Non-SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="scribeSchoolType"
+                value="SDA Christian"
+              />
+              SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="scribeSchoolType"
+                value="Home-schooled"
+              />
+              Home-schooled</label
+            >
+          </div>
+          <label class="checkbox-label"
+            ><input type="checkbox" name="scribeBaptized" value="Yes" />
+            Baptized?</label
+          >
+          <label for="scribePbeYears"
+            >How many years has the team member participated in PBE?</label
+          >
+          <input
+            type="number"
+            id="scribePbeYears"
+            name="scribePbeYears"
+            min="0"
+            max="60"
+            placeholder="Number of years"
+          />
+        </div>
 
         <h3>Members</h3>
-        <div class="member-row">
-          <input name="member1FirstName" placeholder="First Name" />
-          <input name="member1LastName" placeholder="Last Name" />
+        <div class="member-entry">
+          <div class="member-row">
+            <input name="member1FirstName" placeholder="First Name" />
+            <input name="member1LastName" placeholder="Last Name" />
+          </div>
+          <div class="member-details">
+            <label>What type of school does the team member attend?</label>
+            <div class="radio-group">
+              <label
+                ><input type="radio" name="member1SchoolType" value="Public" />
+                Public</label
+              >
+              <label
+                ><input type="radio" name="member1SchoolType" value="Private" />
+                Private</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member1SchoolType"
+                  value="Non-SDA Christian"
+                />
+                Non-SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member1SchoolType"
+                  value="SDA Christian"
+                />
+                SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member1SchoolType"
+                  value="Home-schooled"
+                />
+                Home-schooled</label
+              >
+            </div>
+            <label class="checkbox-label"
+              ><input type="checkbox" name="member1Baptized" value="Yes" />
+              Baptized?</label
+            >
+            <label for="member1PbeYears"
+              >How many years has the team member participated in PBE?</label
+            >
+            <input
+              type="number"
+              id="member1PbeYears"
+              name="member1PbeYears"
+              min="0"
+              max="60"
+              placeholder="Number of years"
+            />
+          </div>
         </div>
-        <div class="member-row">
-          <input name="member2FirstName" placeholder="First Name" />
-          <input name="member2LastName" placeholder="Last Name" />
+        <div class="member-entry">
+          <div class="member-row">
+            <input name="member2FirstName" placeholder="First Name" />
+            <input name="member2LastName" placeholder="Last Name" />
+          </div>
+          <div class="member-details">
+            <label>What type of school does the team member attend?</label>
+            <div class="radio-group">
+              <label
+                ><input type="radio" name="member2SchoolType" value="Public" />
+                Public</label
+              >
+              <label
+                ><input type="radio" name="member2SchoolType" value="Private" />
+                Private</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member2SchoolType"
+                  value="Non-SDA Christian"
+                />
+                Non-SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member2SchoolType"
+                  value="SDA Christian"
+                />
+                SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member2SchoolType"
+                  value="Home-schooled"
+                />
+                Home-schooled</label
+              >
+            </div>
+            <label class="checkbox-label"
+              ><input type="checkbox" name="member2Baptized" value="Yes" />
+              Baptized?</label
+            >
+            <label for="member2PbeYears"
+              >How many years has the team member participated in PBE?</label
+            >
+            <input
+              type="number"
+              id="member2PbeYears"
+              name="member2PbeYears"
+              min="0"
+              max="60"
+              placeholder="Number of years"
+            />
+          </div>
         </div>
-        <div class="member-row">
-          <input name="member3FirstName" placeholder="First Name" />
-          <input name="member3LastName" placeholder="Last Name" />
+        <div class="member-entry">
+          <div class="member-row">
+            <input name="member3FirstName" placeholder="First Name" />
+            <input name="member3LastName" placeholder="Last Name" />
+          </div>
+          <div class="member-details">
+            <label>What type of school does the team member attend?</label>
+            <div class="radio-group">
+              <label
+                ><input type="radio" name="member3SchoolType" value="Public" />
+                Public</label
+              >
+              <label
+                ><input type="radio" name="member3SchoolType" value="Private" />
+                Private</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member3SchoolType"
+                  value="Non-SDA Christian"
+                />
+                Non-SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member3SchoolType"
+                  value="SDA Christian"
+                />
+                SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member3SchoolType"
+                  value="Home-schooled"
+                />
+                Home-schooled</label
+              >
+            </div>
+            <label class="checkbox-label"
+              ><input type="checkbox" name="member3Baptized" value="Yes" />
+              Baptized?</label
+            >
+            <label for="member3PbeYears"
+              >How many years has the team member participated in PBE?</label
+            >
+            <input
+              type="number"
+              id="member3PbeYears"
+              name="member3PbeYears"
+              min="0"
+              max="60"
+              placeholder="Number of years"
+            />
+          </div>
         </div>
-        <div class="member-row">
-          <input name="member4FirstName" placeholder="First Name" />
-          <input name="member4LastName" placeholder="Last Name" />
+        <div class="member-entry">
+          <div class="member-row">
+            <input name="member4FirstName" placeholder="First Name" />
+            <input name="member4LastName" placeholder="Last Name" />
+          </div>
+          <div class="member-details">
+            <label>What type of school does the team member attend?</label>
+            <div class="radio-group">
+              <label
+                ><input type="radio" name="member4SchoolType" value="Public" />
+                Public</label
+              >
+              <label
+                ><input type="radio" name="member4SchoolType" value="Private" />
+                Private</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member4SchoolType"
+                  value="Non-SDA Christian"
+                />
+                Non-SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member4SchoolType"
+                  value="SDA Christian"
+                />
+                SDA Christian</label
+              >
+              <label
+                ><input
+                  type="radio"
+                  name="member4SchoolType"
+                  value="Home-schooled"
+                />
+                Home-schooled</label
+              >
+            </div>
+            <label class="checkbox-label"
+              ><input type="checkbox" name="member4Baptized" value="Yes" />
+              Baptized?</label
+            >
+            <label for="member4PbeYears"
+              >How many years has the team member participated in PBE?</label
+            >
+            <input
+              type="number"
+              id="member4PbeYears"
+              name="member4PbeYears"
+              min="0"
+              max="60"
+              placeholder="Number of years"
+            />
+          </div>
         </div>
 
         <h3>Alternate Member (optional)</h3>
@@ -213,25 +563,74 @@
           <input name="alternateFirstName" placeholder="First Name" />
           <input name="alternateLastName" placeholder="Last Name" />
         </div>
+        <div class="member-details">
+          <label>What type of school does the team member attend?</label>
+          <div class="radio-group">
+            <label
+              ><input type="radio" name="alternateSchoolType" value="Public" />
+              Public</label
+            >
+            <label
+              ><input type="radio" name="alternateSchoolType" value="Private" />
+              Private</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="alternateSchoolType"
+                value="Non-SDA Christian"
+              />
+              Non-SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="alternateSchoolType"
+                value="SDA Christian"
+              />
+              SDA Christian</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="alternateSchoolType"
+                value="Home-schooled"
+              />
+              Home-schooled</label
+            >
+          </div>
+          <label class="checkbox-label"
+            ><input type="checkbox" name="alternateBaptized" value="Yes" />
+            Baptized?</label
+          >
+          <label for="alternatePbeYears"
+            >How many years has the team member participated in PBE?</label
+          >
+          <input
+            type="number"
+            id="alternatePbeYears"
+            name="alternatePbeYears"
+            min="0"
+            max="60"
+            placeholder="Number of years"
+          />
+        </div>
 
         <hr />
-
         <h2>Confirmation</h2>
-        <label>All team members are inducted Pathfinders?</label>
-        <select name="clubConfirmation" required>
+        <label for="clubConfirmation"
+          >All team members are inducted Pathfinders?</label
+        >
+        <select id="clubConfirmation" name="clubConfirmation" required>
           <option value="">Select</option>
           <option>Yes</option>
           <option>No</option>
         </select>
-
         <input type="hidden" name="teamData" id="teamData" />
-
         <button type="submit">Submit Registration</button>
       </form>
     </main>
-
     <iframe name="hidden_iframe" style="display: none"></iframe>
-
     <script>
       fetch("nav.html")
         .then((res) => res.text())
@@ -248,21 +647,22 @@
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
-
         const fd = new FormData(form);
-
-        // Count total members (captain + scribe + filled member slots)
         let memberCount = 0;
-
-        if (fd.get("captainFirstName") && fd.get("captainLastName"))
-          memberCount++;
-        if (fd.get("scribeFirstName") && fd.get("scribeLastName"))
-          memberCount++;
-
-        ["member1", "member2", "member3", "member4"].forEach((m) => {
-          if (fd.get(m + "FirstName") && fd.get(m + "LastName")) {
+        const memberPrefixes = [
+          "captain",
+          "scribe",
+          "member1",
+          "member2",
+          "member3",
+          "member4",
+        ];
+        memberPrefixes.forEach((prefix) => {
+          if (
+            fd.get(prefix + "FirstName")?.trim() &&
+            fd.get(prefix + "LastName")?.trim()
+          )
             memberCount++;
-          }
         });
 
         if (memberCount < 2) {
@@ -272,20 +672,37 @@
           return;
         }
 
+        // Require school type for each named team member; optional alternate only if a name is entered.
+        const allPrefixes = [...memberPrefixes, "alternate"];
+        for (const prefix of allPrefixes) {
+          const first = fd.get(prefix + "FirstName")?.trim();
+          const last = fd.get(prefix + "LastName")?.trim();
+          if ((first || last) && !fd.get(prefix + "SchoolType")) {
+            alert(
+              "Please select a school type for " +
+                (prefix === "alternate"
+                  ? "the alternate member"
+                  : prefix.replace(/([0-9])/, " $1")) +
+                ".",
+            );
+            form
+              .querySelector('input[name="' + prefix + 'SchoolType"]')
+              .focus();
+            return;
+          }
+        }
+
         const formData = Object.fromEntries(fd.entries());
         document.getElementById("teamData").value = JSON.stringify(formData);
-
         const btn = form.querySelector("button[type='submit']");
         btn.disabled = true;
         btn.textContent = "Submitting...";
-
         iframe.onload = () => {
           alert("✅ Registration submitted successfully!");
           form.reset();
           btn.disabled = false;
           btn.textContent = "Submit Registration";
         };
-
         form.submit();
       });
     </script>
